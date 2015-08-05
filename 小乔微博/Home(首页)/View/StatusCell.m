@@ -264,7 +264,6 @@
         self.vipView.hidden = YES;
     }
     
-    
     /** 配图 */
     if (status.pic_urls.count) {
         self.photosView.frame = statusFrame.photosViewF;
