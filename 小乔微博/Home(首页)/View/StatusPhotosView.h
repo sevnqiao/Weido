@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol StatusesPhotosViewDelegate <NSObject>
-- (void) tapImageViewsTappedWithObject:(id) sender;
+- (void) tapImageViewsTappedWithObject:(int)index withPhotosArr:(NSArray *)photos WithImageView:(UIImageView *)imageView;
 @end
 
 

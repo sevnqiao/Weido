@@ -47,11 +47,11 @@
         {
             if (components.hour >= 1) { // 多少小时前发得
                 
-                return [NSString stringWithFormat:@"%d小时前",components.hour];
+                return [NSString stringWithFormat:@"%ld小时前",(long)components.hour];
             }
             else if (components.minute >= 1)
             {
-                return [NSString stringWithFormat:@"%d分钟前",components.minute];
+                return [NSString stringWithFormat:@"%ld分钟前",(long)components.minute];
             }
             else
             {

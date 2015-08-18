@@ -13,10 +13,19 @@
 @interface StatusPhotoView ()
 
 @property(nonatomic, strong)UIImageView * gifImageView;
+@property(nonatomic,strong)UIView * view;
 
 @end
 
 @implementation StatusPhotoView
+
+- (UIView *)view
+{
+    if (!_view) {
+        _view = [[UIView alloc]initWithFrame:self.frame];
+    }
+    return _view;
+}
 
 - (UIImageView *)gifImageView
 {
@@ -37,6 +46,7 @@
         self.contentMode = UIViewContentModeScaleAspectFill;
         // 超出边框的内容剪裁掉
         self.clipsToBounds = YES;
+        _view.frame = self.frame;
     }
     return self;
 }
@@ -45,7 +55,7 @@
 {
     _photo = photo;
     //设置图片
-    NSString * str = [photo.thumbnail_pic stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];
+    NSString * str = photo.thumbnail_pic;//[photo.thumbnail_pic stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];
     [self sd_setImageWithURL:[NSURL URLWithString:str] placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
     
     // 显示gif图片
@@ -68,8 +78,8 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if ([self.delegate respondsToSelector:@selector(tapImageViewTappedWithObject:)]) {
-        [self.delegate tapImageViewTappedWithObject:self];
+    if ([self.delegate respondsToSelector:@selector(tapImageViewTappedWithObject:WithImageView:)]) {
+        [self.delegate tapImageViewTappedWithObject:_index WithImageView:self];
     }
 }
 

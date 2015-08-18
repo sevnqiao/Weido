@@ -252,7 +252,6 @@
     self.nameLabel.text = user.name;
     self.nameLabel.frame = statusFrame.nameLabelF;
     
-    
     /** vip */
     if (user.isVip) {
         self.vipView.hidden = NO;
@@ -263,6 +262,7 @@
     {
         self.vipView.hidden = YES;
     }
+    
     
     /** 配图 */
     if (status.pic_urls.count) {
@@ -393,10 +393,10 @@
     
 }
 
-- (void)tapImageViewsTappedWithObject:(id)sender
+- (void) tapImageViewsTappedWithObject:(int)index withPhotosArr:(NSArray *)photos WithImageView:(UIImageView *)imageView;
 {
-    if ([self.delegate respondsToSelector:@selector(didClickPhotoWithObjects:)]) {
-        [self.delegate didClickPhotoWithObjects:sender];
+    if ([self.delegate respondsToSelector:@selector(didClickPhotoWithObjects:withPhotosArr:WithImageView:)]) {
+        [self.delegate didClickPhotoWithObjects:index withPhotosArr:photos WithImageView:imageView];
     }
 }
 @end

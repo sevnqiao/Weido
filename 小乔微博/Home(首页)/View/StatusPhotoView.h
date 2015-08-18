@@ -11,10 +11,11 @@
 
 @protocol StatusesPhotoViewDelegate <NSObject>
 @optional
-- (void) tapImageViewTappedWithObject:(id) sender;
+- (void) tapImageViewTappedWithObject:(int)index WithImageView:(UIImageView *)imageView;
 @end
 
 @interface StatusPhotoView : UIImageView
 @property (nonatomic , strong) Photo * photo;
+@property(nonatomic,assign)int index;
 @property(nonatomic,assign)id<StatusesPhotoViewDelegate> delegate;
 @end

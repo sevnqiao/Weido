@@ -97,7 +97,6 @@
     
     // 往上拖动，高度减少。
     CGFloat height = headH - delta - 20;
-    NSLog(@"%f",height);
     if (height > headMinH)
     {
         alpha = 0;
@@ -112,7 +111,6 @@
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
     self.navigationController.navigationBar.alpha = alpha;
-    NSLog(@"%f",alpha);
 }
 
 /**

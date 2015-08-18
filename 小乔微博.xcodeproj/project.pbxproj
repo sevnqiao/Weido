@@ -164,7 +164,6 @@
 		B93296401B44D7BA004F25CE /* MLEmojiLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B93295CF1B44D7BA004F25CE /* MLEmojiLabel.m */; };
 		B93296411B44D7BA004F25CE /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B93295D21B44D7BA004F25CE /* TTTAttributedLabel.m */; };
 		B93296441B44DEB9004F25CE /* StatusLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B93296431B44DEB9004F25CE /* StatusLinkViewController.m */; };
-		B938A8001B41162A00D416A1 /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = B938A7FF1B41162A00D416A1 /* UINavigationController+FDFullscreenPopGesture.m */; };
 		B941E1F11B3D569F00EB159E /* JKPopMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = B941E1EE1B3D569F00EB159E /* JKPopMenuItem.m */; };
 		B941E1F21B3D569F00EB159E /* JKPopMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = B941E1F01B3D569F00EB159E /* JKPopMenuView.m */; };
 		B941E1F61B3D589E00EB159E /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = B941E1F51B3D589E00EB159E /* FXBlurView.m */; };
@@ -497,8 +496,6 @@
 		B93295D21B44D7BA004F25CE /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		B93296421B44DEB9004F25CE /* StatusLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusLinkViewController.h; sourceTree = "<group>"; };
 		B93296431B44DEB9004F25CE /* StatusLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusLinkViewController.m; sourceTree = "<group>"; };
-		B938A7FE1B41162A00D416A1 /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
-		B938A7FF1B41162A00D416A1 /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
 		B941E1ED1B3D569F00EB159E /* JKPopMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKPopMenuItem.h; sourceTree = "<group>"; };
 		B941E1EE1B3D569F00EB159E /* JKPopMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKPopMenuItem.m; sourceTree = "<group>"; };
 		B941E1EF1B3D569F00EB159E /* JKPopMenuView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKPopMenuView.h; sourceTree = "<group>"; };
@@ -842,7 +839,6 @@
 			children = (
 				B932955F1B44D7BA004F25CE /* MLEmoji */,
 				B9A69D901B426C8A00E1B8E8 /* DLSlideView */,
-				B938A7FD1B41162A00D416A1 /* FDFullscreenPopGesture */,
 				047E45161B282B5A004C0CCC /* libsqlite3.0.dylib */,
 				4093FDA61B4E65FF00F86552 /* Reveal.framework */,
 				B941E1EC1B3D569E00EB159E /* JKPopMenu */,
@@ -1455,15 +1451,6 @@
 			path = TTTAttributedLabel;
 			sourceTree = "<group>";
 		};
-		B938A7FD1B41162A00D416A1 /* FDFullscreenPopGesture */ = {
-			isa = PBXGroup;
-			children = (
-				B938A7FE1B41162A00D416A1 /* UINavigationController+FDFullscreenPopGesture.h */,
-				B938A7FF1B41162A00D416A1 /* UINavigationController+FDFullscreenPopGesture.m */,
-			);
-			path = FDFullscreenPopGesture;
-			sourceTree = "<group>";
-		};
 		B941E1EC1B3D569E00EB159E /* JKPopMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -1668,7 +1655,6 @@
 				04C0F5A41B2450B600A5981E /* AFHTTPSessionManager.m in Sources */,
 				04C0F5A51B2450B600A5981E /* AFNetworkReachabilityManager.m in Sources */,
 				B9A69DA61B426C8A00E1B8E8 /* DLFixedTabbarView.m in Sources */,
-				B938A8001B41162A00D416A1 /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
 				04CCC3721B32897900105211 /* Comment.m in Sources */,
 				04D92AC51B2D8B7B0042552D /* SettingTableViewController.m in Sources */,
 				043476AF1B1DF9DC0030FEA5 /* TitleMenuViewController.m in Sources */,

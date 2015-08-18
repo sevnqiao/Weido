@@ -66,14 +66,16 @@
     // 创建imageView
     while (self.subviews.count < photoCount) {
         StatusPhotoView * imageView = [[StatusPhotoView alloc] init];
-        imageView.delegate = self;
+        
         imageView.userInteractionEnabled = YES;
         [self addSubview:imageView];
     }
     
     for (int i = 0; i < self.subviews.count; i ++) {
         StatusPhotoView * imageView = self.subviews[i];
-        
+        imageView.tag = i;
+        imageView.index = i;
+        imageView.delegate = self;
         //
         if (i< photoCount) {
             imageView.photo = photos[i];
@@ -131,11 +133,13 @@
 }
 
 
-- (void)tapImageViewTappedWithObject:(id)sender
+- (void) tapImageViewTappedWithObject:(int)index WithImageView:(UIImageView *)imageView;
 {
-    if ([self.delegate respondsToSelector:@selector(tapImageViewsTappedWithObject:)]) {
-        [self.delegate tapImageViewsTappedWithObject:sender];
+    if ([self.delegate respondsToSelector:@selector(tapImageViewsTappedWithObject:withPhotosArr:WithImageView:)]) {
+        [self.delegate tapImageViewsTappedWithObject:index withPhotosArr:self.photos WithImageView:imageView];
     }
+    
+    
 }
 
 @end

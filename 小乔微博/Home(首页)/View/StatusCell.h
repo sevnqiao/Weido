@@ -13,7 +13,7 @@
 @protocol StatusCellDelegate <NSObject>
 @optional
 - (void)didClickCellCommentWithIndexPath:(int)indexPath;
-- (void)didClickPhotoWithObjects:(id)sender;
+- (void)didClickPhotoWithObjects:(int)index withPhotosArr:(NSArray *)photos WithImageView:(UIImageView *)imageView;
 
 @end
 

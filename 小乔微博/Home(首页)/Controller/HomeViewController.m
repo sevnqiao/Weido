@@ -29,18 +29,18 @@
 #import "UserDetialViewController.h"
 #import "StatusPhotoView.h"
 #import "Photo.h"
+#import "HZPhotoBrowser.h"
 
 
-@interface HomeViewController ()<DrapDownMenuDelegate,StatusCellDelegate,StatusCellLinkDelegate>
+
+@interface HomeViewController ()<DrapDownMenuDelegate,StatusCellDelegate,StatusCellLinkDelegate,HZPhotoBrowserDelegate>
 /**
  *  微博数组,里面放得都是模型,一个字典代表一条微博
  */
 @property (nonatomic , strong)NSMutableArray *statusesFrame;
 
-/**蒙板按钮*/
-@property (strong, nonatomic) UIImageView *cover;
-@property(nonatomic,strong) StatusPhotoView * imageView;
-@property(nonatomic,strong)UIScrollView *backView;
+
+@property(nonatomic,strong)NSArray *photoBroArr;
 
 @end
 
@@ -65,28 +65,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self loadNewStatus];
-    
-    [self.cover sizeToFit];
-    self.backView = [[UIScrollView alloc]initWithFrame:[UIApplication sharedApplication].keyWindow.frame];
-    self.backView.backgroundColor= [UIColor blackColor];
-    self.backView.alpha = 0.0f;
-//    self.backView.userInteractionEnabled = YES;
-    [[UIApplication sharedApplication].keyWindow addSubview:self.backView];
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap)];
-    [self.backView addGestureRecognizer:tap];
-    UIPinchGestureRecognizer * big = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(big:)];
-    [self.backView addGestureRecognizer:big];
-    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(pan:)];
-    [self.backView addGestureRecognizer:pan];
-    
-    self.backView.scrollEnabled = YES;
-//    self.backView.canCancelContentTouches=NO;
-//    self.backView.delaysContentTouches=NO;
-    
     self.tableView.backgroundColor = color(221, 221, 221);
     self.tableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
-
     
+    _photoBroArr = [NSArray array];
     // 设置导航栏内容
     [self setupNav];
     //获得用户信息 (昵称)
@@ -195,7 +177,7 @@
     } else {
         // 2.发送请求
         [HttpTool get:@"https://api.weibo.com/2/statuses/friends_timeline.json" params:params success:^(id json) {
-            
+            XYQLog(@"%@",json);
             if (json[@"statuses"] == nil) {
                 [MBProgressHUD showMessage:@"暂无更多微博信息..."];
             }
@@ -265,7 +247,6 @@
         [HttpTool get:@"https://api.weibo.com/2/statuses/friends_timeline.json" params:params success:^(id json) {
             // 缓存新浪返回的responseObject
             [StatusTool saveStatuses:json[@"statuses"]];
-            
             dealingResult(json[@"statuses"]);
             
             self.tabBarItem.badgeValue = nil;
@@ -407,12 +388,12 @@
 
 - (void)friendSearch
 {
-    NSLog(@"1");
+
 }
 
 - (void)pop
 {
-    NSLog(@"2");
+
 }
 
 
@@ -498,60 +479,19 @@
     StatusFrame * statusFrame = self.statusesFrame[indexPath];
     com.statusFrame = statusFrame;
 }
-- (void)didClickPhotoWithObjects:(id)sender
+- (void)didClickPhotoWithObjects:(int)index withPhotosArr:(NSArray *)photos WithImageView:(UIImageView *)imageView;
 {
-    self.imageView = sender;
-    NSString * str = [_imageView.photo.thumbnail_pic stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"bmiddle"];
-    [_imageView sd_setImageWithURL:[NSURL URLWithString:str]];
-    self.cover = [[UIImageView alloc]init];
-    CGRect frame = self.cover.frame;
-    frame = CGRectMake(0, ([UIScreen mainScreen].bounds.size.height - 300) * 0.5, 320, 300);
-    self.cover.frame = frame;
+    self.photoBroArr = photos;
+    
+    //启动图片浏览器
+    HZPhotoBrowser *browserVc = [[HZPhotoBrowser alloc] init];
+    browserVc.sourceImagesContainerView = imageView.superview; // 原图的父控件
+    browserVc.imageCount = photos.count; // 图片总数
+    browserVc.currentImageIndex = index;
+    browserVc.delegate = self;
+    [browserVc show];
+}
 
-    [self.cover setImage:self.imageView.image];
-    self.cover.contentMode = UIViewContentModeScaleAspectFit;
-    [self.backView addSubview:self.cover];
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        self.backView.alpha = 1;
-        
-    }];
-    
-}
-- (void)tap
-{
-    [UIView animateWithDuration:0.5 animations:^{
-        
-        self.backView.alpha = 0.0f;
-        [self.cover removeFromSuperview];
-    }];
-}
-- (void)big:(UIPinchGestureRecognizer *)sender
-{
-    CGFloat lastScale = 1.0;
-    
-    sender.scale=sender.scale-lastScale+1;
-    
-    self.cover.transform=CGAffineTransformScale(self.cover.transform, sender.scale,sender.scale);
-    
-    lastScale=sender.scale;
-    
-    self.backView.contentSize = self.cover.size;
-}
-- (void)pan:(UIPanGestureRecognizer *)sender
-{
-    UIView *piece = [sender view];
-    
-    if ([sender state] == UIGestureRecognizerStateBegan || [sender state] == UIGestureRecognizerStateChanged) {
-        
-        CGPoint translation = [sender translationInView:[piece superview]];
-        
-        [piece setCenter:CGPointMake([piece center].x + translation.x, [piece center].y + translation.y)];
-        
-        [sender setTranslation:CGPointZero inView:[piece superview]];
-        
-    }
-}
 #pragma mark - statusCellLinkDelegate
 /**
  *  点击了链接
@@ -584,7 +524,7 @@
 {
     UserDetialViewController * user = [[UserDetialViewController alloc]init];
     user.userName = [At substringFromIndex:1];
-    NSLog(@"%@",user.userName);
+
     [self.navigationController pushViewController:user animated:YES];
 }
 /**
@@ -593,5 +533,20 @@
 - (void)didClickStatusCellLinkTypePoundSign:(NSString *)PoundSign
 {
     XYQLog(@"%@",PoundSign);
+}
+
+- (UIImage *)photoBrowser:(HZPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index
+{
+    NSString *urlStr = [self.photoBroArr[index] thumbnail_pic];
+    
+    UIImageView * imageView = [[UIImageView alloc]init];
+    [imageView sd_setImageWithURL:[NSURL URLWithString:urlStr]];
+
+    return imageView.image;
+}
+- (NSURL *)photoBrowser:(HZPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
+{
+    NSString *urlStr = [[self.photoBroArr[index] thumbnail_pic] stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"large"];
+    return [NSURL URLWithString:urlStr];
 }
 @end
