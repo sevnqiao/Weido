@@ -27,7 +27,7 @@
 
 @interface UserDetialViewController ()<StatusCellDelegate>
 @property(nonatomic,strong)NSMutableArray *statusesFrame;
-@property(nonatomic,strong)UITableView * tableView;
+//@property(nonatomic,strong)UITableView * tableView;
 @property(nonatomic,strong)UserDetialView2 * userView;
 @property (nonatomic, weak) UILabel *nameLabel;
 @property (nonatomic, assign) CGFloat lastOffsetY;

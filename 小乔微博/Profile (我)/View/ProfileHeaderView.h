@@ -10,6 +10,7 @@
 
 @protocol ProfileHeaderViewDelegate <NSObject>
 @required
+- (void)setupMyDetialDidFinishTap;
 - (void)setupMyStatusDetailDidFinishTap;
 - (void)setupMyAttentionDetailDidFinishTap;
 - (void)setupMyFansDetailDidFinishTap;

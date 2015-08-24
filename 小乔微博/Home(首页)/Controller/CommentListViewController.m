@@ -25,8 +25,9 @@
 #import "Test1ViewController.h"
 #import "MBProgressHUD+MJ.h"
 #import "StatusLinkViewController.h"
+#import "RestoreCommentViewController.h"
 
-@interface CommentListViewController()<CommentToolBarDelegate,StatusCellLinkDelegate>
+@interface CommentListViewController()<CommentToolBarDelegate,StatusCellLinkDelegate,CommentCellLinkDelegate,UIActionSheetDelegate>
 
 @property(nonatomic , strong)NSMutableArray * commentsFrame;
 @property(nonatomic , strong)CommentToolBar * toolBar;
@@ -34,6 +35,14 @@
 @property(nonatomic , strong)UIButton * btn1;
 @property(nonatomic , strong)UIButton * btn2;
 @property(nonatomic , strong)UIButton * btn4;
+/**
+ *  回复评论的ID
+ */
+@property(nonatomic,copy)NSString *idstr;
+/**
+ *  需要删除的评论的indexPath
+ */
+@property(nonatomic,strong)NSIndexPath *indexPath;
 @end
 @implementation CommentListViewController
 - (NSMutableArray *)commentStatus
@@ -54,12 +63,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    XYQLog(@"%@",self.statusFrame.status.text);
+
     self.navigationController.navigationBar.alpha = 1;
     self.navigationItem.title = @"评论列表";
     self.tableView.backgroundColor = color(221, 221, 221);
-    
+    [self.tableView setContentOffset:CGPointMake(0, self.statusFrame.statusHeight)];
+    NSLog(@"%f",self.tableView.contentOffset.y);
     // 下拉刷新
     [self loadNewComments];
     // 上啦加载
@@ -183,6 +192,8 @@
         
         cell.commentFrame = self.commentsFrame[indexPath.row];
         
+        cell.linkDelegate = self;
+        
         return cell;
     }
 }
@@ -252,6 +263,44 @@
     }
     return nil;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        return;
+    }
+    UIActionSheet * sheet;
+    CommentFrame * commentFrame = [[CommentFrame alloc]init];
+    commentFrame = self.commentsFrame[indexPath.row];
+    self.idstr =  commentFrame.comment.idstr;
+    self.indexPath = indexPath;
+    Account * account = [AccountTools account];
+    NSString * str = account.name;
+    NSString * str2 = commentFrame.comment.user.name;
+    if ([str isEqualToString:str2]) {
+        sheet = [[UIActionSheet alloc] initWithTitle:nil
+                                            delegate:self
+                                   cancelButtonTitle:@"Cancel"
+                              destructiveButtonTitle: @"删除"
+                                   otherButtonTitles:@"回复", @"转发", @"复制", nil];
+        sheet.tag = 1000;
+    }
+    else
+    {
+        sheet = [[UIActionSheet alloc] initWithTitle:nil
+                                            delegate:self
+                                   cancelButtonTitle:@"Cancel"
+                              destructiveButtonTitle:nil
+                                   otherButtonTitles:@"回复", @"转发", @"复制", @"举报", nil];
+        sheet.tag = 1001;
+    }
+    // Show the sheet
+    [sheet showInView:self.view];
+}
+
+
+
+
 - (UIButton *)setupWithTitle:(NSString *)title btnX:(CGFloat)btnX backColor:(UIColor *)color titleColor:(UIColor *)titleColor
 {
     UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(btnX, 0, [UIScreen mainScreen].bounds.size.width/4, 33)];
@@ -335,6 +384,100 @@
 - (void)didClickStatusCellLinkTypePoundSign:(NSString *)PoundSign
 {
     XYQLog(@"%@",PoundSign);
+}
+
+
+#pragma mark - CommentCellLinkDelegate
+/**
+ *  点击了链接
+ */
+- (void)didClickCommentCellLinkTypeURL:(NSString *)URL
+{
+    StatusLinkViewController * linkVC = [[StatusLinkViewController alloc]init];
+    linkVC.URL = URL;
+    [self.navigationController pushViewController:linkVC animated:YES];
+}
+/**
+ *  点击了电话
+ */
+- (void)didClickCommentCellLinkTypePhoneNumber:(NSString *)PhoneNumber
+{
+    XYQLog(@"%@",PhoneNumber);
+}
+/**
+ *  点击了邮箱
+ */
+- (void)didClickCommentCellLinkTypeEmail:(NSString *)Email
+{
+    XYQLog(@"%@",Email);
+}
+/**
+ *  点击了用户
+ */
+- (void)didClickCommentCellLinkTypeAt:(NSString *)At
+{
+    XYQLog(@"%@",At);
+}
+/**
+ *  点击了话题
+ */
+- (void)didClickCommentCellLinkTypePoundSign:(NSString *)PoundSign
+{
+    XYQLog(@"%@",PoundSign);
+}
+
+
+#pragma mark  - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag == 1000) {
+        switch (buttonIndex) {
+            case 0:
+                [self destoryCommentWithIdStr:self.idstr];
+                break;
+            case 1:
+            {
+                RestoreCommentViewController * vc = [[RestoreCommentViewController alloc]init];
+                vc.idstr = self.idstr;
+                vc.statusID = self.statusFrame.status.idstr;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+                break;
+            default:
+                [MBProgressHUD showError:@"该功能暂未开放"];
+                break;
+        }
+    }
+    if(actionSheet.tag == 1001)
+    switch (buttonIndex) {
+        case 0:
+        {
+            RestoreCommentViewController * vc = [[RestoreCommentViewController alloc]init];
+            vc.idstr = self.idstr;
+            vc.statusID = self.statusFrame.status.idstr;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+            break;
+        default:
+            [MBProgressHUD showError:@"该功能暂未开放"];
+            break;
+    }
+}
+
+- (void)destoryCommentWithIdStr:(NSString *)idstr
+{
+    Account * account = [AccountTools account];
+    NSMutableDictionary * params = [NSMutableDictionary dictionary];
+    params[@"access_token"] = account.access_token;
+    params[@"cid"] = idstr;
+    
+    [HttpTool post:@"https://api.weibo.com/2/comments/destroy.json" params:params success:^(id json) {
+        [MBProgressHUD showSuccess:@"删除评论成功"];
+        [self.commentsFrame removeObjectAtIndex:self.indexPath.row];
+        [self.tableView reloadData];
+    } failure:^(NSError *error) {
+        [MBProgressHUD showError:@"未知错误"];
+    }];
 }
 
 @end

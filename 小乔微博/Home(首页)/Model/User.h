@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+@class Status;
 
 typedef enum{
     UserVerifiedTypeNone = -1, // 没有认证
@@ -45,5 +46,9 @@ typedef enum{
  */
 @property (nonatomic , assign) int mbrank;
 @property (nonatomic , assign , getter=isVip) BOOL vip;
+
+@property(nonatomic,strong)Status *status;
+
+@property(nonatomic,strong)NSString *following;
 
 @end

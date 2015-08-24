@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+@class TitleMenuViewController;
+@protocol TitleMenuViewControllerDelegate <NSObject>
+@optional
+- (void)willSelectRow;
+- (void)titleMenuviewController:(TitleMenuViewController *)titleMenuviewController didSelectedRowToRefreshStatusesFrame:(NSMutableArray *)statusesFrame title:(NSString *)title;
+@end
 
 @interface TitleMenuViewController : UITableViewController
+@property(nonatomic,assign)id<TitleMenuViewControllerDelegate>delegate;
 
 @end

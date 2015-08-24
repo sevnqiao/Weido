@@ -7,94 +7,189 @@
 //
 
 #import "AllFansTableViewController.h"
+#import "MyFansTableViewCell.h"
+#import "User.h"
+#import "Account.h"
+#import "AccountTools.h"
+#import "HttpTool.h"
+#import "MJExtension.h"
+#import "MJRefresh.h"
+#import "MBProgressHUD+MJ.h"
 
-@interface AllFansTableViewController ()
+@interface AllFansTableViewController ()<UITableViewCellDelegate>
+@property(nonatomic,strong)NSMutableArray * dataArr;
 
+@property(nonatomic,copy)NSString * next_cursor;
 @end
 
 @implementation AllFansTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.title = @"我的Fans";
+    [self setupMyAttention];
+//    self.next_cursor = @"20";
+    [self.tableView addFooterWithTarget:self action:@selector(loadMoreUser)];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (NSMutableArray *)dataArr
+{
+    if (!_dataArr) {
+        _dataArr = [NSMutableArray array];
+    }
+    return _dataArr;
 }
+
+
+- (void)setupMyAttention
+{
+    [MBProgressHUD showMessage:@"正在加载中..."];
+    // 2. 请求参数
+    Account * account = [AccountTools account];
+    NSMutableDictionary * params = [NSMutableDictionary dictionary];
+    params[@"access_token"] = account.access_token;
+    params[@"uid"] = account.uid;
+    params[@"count"] = @200;
+    params[@"trim_status"] = @0;
+    
+    [HttpTool get:@"https://api.weibo.com/2/friendships/followers.json" params:params success:^(id json) {
+        NSArray * arr = [NSArray arrayWithArray:json[@"users"]];
+        for (NSDictionary * dict in arr) {
+            User * user = [User objectWithKeyValues:dict];
+            [self.dataArr addObject:user];
+        }
+        self.next_cursor = json[@"next_cursor"];
+        [self.tableView reloadData];
+        [MBProgressHUD hideHUD];
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+// 上啦加载更多
+- (void)loadMoreUser
+{
+    
+    [MBProgressHUD showMessage:@"正在加载中..."];
+    // 2. 请求参数
+    Account * account = [AccountTools account];
+    NSMutableDictionary * params = [NSMutableDictionary dictionary];
+    params[@"access_token"] = account.access_token;
+    params[@"uid"] = account.uid;
+    params[@"trim_status"] = @0;
+    params[@"count"] = @200;
+    params[@"cursor"] = @50;
+    
+    [HttpTool get:@"https://api.weibo.com/2/friendships/followers.json" params:params success:^(id json) {
+        NSArray * arr = [NSArray arrayWithArray:json[@"users"]];
+        for (NSDictionary * dict in arr) {
+            User * user = [User objectWithKeyValues:dict];
+            [self.dataArr addObject:user];
+        }
+        self.next_cursor = json[@"next_cursor"];
+        [self.tableView reloadData];
+        [MBProgressHUD hideHUD];
+        // 结束刷新(隐藏footer)
+        [self.tableView footerEndRefreshing];
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+    
+    return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    XYQLog(@"self.dataArr.count - %lu",(unsigned long)self.dataArr.count);
+    return self.dataArr.count;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString * ID = @"cell";
+    MyFansTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    if (!cell) {
+        cell = [[MyFansTableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:ID];
+    }
+    User * user = self.dataArr[indexPath.row];
+    cell.user = user;
+    cell.delegate = self;
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    return 70;
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+//
+//// 右侧索引列表
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+//{
+//    //索引数组中得内容,跟分组无关
+//    //索引数组中得下表对应的时分组的下表
+//    return @[@"A",@"B",@"C",@"D",@"F",@"G",@"H",@"J",@"K",@"L",@"M",@"N",@"O",@"P",@"Q",@"R",@"S",@"T",@"U",@"V",@"W",@"X",@"Y",@"Z"];
+//    
+//    //返回carGroup中titel的数组
+//    //    NSMutableArray * arrayM = [NSMutableArray array];
+//    //    for (CarGroup * groups in self.carGroups) {
+//    //        [arrayM addObject:groups.title];
+//    //    }
+//    //    return arrayM;
+//    
+//    
+//    
+//    //KVC
+//    //用来间接修改或获取对象属性的方式
+//    //使用KVC获取数值时,如果指定对象不包含keyPath的"键名",会自动进入对象内部查找
+//    //如果取值的对象是一个数组,返回的同样是一个数组
+//    //    return [self.carGroups valueForKeyPath:@"title"];
+//}
+
+
+
+#pragma mark - UITableViewCellDelegate
+/**
+ *  取消关注
+ */
+- (void)cancelAttentionWithIdStr:(NSString *)idstr
+{
+    // 2. 请求参数
+    Account * account = [AccountTools account];
+    NSMutableDictionary * params = [NSMutableDictionary dictionary];
+    params[@"access_token"] = account.access_token;
+    params[@"uid"] = idstr;
+    [HttpTool get:@"https://api.weibo.com/2/friendships/destroy.json" params:params success:^(id json) {
+        [MBProgressHUD showSuccess:@"取消关注成功"];
+    } failure:^(NSError *error) {
+        [MBProgressHUD showError:@"取消关注失败,该权限暂未开放"];
+    }];
 }
-*/
+/**
+ *  添加关注
+ * https://api.weibo.com/2/friendships/create.json
+ */
+- (void)addAttentionWithIdStr:(NSString *)idstr
+{
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+    // 2. 请求参数
+    Account * account = [AccountTools account];
+    NSMutableDictionary * params = [NSMutableDictionary dictionary];
+    params[@"access_token"] = account.access_token;
+    params[@"uid"] = idstr;
+    [HttpTool get:@"https://api.weibo.com/2/friendships/create.json" params:params success:^(id json) {
+        [MBProgressHUD showSuccess:@"添加关注成功"];
+    } failure:^(NSError *error) {
+        [MBProgressHUD showError:@"添加关注失败,该权限暂未开放"];
+    }];
 }
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

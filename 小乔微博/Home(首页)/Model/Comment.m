@@ -38,27 +38,34 @@
     
     if (components.year == 0)
     {
-        if (components.day <= 1)
-        {
-            if (components.hour >= 1) { // 多少小时前发得
-                
-                return [NSString stringWithFormat:@"%d小时前",components.hour];
-            }
-            else if (components.minute >= 1)
+        if (components.month == 0) {
+            if (components.day < 1)
             {
-                return [NSString stringWithFormat:@"%d分钟前",components.minute];
+                if (components.hour >= 1) { // 多少小时前发得
+                    
+                    return [NSString stringWithFormat:@"%ld小时前",(long)components.hour];
+                }
+                else if (components.minute >= 1)
+                {
+                    return [NSString stringWithFormat:@"%ld分钟前",(long)components.minute];
+                }
+                else
+                {
+                    return @"刚刚";
+                }
             }
-            else
+            else if (components.day <= 2)
             {
-                return @"刚刚";
+                fmt.dateFormat = @"昨天 HH:mm";
+                return [fmt stringFromDate:createDate];
+            }
+            else // 以前的
+            {
+                fmt.dateFormat = @"MM-dd HH:mm";
+                return [fmt stringFromDate:createDate];
             }
         }
-        else if (components.day <= 2)
-        {
-            fmt.dateFormat = @"昨天 HH:mm";
-            return [fmt stringFromDate:createDate];
-        }
-        else // 以前的
+        else
         {
             fmt.dateFormat = @"MM-dd HH:mm";
             return [fmt stringFromDate:createDate];
@@ -71,6 +78,23 @@
     }
 }
 
-
+/**
+ *  设置来源
+ */
+- (void)setSource:(NSString *)source
+{
+    _source = source;
+    
+    // 截取字符串
+    NSRange range = {0,0};
+    if ([source isEqualToString:@""]) {
+        _source = @"";
+        return;
+    }
+    range.location = [source rangeOfString:@">"].location + 1;
+    range.length = [source rangeOfString:@"</"].location - range.location;
+    _source = [NSString stringWithFormat:@"来自%@",[source substringWithRange:range]];
+    //
+}
 
 @end

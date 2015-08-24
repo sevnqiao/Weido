@@ -8,6 +8,7 @@
 
 #import "MessageCenterViewController.h"
 #import "Test1ViewController.h"
+#import "WhisperViewController.h"
 
 @interface MessageCenterViewController ()
 
@@ -56,7 +57,10 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
     
-    cell.textLabel.text = [NSString stringWithFormat:@"测试数据-- %d",indexPath.row];
+//    cell.textLabel.text = [NSString stringWithFormat:@"测试数据-- %ld",(long)indexPath.row];
+    if (indexPath.row == 0) {
+        cell.textLabel.text = @"我的评论";
+    }
     
     return cell;
 }
@@ -65,9 +69,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Test1ViewController * test1 = [[Test1ViewController alloc]init];
-//    test1.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:test1 animated:YES];
+    if (indexPath.row == 0) {
+        WhisperViewController * Wvc = [[WhisperViewController alloc]init];
+        [self.navigationController pushViewController:Wvc animated:YES];
+    }
+    else
+    {
+        Test1ViewController * test1 = [[Test1ViewController alloc]init];
+        [self.navigationController pushViewController:test1 animated:YES];
+    }
 }
 
 @end

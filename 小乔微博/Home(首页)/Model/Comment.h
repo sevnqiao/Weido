@@ -28,4 +28,8 @@
 @property (nonatomic , copy) NSString * idstr;
 
 @property (nonatomic , strong) Status *status;
+
+@property(nonatomic,copy)NSString * source;
+
+@property(nonatomic,strong)Comment * reply_comment;
 @end

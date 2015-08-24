@@ -60,8 +60,8 @@
         _contentLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentCenter;
         
         //下面是自定义表情正则和图像plist的例子
-//        _contentLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
-        _contentLabel.customEmojiPlistName = @"lxh";
+        _contentLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
+        _contentLabel.customEmojiPlistName = @"expressionImage_custom";
     }
     return _contentLabel;
 }
@@ -95,7 +95,7 @@
     NSString * ID = @"statusCell";
     StatusCell * cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (!cell) {
-        cell = [[StatusCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        cell = [[StatusCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
     }
     
     

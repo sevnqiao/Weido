@@ -9,4 +9,4 @@
 // 账号信息
 NSString * const AppKey = @"1082360318";
 NSString * const AppSecret = @"f7260a99e539e308364edb6b23d42272";
-NSString * const AppredirectURL = @"http://www.baidu.com";
+NSString * const AppredirectURL = @"http://www.sina.com";

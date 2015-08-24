@@ -33,7 +33,7 @@
 
 
 
-@interface HomeViewController ()<DrapDownMenuDelegate,StatusCellDelegate,StatusCellLinkDelegate,HZPhotoBrowserDelegate>
+@interface HomeViewController ()<DrapDownMenuDelegate,StatusCellDelegate,StatusCellLinkDelegate,HZPhotoBrowserDelegate,TitleMenuViewControllerDelegate>
 /**
  *  微博数组,里面放得都是模型,一个字典代表一条微博
  */
@@ -41,6 +41,8 @@
 
 
 @property(nonatomic,strong)NSArray *photoBroArr;
+
+@property(nonatomic,strong)DrapDownMenu * menu;
 
 @end
 
@@ -73,15 +75,17 @@
     [self setupNav];
     //获得用户信息 (昵称)
     [self setupUserInfo];
+
+    // 获取微博未读数
+    NSTimer * timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(setupUnreadCount) userInfo:nil repeats:YES];
+    [[NSRunLoop mainRunLoop]addTimer:timer forMode:NSRunLoopCommonModes];
+    
     // 集成下拉刷新控件
     [self setDownRefresh];
     // 上拉刷新
     [self setUpRefresh];
-    
-    // 获取微博未读数
-    NSTimer * timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(setupUnreadCount) userInfo:nil repeats:YES];
-    [[NSRunLoop mainRunLoop]addTimer:timer forMode:NSRunLoopCommonModes];
 }
+
 /**
  *  获取微博未读数
  */
@@ -115,6 +119,7 @@
     }];
     
 }
+
 
 /**
  *  上拉加载更多的微博数据
@@ -257,6 +262,8 @@
         }];
     }
 }
+
+
 /**
  *  显示最新微博的数量
  */
@@ -293,6 +300,7 @@
     }];
 }
 
+
 /**
  *   获得用户信息 (昵称)
  */
@@ -328,6 +336,8 @@
         [MBProgressHUD showError:[NSString stringWithFormat:@"%@",error]];
     }];
 }
+
+
 /**
  *  设置导航栏内容
  */ 
@@ -357,8 +367,10 @@
     // 1. 创建menu
     DrapDownMenu * menu = [DrapDownMenu menu];
     menu.delegate = self;
+    _menu = menu;
     // 2. 设置内容
     TitleMenuViewController * titleMenu = [[TitleMenuViewController alloc]init];
+    titleMenu.delegate = self;
     titleMenu.view.height = 150;
     titleMenu.view.width = 180;
     menu.contentController = titleMenu;
@@ -385,7 +397,40 @@
     
 }
 
+#pragma mark - TitleMenuViewControllerDelegate
+- (void)willSelectRow
+{
+    [_menu removeFromSuperview];
+    UIButton * titleBtn = (UIButton *)self.navigationItem.titleView;
+    [titleBtn setImage:[UIImage imageNamed:@"navigationbar_arrow_down"] forState:UIControlStateNormal];
+    
+    [MBProgressHUD showMessage:@"正在加载中..."];
+}
+- (void)titleMenuviewController:(TitleMenuViewController *)titleMenuviewController didSelectedRowToRefreshStatusesFrame:(NSMutableArray *)statusesFrame title:(NSString *)title
+{
+    self.statusesFrame = [NSMutableArray arrayWithArray:statusesFrame];
+    [self.tableView reloadData];
+    [MBProgressHUD hideHUD];
+    
+    UIButton * titleBtn = (UIButton *)self.navigationItem.titleView;
+    [titleBtn setTitle: title forState:UIControlStateNormal];
+    [titleBtn sizeToFit];
+    
+    if ([title isEqualToString:@"熊桥桥桥桥桥桥"]) {
+        // 集成下拉刷新控件
+        [self setDownRefresh];
+        // 上拉刷新
+        [self setUpRefresh];
+    }
+    else
+    {
+        [self.tableView removeHeader];
+        [self.tableView removeFooter];
+    }
+}
 
+
+#pragma mark - NavegationBarButton click
 - (void)friendSearch
 {
 
@@ -396,11 +441,6 @@
 
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 #pragma mark - Table view data source
 
@@ -535,6 +575,8 @@
     XYQLog(@"%@",PoundSign);
 }
 
+
+#pragma mark - HZPhotoBrowserDelegate
 - (UIImage *)photoBrowser:(HZPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index
 {
     NSString *urlStr = [self.photoBroArr[index] thumbnail_pic];

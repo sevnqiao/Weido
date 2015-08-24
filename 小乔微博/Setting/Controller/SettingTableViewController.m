@@ -12,8 +12,10 @@
 #import "SettingCell.h"
 #import "SettingArrowItem.h"
 #import "SettingSwitchItem.h"
+#import "SettingLabelItem.h"
 #import "MBProgressHUD+MJ.h"
 #import "Test1ViewController.h"
+#import "SDImageCache.h"
 
 @interface SettingTableViewController ()
 
@@ -52,7 +54,7 @@
 - (void)addGroup1
 {
     // 第一组
-    SettingArrowItem * item1 = [SettingArrowItem itemWithIcon:nil withTitle:@"通知" ];
+    SettingArrowItem * item1 = [SettingArrowItem itemWithIcon:nil withTitle:@"检查更新"];
     // block 保存了一段检查更新的功能
     item1.block = ^{
         // 1. 显示蒙版
@@ -79,13 +81,17 @@
 - (void)addGroup2
 {
     // 第一组
-    SettingArrowItem * item1 = [SettingArrowItem itemWithIcon:nil withTitle:@"清理缓存" ];
+    NSUInteger cacheSize = [[SDImageCache sharedImageCache]getSize];
+    __block NSString * str = [NSString stringWithFormat:@"%.1fM",(cacheSize*1.0)/1024/1024];
+    SettingLabelItem * item1 = [SettingLabelItem itemWithIcon:nil withTitle:@"清理缓存" ];
+    item1.text = str;
     // block 保存了一段检查更新的功能
     item1.block = ^{
-
+        [[SDImageCache sharedImageCache]clearDiskOnCompletion:^{
+            [MBProgressHUD showSuccess:[NSString stringWithFormat:@"已清理%@缓存",str]];
+        }];
     };
-    
-    
+
     SettingArrowItem * item2 = [SettingArrowItem itemWithIcon:nil withTitle:@"意见反馈" destVcClass:[Test1ViewController class]];
     
     SettingArrowItem * item3 = [SettingArrowItem itemWithIcon:nil withTitle:@"关于微博" destVcClass:[Test1ViewController class]];

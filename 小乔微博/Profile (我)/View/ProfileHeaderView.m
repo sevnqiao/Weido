@@ -26,6 +26,10 @@
 @property (weak, nonatomic) IBOutlet UIView *myAttention;
 @property (weak, nonatomic) IBOutlet UIView *myFans;
 
+- (IBAction)MyDetialClick:(UIButton *)sender;
+- (IBAction)myStatusClick:(UIButton *)sender;
+- (IBAction)myAttentionClick:(UIButton *)sender;
+- (IBAction)myFansClick:(UIButton *)sender;
 
 @end
 
@@ -38,40 +42,10 @@
         self = [[NSBundle mainBundle] loadNibNamed:@"ProfileHeaderView" owner:nil options:nil].lastObject;
         
         [self setupProfile];
-        
-        self.myStatus.userInteractionEnabled = YES;
-        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(click1)];
-        [self.myStatus addGestureRecognizer:tap];
-        
-//        self.myAttention.userInteractionEnabled = YES;
-//        UITapGestureRecognizer * tap2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(click2)];
-//        [self.myStatus addGestureRecognizer:tap2];
-//        
-//        self.myFans.userInteractionEnabled = YES;
-//        UITapGestureRecognizer * tap3 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(click3)];
-//        [self.myStatus addGestureRecognizer:tap3];
     }
     return self;
 }
 
-- (void)click1
-{
-    if ([self.delegate respondsToSelector:@selector(setupMyStatusDetailDidFinishTap)]) {
-        [self.delegate setupMyStatusDetailDidFinishTap];
-    }
-}
-//- (void)click2
-//{
-//    if ([self.delegate respondsToSelector:@selector(setupMyAttentionDetailDidFinishTap)]) {
-//        [self.delegate setupMyAttentionDetailDidFinishTap];
-//    }
-//}
-//- (void)click3
-//{
-//    if ([self.delegate respondsToSelector:@selector(setupMyFansDetailDidFinishTap)]) {
-//        [self.delegate setupMyFansDetailDidFinishTap];
-//    }
-//}
 
 
 - (void)setupProfile
@@ -98,4 +72,25 @@
 
 }
     
+- (IBAction)MyDetialClick:(UIButton *)sender {
+    
+}
+
+- (IBAction)myStatusClick:(UIButton *)sender {
+    if ([self.delegate respondsToSelector:@selector(setupMyStatusDetailDidFinishTap)]) {
+        [self.delegate setupMyStatusDetailDidFinishTap];
+    }
+}
+
+- (IBAction)myAttentionClick:(UIButton *)sender {
+    if ([self.delegate respondsToSelector:@selector(setupMyAttentionDetailDidFinishTap)]) {
+        [self.delegate setupMyAttentionDetailDidFinishTap];
+    }
+}
+
+- (IBAction)myFansClick:(UIButton *)sender {
+    if ([self.delegate respondsToSelector:@selector(setupMyFansDetailDidFinishTap)]) {
+        [self.delegate setupMyFansDetailDidFinishTap];
+    }
+}
 @end

@@ -13,22 +13,48 @@
 #import "User.h"
 #import "Comment.h"
 #import "IconView.h"
+#import "MLEmojiLabel.h"
 
-@interface CommentCell()
+@interface CommentCell()<MLEmojiLabelDelegate>
 
-@property (nonatomic,weak) UIView * originaView;  // 原创微博整体
-@property (nonatomic,weak) IconView * iconView;  // 头像
+@property (nonatomic,strong) UIView * originaView;  // 原创微博整体
+@property (nonatomic,strong) IconView * iconView;  // 头像
 
-@property (nonatomic,weak) UIImageView * vipView;  // vip
-@property (nonatomic,weak) UILabel * nameLabel;  // 昵称
-@property (nonatomic,weak) UILabel * timeLabel; // 时间
-@property (nonatomic,weak) UILabel * contentLabel; // 内容
+@property (nonatomic,strong) UIImageView * vipView;  // vip
+@property (nonatomic,strong) UILabel * nameLabel;  // 昵称
+@property (nonatomic,strong) UILabel * timeLabel; // 时间
+@property (nonatomic,strong) MLEmojiLabel * contentLabel; // 内容
 
 
 @end
 
 
 @implementation CommentCell
+
+
+//这个是通常的用法
+- (MLEmojiLabel *)contentLabel
+{
+    if (!_contentLabel) {
+        _contentLabel = [MLEmojiLabel new];
+        _contentLabel.numberOfLines = 0;
+        _contentLabel.font = [UIFont systemFontOfSize:13.0f];
+        _contentLabel.delegate = self;
+        _contentLabel.backgroundColor = [UIColor clearColor];
+        _contentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        _contentLabel.textColor = [UIColor blackColor];
+        _contentLabel.isNeedAtAndPoundSign = YES;
+        _contentLabel.disableEmoji = NO;
+        _contentLabel.lineSpacing = 0.0f;
+        _contentLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentCenter;
+        
+        //下面是自定义表情正则和图像plist的例子
+        _contentLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
+        _contentLabel.customEmojiPlistName = @"expressionImage_custom";
+    }
+    return _contentLabel;
+}
+
 + (instancetype)cellWithTableView:(UITableView *)tableView
 {
     NSString * ID = @"commentCell";
@@ -96,11 +122,9 @@
 
     
     /** 正文 */
-    UILabel *contentLabel = [[UILabel alloc] init];
-    contentLabel.font = [UIFont systemFontOfSize:13];
-    contentLabel.numberOfLines = 0;
-    [originalView addSubview:contentLabel];
-    self.contentLabel = contentLabel;
+    self.contentLabel.emojiLabeldelegate = self;
+    [originalView addSubview:self.contentLabel];
+
 }
 
 
@@ -155,5 +179,40 @@
 
 }
 
+
+#pragma mark - delegate
+- (void)mlEmojiLabel:(MLEmojiLabel*)emojiLabel didSelectLink:(NSString*)link withType:(MLEmojiLabelLinkType)type
+{
+    switch(type){
+        case MLEmojiLabelLinkTypeURL:
+            if ([self.linkDelegate respondsToSelector:@selector(didClickCommentCellLinkTypeURL:)]) {
+                [self.linkDelegate didClickCommentCellLinkTypeURL:link];
+            }
+            break;
+        case MLEmojiLabelLinkTypePhoneNumber:
+            if ([self.linkDelegate respondsToSelector:@selector(didClickCommentCellLinkTypePhoneNumber:)]) {
+                [self.linkDelegate didClickCommentCellLinkTypePhoneNumber:link];
+            }
+            break;
+        case MLEmojiLabelLinkTypeEmail:
+            if ([self.linkDelegate respondsToSelector:@selector(didClickCommentCellLinkTypeEmail:)]) {
+                [self.linkDelegate didClickCommentCellLinkTypeEmail:link];
+            }
+            break;
+        case MLEmojiLabelLinkTypeAt:
+            if ([self.linkDelegate respondsToSelector:@selector(didClickCommentCellLinkTypeAt:)]) {
+                [self.linkDelegate didClickCommentCellLinkTypeAt:link];
+            }
+            break;
+        case MLEmojiLabelLinkTypePoundSign:
+            if ([self.linkDelegate respondsToSelector:@selector(didClickCommentCellLinkTypePoundSign:)]) {
+                [self.linkDelegate didClickCommentCellLinkTypePoundSign:link];
+            }
+            break;
+        default:
+            break;
+    }
+    
+}
 
 @end

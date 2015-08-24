@@ -143,6 +143,12 @@
 }
 
 #pragma mark - ProfileHeaderViewDelegate
+- (void)setupMyDetialDidFinishTap
+{
+    UserDetialViewController * userVC = [[UserDetialViewController alloc]init];
+    [self.navigationController pushViewController:userVC animated:YES];
+}
+
 - (void)setupMyStatusDetailDidFinishTap
 {
     AllStatusTableViewController * allStatus = [[AllStatusTableViewController alloc]init];
