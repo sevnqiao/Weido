@@ -92,7 +92,9 @@
 {
     // 第一组
     SettingArrowItem * item1 = [SettingArrowItem itemWithIcon:@"album" withTitle:@"我的相册" ];
-
+    item1.block = ^{
+        
+    };
     
     
     SettingArrowItem * item2 = [SettingArrowItem itemWithIcon:@"collect" withTitle:@"我的点评" destVcClass:[Test1ViewController class]];

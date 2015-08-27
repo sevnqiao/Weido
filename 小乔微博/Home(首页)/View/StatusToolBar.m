@@ -50,16 +50,17 @@
 {
     if (self = [super initWithFrame:frame]) {
         
-        self.retweet = [self setupBtnWithTitle:@"转发" Image:@"timeline_icon_retweet"];
-        self.comment = [self setupBtnWithTitle:@"评论" Image:@"timeline_icon_comment"];
-        self.unlike = [self setupBtnWithTitle:@"赞" Image:@"timeline_icon_unlike"];
+        self.retweet = [self setupBtnWithTitle:@"转发" Image:@"timeline_icon_retweet" tag:100];
+        self.comment = [self setupBtnWithTitle:@"评论" Image:@"timeline_icon_comment" tag:101];
+        self.unlike = [self setupBtnWithTitle:@"赞" Image:@"timeline_icon_unlike" tag:102];
     }
     return self;
 }
 
-- (UIButton *)setupBtnWithTitle:(NSString *)title Image:(NSString *)image
+- (UIButton *)setupBtnWithTitle:(NSString *)title Image:(NSString *)image tag:(int)tag
 {
     UIButton * btn = [[UIButton alloc]init];
+    btn.tag = tag;
     [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
     btn.contentMode = UIViewContentModeCenter;
     [btn setImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
@@ -90,7 +91,7 @@
 - (void)btnClick:(UIButton *)btn
 {
     if ([self.delegate respondsToSelector:@selector(statusToolBar:DidClickButton:)]) {
-        [self.delegate statusToolBar:self DidClickButton:(NSInteger)(btn.x + 1)/btn.width];
+        [self.delegate statusToolBar:self DidClickButton:(int)btn.tag];
     }
 }
 @end

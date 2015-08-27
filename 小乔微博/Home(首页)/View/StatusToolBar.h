@@ -12,7 +12,7 @@
 
 @protocol StatusToolBarDelegate <NSObject>
 @optional
-- (void)statusToolBar:(StatusToolBar *)toolBar DidClickButton:(NSUInteger)index;
+- (void)statusToolBar:(StatusToolBar *)toolBar DidClickButton:(int)tag;
 
 @end
 

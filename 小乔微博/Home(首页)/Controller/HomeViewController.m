@@ -30,7 +30,7 @@
 #import "StatusPhotoView.h"
 #import "Photo.h"
 #import "HZPhotoBrowser.h"
-
+#import "RetweetViewController.h"
 
 
 @interface HomeViewController ()<DrapDownMenuDelegate,StatusCellDelegate,StatusCellLinkDelegate,HZPhotoBrowserDelegate,TitleMenuViewControllerDelegate>
@@ -470,7 +470,7 @@
     cell.delegate = self;
     cell.linkDelegate = self;
     cell.statusFrame = self.statusesFrame[indexPath.row];
-    cell.row = (int)indexPath.row;
+    cell.indexPath = indexPath;
     return cell;
 }
 
@@ -511,13 +511,35 @@
 
 
 #pragma mark- statusCellDelegate
-- (void)didClickCellCommentWithIndexPath:(int)indexPath
+- (void)didClickCellCommentWithIndexPath:(NSIndexPath *)indexPath WithType:(int)type
 {
-    CommentListViewController * com = [[CommentListViewController alloc]init];
-    [self.navigationController pushViewController:com animated:YES];
+    switch (type) {
+        case 100:
+        {
+            RetweetViewController *ret = [[RetweetViewController alloc]init];
+            UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:ret];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            StatusFrame * statusFrame = self.statusesFrame[indexPath.row];
+            ret.statusID = statusFrame.status.idstr;
+            ret.statusFrame = statusFrame;
+        }
+            break;
+        case 101:
+        {
+            CommentListViewController * com = [[CommentListViewController alloc]init];
+            [self.navigationController pushViewController:com animated:YES];
+            StatusFrame * statusFrame = self.statusesFrame[indexPath.row];
+            com.statusFrame = statusFrame;
+        }
+            break;
+        case 102:
+            
+            break;
+            
+        default:
+            break;
+    }
     
-    StatusFrame * statusFrame = self.statusesFrame[indexPath];
-    com.statusFrame = statusFrame;
 }
 - (void)didClickPhotoWithObjects:(int)index withPhotosArr:(NSArray *)photos WithImageView:(UIImageView *)imageView;
 {

@@ -251,7 +251,7 @@
     StatusCell * cell = [StatusCell cellWithTableView:tableView];
     cell.delegate = self;
     cell.statusFrame = self.statusesFrame[indexPath.row];
-    cell.row = (int)indexPath.row;
+    cell.indexPath = indexPath;
     return cell;
 }
 //

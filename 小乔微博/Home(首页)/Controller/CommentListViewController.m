@@ -26,6 +26,7 @@
 #import "MBProgressHUD+MJ.h"
 #import "StatusLinkViewController.h"
 #import "RestoreCommentViewController.h"
+#import "RetweetViewController.h"
 
 @interface CommentListViewController()<CommentToolBarDelegate,StatusCellLinkDelegate,CommentCellLinkDelegate,UIActionSheetDelegate>
 
@@ -327,12 +328,17 @@
 - (void)commentToolBar:(CommentToolBar *)toolBar DidClickButton:(NSUInteger)index
 {
     switch (index) {
-        case 0: // 拍照
+        case 0: // 转发
         {
-            XYQLog(@"转法");
+            RetweetViewController *ret = [[RetweetViewController alloc]init];
+            ret.statusID = self.statusFrame.status.idstr;
+            ret.statusFrame = self.statusFrame;
+            UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:ret];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            
         }
             break;
-        case 1: // 相册
+        case 1: // 评论
         {
             CommentViewController * comment = [[CommentViewController alloc]init];
             comment.statusID = self.statusFrame.status.idstr;
@@ -340,7 +346,7 @@
             [self.navigationController presentViewController:nav animated:YES completion:nil];
         }
             break;
-              break;
+            
             
         default:
             break;

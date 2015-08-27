@@ -128,7 +128,16 @@
 		4069E4401B848CDF00F5E97C /* RestoreCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4069E43F1B848CDF00F5E97C /* RestoreCommentViewController.m */; };
 		407BCC681B857E7D006F3688 /* WhisperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 407BCC671B857E7D006F3688 /* WhisperViewController.m */; };
 		407BCC6B1B8581BB006F3688 /* WhisperCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 407BCC6A1B8581BB006F3688 /* WhisperCell.m */; };
+		40825E4F1B8C70AB00EADBC6 /* RetweetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40825E4E1B8C70AB00EADBC6 /* RetweetViewController.m */; };
 		408F05C51B86D12000B6A7D3 /* MMLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 408F05C41B86D12000B6A7D3 /* MMLocationManager.m */; };
+		409480071B8D897C008B3EAF /* AlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 40947FFC1B8D897C008B3EAF /* AlbumCell.m */; };
+		409480081B8D897C008B3EAF /* AlbumCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 40947FFD1B8D897C008B3EAF /* AlbumCell.xib */; };
+		409480091B8D897C008B3EAF /* AlbumPhotosListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 40947FFF1B8D897C008B3EAF /* AlbumPhotosListView.m */; };
+		4094800A1B8D897C008B3EAF /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 409480011B8D897C008B3EAF /* PhotoCell.m */; };
+		4094800B1B8D897C008B3EAF /* PhotoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 409480021B8D897C008B3EAF /* PhotoCell.xib */; };
+		4094800C1B8D897C008B3EAF /* selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 409480041B8D897C008B3EAF /* selected@2x.png */; };
+		4094800D1B8D897C008B3EAF /* UserAlbumListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 409480061B8D897C008B3EAF /* UserAlbumListView.m */; };
+		4094800F1B8D8ED8008B3EAF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4094800E1B8D8ED8008B3EAF /* AssetsLibrary.framework */; };
 		409B761F1B830705008F3BB9 /* HZIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 409B76181B830705008F3BB9 /* HZIndicatorView.m */; };
 		409B76201B830705008F3BB9 /* HZPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 409B761A1B830705008F3BB9 /* HZPhotoBrowser.m */; };
 		409B76211B830705008F3BB9 /* HZPhotoBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = 409B761D1B830705008F3BB9 /* HZPhotoBrowserView.m */; };
@@ -442,9 +451,23 @@
 		407BCC671B857E7D006F3688 /* WhisperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhisperViewController.m; sourceTree = "<group>"; };
 		407BCC691B8581BB006F3688 /* WhisperCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhisperCell.h; sourceTree = "<group>"; };
 		407BCC6A1B8581BB006F3688 /* WhisperCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhisperCell.m; sourceTree = "<group>"; };
+		40825E4D1B8C70AB00EADBC6 /* RetweetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetweetViewController.h; sourceTree = "<group>"; };
+		40825E4E1B8C70AB00EADBC6 /* RetweetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetweetViewController.m; sourceTree = "<group>"; };
 		408F05C31B86D12000B6A7D3 /* MMLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMLocationManager.h; sourceTree = "<group>"; };
 		408F05C41B86D12000B6A7D3 /* MMLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMLocationManager.m; sourceTree = "<group>"; };
 		4093FDA61B4E65FF00F86552 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
+		40947FFB1B8D897C008B3EAF /* AlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumCell.h; sourceTree = "<group>"; };
+		40947FFC1B8D897C008B3EAF /* AlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumCell.m; sourceTree = "<group>"; };
+		40947FFD1B8D897C008B3EAF /* AlbumCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumCell.xib; sourceTree = "<group>"; };
+		40947FFE1B8D897C008B3EAF /* AlbumPhotosListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumPhotosListView.h; sourceTree = "<group>"; };
+		40947FFF1B8D897C008B3EAF /* AlbumPhotosListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumPhotosListView.m; sourceTree = "<group>"; };
+		409480001B8D897C008B3EAF /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
+		409480011B8D897C008B3EAF /* PhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
+		409480021B8D897C008B3EAF /* PhotoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCell.xib; sourceTree = "<group>"; };
+		409480041B8D897C008B3EAF /* selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "selected@2x.png"; sourceTree = "<group>"; };
+		409480051B8D897C008B3EAF /* UserAlbumListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAlbumListView.h; sourceTree = "<group>"; };
+		409480061B8D897C008B3EAF /* UserAlbumListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserAlbumListView.m; sourceTree = "<group>"; };
+		4094800E1B8D8ED8008B3EAF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		409B76171B830705008F3BB9 /* HZIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZIndicatorView.h; sourceTree = "<group>"; };
 		409B76181B830705008F3BB9 /* HZIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HZIndicatorView.m; sourceTree = "<group>"; };
 		409B76191B830705008F3BB9 /* HZPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HZPhotoBrowser.h; sourceTree = "<group>"; };
@@ -566,6 +589,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4094800F1B8D8ED8008B3EAF /* AssetsLibrary.framework in Frameworks */,
 				047E45171B282B5A004C0CCC /* libsqlite3.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -776,6 +800,8 @@
 				4069E43F1B848CDF00F5E97C /* RestoreCommentViewController.m */,
 				B93296421B44DEB9004F25CE /* StatusLinkViewController.h */,
 				B93296431B44DEB9004F25CE /* StatusLinkViewController.m */,
+				40825E4D1B8C70AB00EADBC6 /* RetweetViewController.h */,
+				40825E4E1B8C70AB00EADBC6 /* RetweetViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1038,6 +1064,7 @@
 		049448D31B1D337900A6B340 = {
 			isa = PBXGroup;
 			children = (
+				4094800E1B8D8ED8008B3EAF /* AssetsLibrary.framework */,
 				049448DE1B1D337900A6B340 /* 小乔微博 */,
 				049448F81B1D337900A6B340 /* 小乔微博Tests */,
 				049448DD1B1D337900A6B340 /* Products */,
@@ -1183,6 +1210,7 @@
 		04C0F5B81B259F6B00A5981E /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				40947FFA1B8D897C008B3EAF /* SimpleCollectionViewAPI */,
 				04C0F5B91B259FB300A5981E /* ComposeViewController.h */,
 				04C0F5BA1B259FB300A5981E /* ComposeViewController.m */,
 			);
@@ -1303,6 +1331,32 @@
 				408F05C41B86D12000B6A7D3 /* MMLocationManager.m */,
 			);
 			path = MMLocationManager;
+			sourceTree = "<group>";
+		};
+		40947FFA1B8D897C008B3EAF /* SimpleCollectionViewAPI */ = {
+			isa = PBXGroup;
+			children = (
+				40947FFB1B8D897C008B3EAF /* AlbumCell.h */,
+				40947FFC1B8D897C008B3EAF /* AlbumCell.m */,
+				40947FFD1B8D897C008B3EAF /* AlbumCell.xib */,
+				40947FFE1B8D897C008B3EAF /* AlbumPhotosListView.h */,
+				40947FFF1B8D897C008B3EAF /* AlbumPhotosListView.m */,
+				409480001B8D897C008B3EAF /* PhotoCell.h */,
+				409480011B8D897C008B3EAF /* PhotoCell.m */,
+				409480021B8D897C008B3EAF /* PhotoCell.xib */,
+				409480031B8D897C008B3EAF /* resource */,
+				409480051B8D897C008B3EAF /* UserAlbumListView.h */,
+				409480061B8D897C008B3EAF /* UserAlbumListView.m */,
+			);
+			path = SimpleCollectionViewAPI;
+			sourceTree = "<group>";
+		};
+		409480031B8D897C008B3EAF /* resource */ = {
+			isa = PBXGroup;
+			children = (
+				409480041B8D897C008B3EAF /* selected@2x.png */,
+			);
+			path = resource;
 			sourceTree = "<group>";
 		};
 		409B76161B830705008F3BB9 /* HZPhotoBrowser */ = {
@@ -1665,9 +1719,12 @@
 				044B2F1A1B1D7C56003A8A0D /* Images.xcassets in Resources */,
 				B91D59E51B453F1B00808C41 /* EmotionIcons.bundle in Resources */,
 				B91D58DE1B4516E300808C41 /* CoreStatusBtnMaskView.xib in Resources */,
+				4094800B1B8D897C008B3EAF /* PhotoCell.xib in Resources */,
 				B932963D1B44D7BA004F25CE /* expression_custom.plist in Resources */,
+				409480081B8D897C008B3EAF /* AlbumCell.xib in Resources */,
 				409B76221B830705008F3BB9 /* whiteplaceholder.png in Resources */,
 				04BACAC71B215E7B00F69EA0 /* MJRefresh.bundle in Resources */,
+				4094800C1B8D897C008B3EAF /* selected@2x.png in Resources */,
 				04D92AD21B2D8B7B0042552D /* AboutHeaderView.xib in Resources */,
 				043552901B20079E009896DB /* MBProgressHUD.bundle in Resources */,
 				B91D58B01B45169700808C41 /* CoreEmotionView.xib in Resources */,
@@ -1708,6 +1765,7 @@
 				04D92AD51B2D8B7B0042552D /* SettingCell.m in Sources */,
 				04BACAD11B21B9E000F69EA0 /* StatusFrame.m in Sources */,
 				B91D58991B45165A00808C41 /* NSString+Emoji.m in Sources */,
+				40825E4F1B8C70AB00EADBC6 /* RetweetViewController.m in Sources */,
 				B91D58AF1B45169700808C41 /* CoreEmotionView.m in Sources */,
 				044B2F201B1D872B003A8A0D /* UIBarButtonItem+Extension.m in Sources */,
 				0435528F1B20079E009896DB /* MBProgressHUD+MJ.m in Sources */,
@@ -1755,6 +1813,7 @@
 				04BACAAB1B212ACA00F69EA0 /* NSObject+MJCoding.m in Sources */,
 				407BCC6B1B8581BB006F3688 /* WhisperCell.m in Sources */,
 				04405E131B20A1930095D18B /* UIImage+GIF.m in Sources */,
+				409480091B8D897C008B3EAF /* AlbumPhotosListView.m in Sources */,
 				B97AFB051B439A1300561126 /* AllStatusTableViewController.m in Sources */,
 				04D92ABD1B2D8B7B0042552D /* BaseTableViewController.m in Sources */,
 				04BACACC1B215E7B00F69EA0 /* UIScrollView+MJExtension.m in Sources */,
@@ -1789,6 +1848,7 @@
 				04319BB11B1DB01C00FE2833 /* SearchBar.m in Sources */,
 				04A1BEEF1B32CB8600AB706E /* CommentListViewController.m in Sources */,
 				047E458D1B2AE663004C0CCC /* ComposeToolBar.m in Sources */,
+				4094800A1B8D897C008B3EAF /* PhotoCell.m in Sources */,
 				04C0F5AA1B2450B600A5981E /* AFURLSessionManager.m in Sources */,
 				04C0F5B31B2567A900A5981E /* StatusPhotoView.m in Sources */,
 				B9A69DA91B426C8A00E1B8E8 /* DLUtility.m in Sources */,
@@ -1856,7 +1916,9 @@
 				409B76251B830CE4008F3BB9 /* MyAttentionViewTableViewCell.m in Sources */,
 				04C74DB01B23DEA900DD3E45 /* StatusToolBar.m in Sources */,
 				B91D589E1B45165A00808C41 /* EmotionAttachment.m in Sources */,
+				4094800D1B8D897C008B3EAF /* UserAlbumListView.m in Sources */,
 				B93296441B44DEB9004F25CE /* StatusLinkViewController.m in Sources */,
+				409480071B8D897C008B3EAF /* AlbumCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

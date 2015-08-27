@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ComposeViewController : UIViewController
-@property(nonatomic,strong)UIImageView * imageView;
+@property(nonatomic,strong)NSMutableArray * imagesArr;
 @end

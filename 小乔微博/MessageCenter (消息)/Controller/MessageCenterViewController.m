@@ -9,6 +9,7 @@
 #import "MessageCenterViewController.h"
 #import "Test1ViewController.h"
 #import "WhisperViewController.h"
+#import "HttpTool.h"
 
 @interface MessageCenterViewController ()
 
@@ -18,7 +19,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [self send];
      self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"写私信" style:UIBarButtonItemStylePlain target:self action:@selector(edit)];
     self.navigationItem.rightBarButtonItem.enabled = NO;
 //
@@ -29,6 +30,18 @@
     [super viewWillAppear:animated];
 //
 }
+
+- (void)send
+{
+    
+    [HttpTool get:@"http://api.jianshu.io/v2/trending/daily.json?app[name]=hugo&app[version]=2.8.0&auth1=3621b026a42539bf437a415439bbdb6e&auth2=e3e8dccb889130be9f3aeda8f2e15f13&count=20&device[guid]=DBAA79B0-19AC-41CB-94C1-F2EEA3EB38B5&limit=20&page=1&timestamp=1440406687&user_id=678928" params:nil success:^(id json) {
+        NSLog(@"");
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+
 
 - (void)edit
 {

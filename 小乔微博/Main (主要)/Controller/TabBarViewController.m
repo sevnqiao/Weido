@@ -16,13 +16,21 @@
 #import "Test1ViewController.h"
 #import "ComposeViewController.h"
 #import "JKPopMenuView.h"
+#import "UserAlbumListView.h"
 
 @interface TabBarViewController ()<TabBarDelegate,JKPopMenuViewSelectDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @property(nonatomic, strong)UIImage * image;
+@property(nonatomic,strong)NSMutableArray *imagesArr;
 @end
 
 @implementation TabBarViewController
-
+- (NSMutableArray *)imagesArr
+{
+    if (!_imagesArr) {
+        _imagesArr = [NSMutableArray array];
+    }
+    return _imagesArr;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -47,7 +55,7 @@
 //    // 3. 添加一个按钮到tabBar中间位置
             // 在tabBar中定义
     
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(Return_Image_Action:) name:@"RETURN_IMAGE_SELECT" object:nil];
 }
 
 - (void)addChildVc:(UIViewController *)childVc title:(NSString *)title image:(NSString * )image selectedImage:(NSString *)selectedImage
@@ -98,12 +106,9 @@
             
         case 1: // 相册
         {
-            if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
-                return;
-            UIImagePickerController * ipc = [[UIImagePickerController alloc]init];
-            ipc.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            ipc.delegate = self;
-            [self presentViewController:ipc animated:YES completion:nil];
+            UserAlbumListView * userAlbum = [[UserAlbumListView alloc]init];
+            NavigationController * nav = [[NavigationController alloc]initWithRootViewController:userAlbum];
+            [self presentViewController:nav animated:YES completion:nil];
         }
             break;
         case 2: // 拍摄
@@ -131,16 +136,26 @@
     }
 }
 
-
+-(void) Return_Image_Action:(NSNotification *) notification{
+    NSMutableArray *images=[notification userInfo][@"images"];
+    _imagesArr = images;
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    [NSTimer scheduledTimerWithTimeInterval:0.4 target:self selector:@selector(presentVC) userInfo:nil repeats:NO];
+}
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    ComposeViewController * comVC = [[ComposeViewController alloc]init];
-    comVC.imageView.image = image;
-    UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:comVC];
-    
+    [_imagesArr addObject:image];
     [self dismissViewControllerAnimated:YES completion:nil];
-    [self presentViewController:nav animated:YES completion:nil];
-
+    [NSTimer scheduledTimerWithTimeInterval:0.4 target:self selector:@selector(presentVC) userInfo:nil repeats:NO];
 }
+- (void)presentVC
+{
+    ComposeViewController * comVC = [[ComposeViewController alloc]init];
+    comVC.imagesArr = _imagesArr;
+    NavigationController * nav = [[NavigationController alloc]initWithRootViewController:comVC];
+    [self presentViewController:nav animated:YES completion:nil];
+}
+
+
 @end

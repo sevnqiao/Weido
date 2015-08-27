@@ -12,6 +12,7 @@
 #import "Account.h"
 #import "AccountTools.h"
 #import "MBProgressHUD+MJ.h"
+#import "UserDetialViewController.h"
 
 @interface ProfileHeaderView ()
 @property (weak, nonatomic) IBOutlet UIImageView *iconView;
@@ -73,7 +74,9 @@
 }
     
 - (IBAction)MyDetialClick:(UIButton *)sender {
-    
+    if ([self.delegate respondsToSelector:@selector(setupMyDetialDidFinishTap)]) {
+        [self.delegate setupMyDetialDidFinishTap];
+    }
 }
 
 - (IBAction)myStatusClick:(UIButton *)sender {

@@ -336,25 +336,10 @@
 
 
 #pragma mark - statusToolBarDelegate
-- (void)statusToolBar:(StatusToolBar *)toolBar DidClickButton:(NSUInteger)index
+- (void)statusToolBar:(StatusToolBar *)toolBar DidClickButton:(int)tag
 {
-    switch (index) {
-        case 0: //
-        {
-            XYQLog(@"转法");
-        }
-            break;
-        case 1: //
-        {
-            if ([self.delegate respondsToSelector:@selector(didClickCellCommentWithIndexPath:)]) {
-                [self.delegate didClickCellCommentWithIndexPath:self.row];
-            }
-        }
-            break;
-            break;
-
-        default:
-            break;
+    if ([self.delegate respondsToSelector:@selector(didClickCellCommentWithIndexPath: WithType:)]) {
+        [self.delegate didClickCellCommentWithIndexPath:self.indexPath WithType:tag];
     }
 }
 

@@ -6,6 +6,10 @@
 //  Copyright (c) 2015年 Mr.X. All rights reserved.
 //
 
+#define StatusPhotoW ([UIScreen mainScreen].bounds.size.width - 4*10)/3
+#define StatusPhotoMargin 10
+
+
 #import "ComposeViewController.h"
 #import "User.h"
 #import "AccountTools.h"
@@ -19,14 +23,14 @@
 #import "EmotionModel.h"
 #import "NSString+EmotionExtend.h"
 #import "AFNetworking.h"
+#import "UserAlbumListView.h"
+#import "NavigationController.h"
 
 @interface ComposeViewController ()<ComposeToolBarDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,UITextViewDelegate>
 @property(nonatomic,strong)PlacehoderTextView * textView;
 @property(nonatomic,strong)ComposeToolBar * toolBar;
 
 @property (nonatomic,strong) CoreEmotionView *emotionView;
-
-
 
 @end
 
@@ -41,12 +45,12 @@
     return _emotionView;
 }
 
-- (UIImageView *)imageView
+- (NSMutableArray *)imagesArr
 {
-    if (!_imageView) {
-        _imageView = [[UIImageView alloc]init];
+    if (!_imagesArr) {
+        _imagesArr = [NSMutableArray array];
     }
-    return _imageView;
+    return _imagesArr;
 }
 
 - (void)viewDidLoad {
@@ -67,24 +71,25 @@
     // 3. 添加工具条
     [self setupToolBar];
     
-    // 4. 添加图片控件
-    [self setupPhotoBar];
+    if (_imagesArr.count != 0) {
+        for (int i=0;i<_imagesArr.count; i++) {
+            UIImageView * imageView = [[UIImageView alloc]init];;
+            int col = i % 3;
+            int row = i / 3;
+            imageView.x = col * (StatusPhotoW + StatusPhotoMargin) + 10;
+            imageView.y = row * (StatusPhotoW + StatusPhotoMargin) + 100;
+            imageView.height = StatusPhotoW;
+            imageView.width = StatusPhotoW;
+            imageView.image = _imagesArr[i];
+            [self.textView addSubview:imageView];
+        }
+    }
     
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(Return_Image_Action:) name:@"RETURN_IMAGE_SELECT" object:nil];
 }
 
 
-
-- (void)setupPhotoBar
-{
-    UIImageView *imageView = [[UIImageView alloc]init];
-    imageView.image = self.imageView.image;
-    imageView.x = 10;
-    imageView.y = 100;
-    imageView.width = 100;
-    imageView.height = 100;
-    [self.textView addSubview:imageView];
-    self.imageView = imageView;
-}
 
 - (void)setupToolBar
 {
@@ -175,13 +180,13 @@
 
 - (void)send
 {
-    if (self.imageView.image)
+    if (self.imagesArr.count == 0)
     {
-        [self sendWithImage];
+        [self sendWithOutImage];
     }
     else
     {
-        [self sendWithOutImage];
+        [self sendWithImage];
     }
 }
 
@@ -205,8 +210,9 @@
 
 - (void)sendWithImage
 {
+    [self.textView resignFirstResponder];
     Account * account = [AccountTools account];
-
+    
     AFHTTPRequestOperationManager * manager = [AFHTTPRequestOperationManager manager];
     
     NSMutableDictionary * params = [NSMutableDictionary dictionary];
@@ -219,13 +225,23 @@
     }
     URL = @"https://upload.api.weibo.com/2/statuses/upload.json";
     
-
+    
     [manager POST:URL parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
         // 拼接文件数据
-        UIImage *image = self.imageView.image;
-        NSData *data = UIImageJPEGRepresentation(image, 1.0);
-        [formData appendPartWithFileData:data name:@"pic" fileName:@"test.png" mimeType:@"image/png"];
+        for(UIImage *image in _imagesArr)
+        {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            
+            // 设置时间格式
+            formatter.dateFormat = @"yyyyMMddHHmmss";
+            NSString *str = [formatter stringFromDate:[NSDate date]];
+            NSString *fileName = [NSString stringWithFormat:@"%@.png", str];
+            
+            NSData *data = UIImageJPEGRepresentation(image, 1.0);
+            [formData appendPartWithFileData:data name:@"pic" fileName:fileName mimeType:@"image/png"];
+        }
+        
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [MBProgressHUD  showSuccess:@"发送成功"];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -238,12 +254,14 @@
 
 - (void)cancle
 {
+    [_imagesArr removeAllObjects];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - 工具栏点击事件代理
 - (void)composeToolBar:(ComposeToolBar *)toolBar DidClickButton:(NSUInteger)index
 {
+    [_imagesArr removeAllObjects];
     switch (index) {
         case 0: // 拍照
         {
@@ -257,19 +275,23 @@
             break;
         case 1: // 相册
         {
-            if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
-                return;
-            UIImagePickerController * ipc = [[UIImagePickerController alloc]init];
-            ipc.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            ipc.delegate = self;
-            [self presentViewController:ipc animated:YES completion:nil];
+//            if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+//                return;
+//            UIImagePickerController * ipc = [[UIImagePickerController alloc]init];
+//            ipc.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//            ipc.delegate = self;
+//            [self presentViewController:ipc animated:YES completion:nil];
+            
+            UserAlbumListView * userAlbum = [[UserAlbumListView alloc]init];
+            NavigationController * nav = [[NavigationController alloc]initWithRootViewController:userAlbum];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
         }
             break;
 //        case 2: // @
-//            <#statements#>
+//
 //            break;
 //        case 3: // #
-//            <#statements#>
+//
 //            break;
         case 4: // 表情
         {
@@ -290,8 +312,27 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     UIImage * image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    self.imageView.image  = image;
+    [_imagesArr addObject:image];
+    UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 100, 100, 100)];
+    imageView.image = image;
+    [self.textView addSubview:imageView];
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+-(void) Return_Image_Action:(NSNotification *) notification{
+    _imagesArr = [notification userInfo][@"images"];
+    for (int i=0;i<_imagesArr.count; i++) {
+        UIImageView * imageView = [[UIImageView alloc]init];;
+        int col = i % 3;
+        int row = i / 3;
+        imageView.x = col * (StatusPhotoW + StatusPhotoMargin) + 10;
+        imageView.y = row * (StatusPhotoW + StatusPhotoMargin) + 100;
+        imageView.height = StatusPhotoW;
+        imageView.width = StatusPhotoW;
+        imageView.image = _imagesArr[i];
+        [self.textView addSubview:imageView];
+    }
 }
 
 #pragma mark - 编辑框代理

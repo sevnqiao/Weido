@@ -12,7 +12,7 @@
 @class StatusToolBar;
 @protocol StatusCellDelegate <NSObject>
 @optional
-- (void)didClickCellCommentWithIndexPath:(int)indexPath;
+- (void)didClickCellCommentWithIndexPath:(NSIndexPath *)indexPath WithType:(int)type;
 - (void)didClickPhotoWithObjects:(int)index withPhotosArr:(NSArray *)photos WithImageView:(UIImageView *)imageView;
 
 @end
@@ -44,7 +44,7 @@
 
 @interface StatusCell : UITableViewCell
 @property (nonatomic , strong) StatusFrame * statusFrame;
-@property (nonatomic , assign) int row;
+@property (nonatomic , strong) NSIndexPath * indexPath;
 
 
 

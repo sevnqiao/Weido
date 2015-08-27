@@ -1,12 +1,12 @@
 //
-//  ComposeViewController.m
+//  RetweetViewController.m
 //  小乔微博
 //
-//  Created by 熊云桥 on 15/6/8.
+//  Created by Sevn on 15/8/25.
 //  Copyright (c) 2015年 Mr.X. All rights reserved.
 //
 
-#import "CommentViewController.h"
+#import "RetweetViewController.h"
 #import "User.h"
 #import "AccountTools.h"
 #import "Account.h"
@@ -17,14 +17,16 @@
 #import "CommentListViewController.h"
 #import "Status.h"
 #import "StatusFrame.h"
+#import "UIImageView+WebCache.h"
+#import "Photo.h"
 
 
-@interface CommentViewController ()<ComposeToolBarDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
+@interface RetweetViewController ()<ComposeToolBarDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 @property(nonatomic,strong)PlacehoderTextView * textView;
 @property(nonatomic,strong)ComposeToolBar * toolBar;
 @end
 
-@implementation CommentViewController
+@implementation RetweetViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -38,10 +40,11 @@
     [self setupTextView];
     self.automaticallyAdjustsScrollViewInsets = YES;
     
-    
     // 3. 添加工具条
     [self setupToolBar];
     
+    // 4. 添加转发微博
+    [self setupRetweet];
     
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -51,6 +54,40 @@
     self.navigationController.navigationBar.alpha = 1;
 }
 
+- (void)setupRetweet
+{
+    UIView * view = [[UIView alloc]initWithFrame:CGRectMake(10, 100, [UIScreen mainScreen].bounds.size.width - 2*10, 65)];
+    [self.textView addSubview:view];
+    view.backgroundColor = color(245, 245, 245);
+    
+    UIImageView * photoIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 65, 65)];
+    if (self.statusFrame.status.pic_urls.count == 0) {
+        NSString * str = self.statusFrame.status.user.profile_image_url;
+        [photoIV sd_setImageWithURL:[NSURL URLWithString:str] placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
+    }
+    else
+    {
+        Photo * photo = self.statusFrame.status.pic_urls[0];
+        NSString * str = photo.thumbnail_pic;
+        [photoIV sd_setImageWithURL:[NSURL URLWithString:str] placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
+    }
+    [view addSubview:photoIV];
+    
+    UILabel * nameL = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(photoIV.frame)+10, 10, 200, 15)];
+    nameL.font = [UIFont systemFontOfSize:15];
+    nameL.textColor = color(185, 185, 185);
+    nameL.text = [NSString stringWithFormat:@"@%@",self.statusFrame.status.user.name];
+    [view addSubview:nameL];
+    
+    UILabel * statusL = [[UILabel alloc]initWithFrame:CGRectMake(CGRectGetMaxX(photoIV.frame)+10, CGRectGetMaxY(nameL.frame)+10, [UIScreen mainScreen].bounds.size.width - CGRectGetWidth(photoIV.frame) - 2*10, 30)];
+    statusL.font = [UIFont systemFontOfSize:13];
+    statusL.textColor = color(185, 185, 185);
+    statusL.text = self.statusFrame.status.text;
+    statusL.numberOfLines = 2;
+    statusL.lineBreakMode = NSLineBreakByTruncatingTail;
+    [view addSubview:statusL];
+    
+}
 - (void)setupToolBar
 {
     ComposeToolBar * toolBar = [[ComposeToolBar alloc]init];
@@ -99,7 +136,7 @@
     textView.frame = self.view.bounds;
     textView.font = [UIFont systemFontOfSize:15];
     //    textView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
-    textView.placehoder = @"写评论...";
+    textView.placehoder = @"说说分享心得...";
     [self.view addSubview:textView];
     self.textView = textView;
     
@@ -115,7 +152,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStyleDone target:self action:@selector(send)];
     //    self.navigationItem.rightBarButtonItem.enabled = NO;
     UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
-    NSString * Str = [NSString stringWithFormat:@"发评论\n%@",[AccountTools account].name];
+    NSString * Str = [NSString stringWithFormat:@"转发微博\n%@",[AccountTools account].name];
     // 创建一个带有属性的字符串
     NSMutableAttributedString * attStr = [[NSMutableAttributedString alloc]initWithString:Str];
     // 添加属性
@@ -132,12 +169,12 @@
     
     NSMutableDictionary * params = [NSMutableDictionary dictionary];
     params[@"access_token"] = account.access_token;
-    params[@"comment"] = self.textView.text;
+    params[@"status"] = self.textView.text;
     long long currentStatusID = self.statusID.longLongValue;
     params[@"id"] = @(currentStatusID);
-
-    [HttpTool post:@"https://api.weibo.com/2/comments/create.json" params:params success:^(id json) {
-        [MBProgressHUD  showSuccess:@"评论成功"];
+    
+    [HttpTool post:@"https://api.weibo.com/2/statuses/repost.json" params:params success:^(id json) {
+        [MBProgressHUD  showSuccess:@"转发成功"];
     } failure:^(NSError *error) {
         [MBProgressHUD showError:[NSString stringWithFormat:@"%@",error]];
     }];
