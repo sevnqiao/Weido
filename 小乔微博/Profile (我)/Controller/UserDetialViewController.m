@@ -5,11 +5,14 @@
 //  Created by kenny on 15/7/7.
 //  Copyright (c) 2015年 Mr.X. All rights reserved.
 //
-#define headH 200
-#define headMinH 84
-#define tabBarH 44
+//#define headH 200
+//#define headMinH 84
+//#define tabBarH 44
+#define YZHeadViewH 200
 
+#define YZHeadViewMinH 64
 
+#define YZTabBarH 44
 
 #import "UserDetialViewController.h"
 #import "UserDetialView2.h"
@@ -23,6 +26,7 @@
 #import "Account.h"
 #import "MJExtension.h"
 #import "CommentListViewController.h"
+#import "MXSliderBar.h"
 
 
 @interface UserDetialViewController ()<StatusCellDelegate>
@@ -46,14 +50,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _lastOffsetY = -(headH + tabBarH);
+    _lastOffsetY = -(YZHeadViewH + YZTabBarH);
+    
+    // 设置顶部额外滚动区域
+//    self.tableView.contentInset = UIEdgeInsetsMake(YZHeadViewH + YZTabBarH , 0, 0, 0);
 
 
-    self.tableView.contentInset = UIEdgeInsetsMake(180, 0, 0, 0);
+//    self.tableView.contentInset = UIEdgeInsetsMake(180, 0, 0, 0);
     [self.tableView setHeaderHidden:YES];
     [self setUpRefresh];
     [self loadNewStatus];
     [self setupNav];
+    self.tableView.tableHeaderView = [self setupHeader];
 }
 
 /**
@@ -69,48 +77,48 @@
     self.navigationItem.leftBarButtonItem.enabled = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
-    _userView  = [[UserDetialView2 alloc]initWithFrame:CGRectMake(0, -200, self.view.width, 200) userName:self.userName];
-    _userView.frame = CGRectMake(0, -200, self.view.width, 200);
-    _userView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.view addSubview:_userView];
+//    _userView  = [[UserDetialView2 alloc]initWithFrame:CGRectMake(0, -200, self.view.width, 200) userName:self.userName];
+//    _userView.frame = CGRectMake(0, -200, self.view.width, 200);
+//    _userView.contentMode = UIViewContentModeScaleAspectFill;
+//    [self.view addSubview:_userView];
+}
+
+- (UIView *)setupHeader
+{
+    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200)];
+    UIImageView *backImage = [[UIImageView alloc]initWithFrame:headerView.frame];
+    backImage.image = [UIImage imageNamed:@"IMG_0031"];
     
-    UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.width, 33)];
-    view.backgroundColor = [UIColor lightGrayColor];
-    UIButton * btn1 = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 33)];
-    btn1.center = view.center;
-    [btn1 setTitle:@"微博" forState:UIControlStateNormal];
-    [btn1 setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [btn1.titleLabel setFont:[UIFont systemFontOfSize:12]];
-    [btn1.titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [view addSubview:btn1];
-    self.tableView.tableHeaderView = view;
     
+    
+    return headerView;
 }
 
 #pragma mark - scrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    CGFloat offsetY = scrollView.contentOffset.y;
-    CGFloat delta = offsetY - _lastOffsetY;
-    CGFloat alpha;
-    // 当alpha大于1，导航条半透明，因此做处理，大于1，就直接=0.99
+//    CGFloat offsetY = scrollView.contentOffset.y;
+//    CGFloat delta = offsetY - _lastOffsetY;
+//    CGFloat alpha;
+//    // 当alpha大于1，导航条半透明，因此做处理，大于1，就直接=0.99
+//    
+//    // 往上拖动，高度减少。
+//    CGFloat height = headH - delta - 20;
+//    if (height > headMinH)
+//    {
+//        alpha = 0;
+//    }
+//    else
+//    {
+//        alpha = 1 - height / (headMinH);
+//    }
+//    if (alpha >= 1) {
+//        alpha = 0.99;
+//        self.navigationItem.leftBarButtonItem.enabled = YES;
+//        self.navigationItem.rightBarButtonItem.enabled = YES;
+//    }
+//    self.navigationController.navigationBar.alpha = alpha;
     
-    // 往上拖动，高度减少。
-    CGFloat height = headH - delta - 20;
-    if (height > headMinH)
-    {
-        alpha = 0;
-    }
-    else
-    {
-        alpha = 1 - height / (headMinH);
-    }
-    if (alpha >= 1) {
-        alpha = 0.99;
-        self.navigationItem.leftBarButtonItem.enabled = YES;
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-    }
-    self.navigationController.navigationBar.alpha = alpha;
 }
 
 /**
@@ -254,11 +262,6 @@
     cell.indexPath = indexPath;
     return cell;
 }
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    return 44;
-//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -278,6 +281,18 @@
     comment.statusFrame = statusFrame;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    MXSliderBar *sliderBar = [[MXSliderBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width, 33) withTitles:@[@"主页",@"微博",@"相册"]];
+    sliderBar.backgroundColor = color(242, 242, 242);
+    return sliderBar;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 33;
+}
+
 - (void)didClickCellCommentWithIndexPath:(int)indexPath
 {
     CommentListViewController * com = [[CommentListViewController alloc]init];
@@ -286,6 +301,8 @@
     StatusFrame * statusFrame = self.statusesFrame[indexPath];
     com.statusFrame = statusFrame;
 }
+
+
 
 - (void)dealloc
 {

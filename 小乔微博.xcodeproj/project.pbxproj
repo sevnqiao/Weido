@@ -126,6 +126,7 @@
 		04E0FA581B2DC94000C4E838 /* count.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E0FA571B2DC94000C4E838 /* count.m */; };
 		04E0FA5F1B2E601900C4E838 /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E0FA5E1B2E601900C4E838 /* HttpTool.m */; };
 		4069E4401B848CDF00F5E97C /* RestoreCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4069E43F1B848CDF00F5E97C /* RestoreCommentViewController.m */; };
+		407028991B96A63E00BE937F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 407028981B96A63E00BE937F /* LaunchScreen.xib */; };
 		407BCC681B857E7D006F3688 /* WhisperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 407BCC671B857E7D006F3688 /* WhisperViewController.m */; };
 		407BCC6B1B8581BB006F3688 /* WhisperCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 407BCC6A1B8581BB006F3688 /* WhisperCell.m */; };
 		40825E4F1B8C70AB00EADBC6 /* RetweetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40825E4E1B8C70AB00EADBC6 /* RetweetViewController.m */; };
@@ -144,6 +145,7 @@
 		409B76221B830705008F3BB9 /* whiteplaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 409B761E1B830705008F3BB9 /* whiteplaceholder.png */; };
 		409B76251B830CE4008F3BB9 /* MyAttentionViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 409B76241B830CE4008F3BB9 /* MyAttentionViewTableViewCell.m */; };
 		409B76281B8333EA008F3BB9 /* MyFansTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 409B76271B8333EA008F3BB9 /* MyFansTableViewCell.m */; };
+		40AD4F8D1B9998F700775801 /* MXSliderBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 40AD4F8B1B9998F700775801 /* MXSliderBar.m */; };
 		B91D58961B45165A00808C41 /* NSArray+SubArray.m in Sources */ = {isa = PBXBuildFile; fileRef = B91D58691B45165A00808C41 /* NSArray+SubArray.m */; };
 		B91D58971B45165A00808C41 /* NSAttributedString+Emotion.m in Sources */ = {isa = PBXBuildFile; fileRef = B91D586B1B45165A00808C41 /* NSAttributedString+Emotion.m */; };
 		B91D58981B45165A00808C41 /* NSMutableArray+EmotionExtend.m in Sources */ = {isa = PBXBuildFile; fileRef = B91D586D1B45165A00808C41 /* NSMutableArray+EmotionExtend.m */; };
@@ -447,6 +449,7 @@
 		04E0FA5E1B2E601900C4E838 /* HttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HttpTool.m; path = Tool/HttpTool.m; sourceTree = "<group>"; };
 		4069E43E1B848CDF00F5E97C /* RestoreCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestoreCommentViewController.h; sourceTree = "<group>"; };
 		4069E43F1B848CDF00F5E97C /* RestoreCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestoreCommentViewController.m; sourceTree = "<group>"; };
+		407028981B96A63E00BE937F /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		407BCC661B857E7D006F3688 /* WhisperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhisperViewController.h; sourceTree = "<group>"; };
 		407BCC671B857E7D006F3688 /* WhisperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhisperViewController.m; sourceTree = "<group>"; };
 		407BCC691B8581BB006F3688 /* WhisperCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhisperCell.h; sourceTree = "<group>"; };
@@ -480,6 +483,8 @@
 		409B76241B830CE4008F3BB9 /* MyAttentionViewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAttentionViewTableViewCell.m; sourceTree = "<group>"; };
 		409B76261B8333EA008F3BB9 /* MyFansTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyFansTableViewCell.h; sourceTree = "<group>"; };
 		409B76271B8333EA008F3BB9 /* MyFansTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyFansTableViewCell.m; sourceTree = "<group>"; };
+		40AD4F8B1B9998F700775801 /* MXSliderBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXSliderBar.m; sourceTree = "<group>"; };
+		40AD4F8C1B9998F700775801 /* MXSliderBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXSliderBar.h; sourceTree = "<group>"; };
 		B91D58681B45165A00808C41 /* NSArray+SubArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+SubArray.h"; sourceTree = "<group>"; };
 		B91D58691B45165A00808C41 /* NSArray+SubArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+SubArray.m"; sourceTree = "<group>"; };
 		B91D586A1B45165A00808C41 /* NSAttributedString+Emotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+Emotion.h"; sourceTree = "<group>"; };
@@ -918,6 +923,7 @@
 				044B2EF81B1D7C3D003A8A0D /* AppDelegate.h */,
 				044B2EF91B1D7C3D003A8A0D /* AppDelegate.m */,
 				044B2EFA1B1D7C3D003A8A0D /* main.m */,
+				407028981B96A63E00BE937F /* LaunchScreen.xib */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -1008,6 +1014,8 @@
 				409B76241B830CE4008F3BB9 /* MyAttentionViewTableViewCell.m */,
 				409B76261B8333EA008F3BB9 /* MyFansTableViewCell.h */,
 				409B76271B8333EA008F3BB9 /* MyFansTableViewCell.m */,
+				40AD4F8C1B9998F700775801 /* MXSliderBar.h */,
+				40AD4F8B1B9998F700775801 /* MXSliderBar.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1728,6 +1736,7 @@
 				04D92AD21B2D8B7B0042552D /* AboutHeaderView.xib in Resources */,
 				043552901B20079E009896DB /* MBProgressHUD.bundle in Resources */,
 				B91D58B01B45169700808C41 /* CoreEmotionView.xib in Resources */,
+				407028991B96A63E00BE937F /* LaunchScreen.xib in Resources */,
 				044B2F191B1D7C56003A8A0D /* Info.plist in Resources */,
 				046D185D1B353376006F9AEB /* ProfileHeaderView.xib in Resources */,
 				B932963E1B44D7BA004F25CE /* expressionImage.plist in Resources */,
@@ -1845,6 +1854,7 @@
 				B9252A7F1B4BDC4100E5BA7D /* UserDetialView2.m in Sources */,
 				B91D589F1B45165A00808C41 /* EmotionViewConst.m in Sources */,
 				04405E121B20A1930095D18B /* UIButton+WebCache.m in Sources */,
+				40AD4F8D1B9998F700775801 /* MXSliderBar.m in Sources */,
 				04319BB11B1DB01C00FE2833 /* SearchBar.m in Sources */,
 				04A1BEEF1B32CB8600AB706E /* CommentListViewController.m in Sources */,
 				047E458D1B2AE663004C0CCC /* ComposeToolBar.m in Sources */,

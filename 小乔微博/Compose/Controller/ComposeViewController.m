@@ -245,7 +245,6 @@
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         [MBProgressHUD  showSuccess:@"发送成功"];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        XYQLog(@"%@",error);
         [MBProgressHUD showError:@"发送失败"];
     }];
     // 返回主界面
