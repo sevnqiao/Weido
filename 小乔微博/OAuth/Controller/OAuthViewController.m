@@ -91,24 +91,6 @@
  *
  *  @return 授权成功后的requestToken
  */
-
-/**
- HTTP请求方式
- URL : https://api.weibo.com/oauth2/access_token
- POST
- 
- 请求参数         必选 	类型及范围 	说明
- client_id 	    true 	string 	申请应用时分配的AppKey。
- client_secret 	true 	string 	申请应用时分配的AppSecret。
- grant_type 	true 	string 	请求的类型，填写authorization_code
- 
- 
- grant_type为authorization_code
-                必选   类型及范围 	说明
- code           true 	string 	调用authorize获得的code值。
- redirect_uri 	true 	string 	回调地址，需需与注册应用里的回调地址一致。
- */
-
 - (void)accessTokenWithCode:(NSString *)code
 {
     // 1. 拼接请求参数
@@ -120,20 +102,15 @@
     parms[@"redirect_uri"] = AppredirectURL;
 
     // 2. 发送请求
-    [HttpTool post:@"https://api.weibo.com/oauth2/access_token" params:parms
-           success:^(id json) {
-               [MBProgressHUD hideHUD];
-               
-               // 将返回的账号数据存入沙盒
-               Account * account = [Account accountWithDict:json]; // 数据转模型
-               [AccountTools saveAccount:account];
-               // 3. 切换窗口 进入首页
-               // 切换根控制器
-               [[UIApplication sharedApplication].keyWindow switchRootViewController];
-           } failure:^(NSError *error) {
-               [MBProgressHUD hideHUD];
-           }];
-    
-
+    [XYQApi getAccessTokenWithCode:code ClientID:AppKey CilentSecret:AppSecret GrantType:@"authorization_code" RedirectURL:AppredirectURL type:@"POST" success:^(id json) {
+        [MBProgressHUD hideHUD];
+        
+        // 将返回的账号数据存入沙盒
+        Account * account = [Account accountWithDict:json]; // 数据转模型
+        [AccountTools saveAccount:account];
+        // 3. 切换窗口 进入首页
+        // 切换根控制器
+        [[UIApplication sharedApplication].keyWindow switchRootViewController];
+    }];
 }
 @end

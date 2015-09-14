@@ -28,7 +28,9 @@
 #import "UIBarButtonItem+Extension.h"
 #import "UIWindow+Extension.h"
 #import "NSString+Extension.h"
-
+#import "XYQApi.h"
+#import "UIImageView+WebCache.h"
+#import "AFNetworking.h"
 
 
 #ifdef DEBUG // 处于开发阶段

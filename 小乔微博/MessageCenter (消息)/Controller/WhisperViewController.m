@@ -36,29 +36,24 @@
     [super viewDidLoad];
     self.title = @"所有评论";
     
-    [self sendRequest];
+    [self loadNew];
     
-    [self.tableView addHeaderWithTarget:self action:@selector(sendRequest)];
+    [self.tableView addHeaderWithTarget:self action:@selector(loadNew)];
     [self.tableView addFooterWithTarget:self action:@selector(loadMore)];
 }
 
-- (void)sendRequest
+- (void)loadNew
 {
     [MBProgressHUD showMessage:@"正在加载中"];
-    Account * account = [AccountTools account];
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
     Comment * comment = [self.commentsArr firstObject];
+    NSNumber *sinceID;
     if (comment) {
-        params[@"since_id"] = comment.status.idstr;
+        sinceID = [NSNumber numberWithLongLong:[comment.status.idstr longLongValue]];
     }
-    params[@"count"] = @(100);
-    //https://api.weibo.com/2/comments/timeline.json
-    //https://api.weibo.com/2/comments/mentions.json
-    [HttpTool get:@"https://api.weibo.com/2/comments/timeline.json" params:params success:^(id json) {
+    [XYQApi getNewMyCommentWithAccessToken:[AccountTools account].access_token sinceID:sinceID count:@(100) type:@"GET" success:^(id json) {
         NSArray * arr = json[@"comments"];
         if (arr.count == 0) {
-//            [MBProgressHUD showError:@"新浪个2B , 不给数据了"];
+            //            [MBProgressHUD showError:@"新浪个2B , 不给数据了"];
         }
         NSMutableArray * newArr = [NSMutableArray array];
         for (NSDictionary * dict in arr) {
@@ -73,28 +68,21 @@
         [self.tableView reloadData];
         [self.tableView headerEndRefreshing];
         [MBProgressHUD hideHUD];
-    } failure:^(NSError *error) {
-        
     }];
 }
 
 - (void)loadMore
 {
     [MBProgressHUD showMessage:@"正在加载中"];
-    Account * account = [AccountTools account];
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
     Comment * lastComment = [self.commentsArr lastObject];
+    NSNumber *maxID ;
     if (lastComment) {
-        params[@"max_id"] = lastComment.status.idstr;
+        maxID = [NSNumber numberWithLongLong:[lastComment.status.idstr longLongValue]];
     }
-    params[@"count"] = @(100);
-    //https://api.weibo.com/2/comments/timeline.json
-    //https://api.weibo.com/2/comments/mentions.json
-    [HttpTool get:@"https://api.weibo.com/2/comments/timeline.json" params:params success:^(id json) {
+    [XYQApi getMoreMyCommentWithAccessToken:[AccountTools account].access_token maxID:maxID count:@(100) type:@"GET" success:^(id json) {
         NSArray * arr = json[@"comments"];
         if (arr.count == 0) {
-            //            [MBProgressHUD showError:@"新浪个2B , 不给数据了"];
+            [MBProgressHUD showError:@"新浪个2B , 不给数据了"];
         }
         for (NSDictionary * dict in arr) {
             Comment * comment = [Comment objectWithKeyValues:dict];
@@ -103,8 +91,6 @@
         [self.tableView reloadData];
         [self.tableView headerEndRefreshing];
         [MBProgressHUD hideHUD];
-    } failure:^(NSError *error) {
-        
     }];
 }
 
@@ -136,10 +122,7 @@
 {
     WhisperCell * cell = [[WhisperCell alloc]init];
     cell.comment = self.commentsArr[indexPath.row];
-
-    NSLog(@"cell.height -- %f",cell.cellHeight);
     return cell.cellHeight;
-//    return 110;
 }
 
 /** 回复一条评论 */

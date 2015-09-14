@@ -549,10 +549,8 @@ static inline CGFloat TTTFlushFactorForTextAlignment(NSTextAlignment textAlignme
                     return;
                 }
             }
-            
             //添加链接
             NSString *actionString = [NSString stringWithFormat:@"%@%@",urlAction,[self.text substringWithRange:result.range]];
-            
             //这里暂时用NSTextCheckingTypeCorrection类型的传递消息吧
             //因为有自定义的类型出现，所以这样方便点。
             NSTextCheckingResult *aResult = [NSTextCheckingResult correctionCheckingResultWithRange:result.range replacementString:actionString];

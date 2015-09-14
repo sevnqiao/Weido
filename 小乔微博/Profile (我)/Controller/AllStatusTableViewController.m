@@ -73,18 +73,15 @@
 - (void)loadMoreStatus
 {
     [MBProgressHUD showMessage:@"正在努力加载中"];
-    // 1.拼接请求参数
-    Account *account = [AccountTools account];
-    NSMutableDictionary *params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
     
     // 取出最后面的微博（最新的微博，ID最大的微博）
     StatusFrame *lastStatusF = [self.statusesFrame lastObject];
+    NSNumber *maxID;
     if (lastStatusF) {
         // 若指定此参数，则返回ID小于或等于max_id的微博，默认为0。
         // id这种数据一般都是比较大的，一般转成整数的话，最好是long long类型
-        long long maxId = lastStatusF.status.idstr.longLongValue - 1;
-        params[@"max_id"] = @(maxId);
+        maxID = [NSNumber numberWithLongLong:lastStatusF.status.idstr.longLongValue - 1];
+        
     }
     void (^dealingResult)(NSArray *) = ^(NSArray * statuses){
         // 将 "微博字典"数组 转为 "微博模型"数组
@@ -110,13 +107,9 @@
     };
     
     // 2.发送请求
-    [HttpTool get:@"https://api.weibo.com/2/statuses/user_timeline.json" params:params success:^(id json) {
-        
+    [XYQApi getMoreStatusWithAccessToken:[AccountTools account].access_token maxID:maxID type:@"GET" success:^(id json) {
         dealingResult(json[@"statuses"]);
-        
         [MBProgressHUD hideHUD];
-    } failure:^(NSError *error) {
-        [MBProgressHUD showError:[NSString stringWithFormat:@"%@",error]];
     }];
     
 }
@@ -132,16 +125,7 @@
 - (void)loadNewStatus
 {
     [MBProgressHUD showMessage:@"正在努力加载中"];
-    Account * account = [AccountTools account];
-    // 2. 拼接请求参数
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
-    
     StatusFrame * firstStatusF = [self.statusesFrame firstObject];
-    if (firstStatusF) {
-        params[@"since_id"] = firstStatusF.status.idstr;
-    }
-    
     void (^dealingResult)(NSArray *) = ^(NSArray * statuses){
         NSArray * newStatus = [Status objectArrayWithKeyValuesArray:statuses];
         // 将status数组转换为frame数组
@@ -151,7 +135,6 @@
             statusFrame.status = status;
             [newFrame addObject:statusFrame];
         }
-        
         NSRange range = NSMakeRange(0, newFrame.count);
         NSIndexSet * set = [NSIndexSet indexSetWithIndexesInRange:range];
         [self.statusesFrame insertObjects:newFrame atIndexes:set];
@@ -162,14 +145,15 @@
 
     };
     // 3. 发送请求
-    [HttpTool get:@"https://api.weibo.com/2/statuses/user_timeline.json" params:params success:^(id json) {
+    NSNumber *sinceID;
+    if (firstStatusF) {
+        sinceID = [NSNumber numberWithLongLong:[firstStatusF.status.idstr longLongValue]];
+    }
+    [XYQApi getNewStatusWithAccessToken:[AccountTools account].access_token sinceID:sinceID type:@"GET" success:^(id json) {
         dealingResult(json[@"statuses"]);
         self.tabBarItem.badgeValue = nil;
         [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-        
         [MBProgressHUD hideHUD];
-    } failure:^(NSError *error) {
-        [MBProgressHUD showError:[NSString stringWithFormat:@"%@",error]];
     }];
 }
 

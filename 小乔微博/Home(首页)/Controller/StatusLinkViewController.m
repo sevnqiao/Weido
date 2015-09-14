@@ -7,7 +7,7 @@
 //
 
 #import "StatusLinkViewController.h"
-@interface StatusLinkViewController()
+@interface StatusLinkViewController()<UIWebViewDelegate>
 @property(nonatomic , strong)UIWebView * webView;
 @end
 
@@ -16,7 +16,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.title = self.URL;
+    
     // 1. 创建一个webView
     UIWebView * webView = [[UIWebView alloc]init];
     webView.frame  = self.view.bounds;
@@ -29,10 +29,16 @@
     NSURLRequest * request = [NSURLRequest requestWithURL:url];
     [webView loadRequest:request];
     
+    
+    
 }
 
-- (void)dealloc
+- (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    self.title  = [_webView stringByEvaluatingJavaScriptFromString:@"document.title"];//获取当前页面的title
+}
+
+- (void)dealloc{
     self.webView =  nil;
     
 }

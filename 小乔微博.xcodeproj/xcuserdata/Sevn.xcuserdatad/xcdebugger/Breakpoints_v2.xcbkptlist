@@ -19,45 +19,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "&#x5c0f;&#x4e54;&#x5fae;&#x535a;/Home(&#x9996;&#x9875;)/Controller/HomeViewController.m"
-            timestampString = "462359318.991224"
+            filePath = "&#x5c0f;&#x4e54;&#x5fae;&#x535a;/Main (&#x4e3b;&#x8981;)/Lib/MLEmoji/TTTAttributedLabel/TTTAttributedLabel.m"
+            timestampString = "463908838.396609"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "532"
-            endingLineNumber = "532"
-            landmarkName = "-didClickCellCommentWithIndexPath:WithType:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "&#x5c0f;&#x4e54;&#x5fae;&#x535a;/Compose/Controller/ComposeViewController.m"
-            timestampString = "462359747.41567"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "246"
-            endingLineNumber = "246"
-            landmarkName = "-sendWithImage"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "&#x5c0f;&#x4e54;&#x5fae;&#x535a;/Home(&#x9996;&#x9875;)/Controller/HomeViewController.m"
-            timestampString = "462859759.480282"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
-            landmarkName = "-loadMoreStatus"
+            startingLineNumber = "1113"
+            endingLineNumber = "1113"
+            landmarkName = "-setText:afterInheritingLabelAttributesAndConfiguringWithBlock:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

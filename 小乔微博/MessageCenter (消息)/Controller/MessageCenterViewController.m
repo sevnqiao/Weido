@@ -19,32 +19,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self send];
      self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"写私信" style:UIBarButtonItemStylePlain target:self action:@selector(edit)];
     self.navigationItem.rightBarButtonItem.enabled = NO;
 //
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 //
 }
 
-- (void)send
-{
-    
-    [HttpTool get:@"http://api.jianshu.io/v2/trending/daily.json?app[name]=hugo&app[version]=2.8.0&auth1=3621b026a42539bf437a415439bbdb6e&auth2=e3e8dccb889130be9f3aeda8f2e15f13&count=20&device[guid]=DBAA79B0-19AC-41CB-94C1-F2EEA3EB38B5&limit=20&page=1&timestamp=1440406687&user_id=678928" params:nil success:^(id json) {
-        NSLog(@"");
-    } failure:^(NSError *error) {
-        
-    }];
-}
-
-
-
-- (void)edit
-{
+- (void)edit{
     
 }
 
@@ -58,12 +43,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 20;
+    return 1;
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString * ID = @"mseeageCenter";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (!cell) {
@@ -80,8 +64,7 @@
 
 #pragma mark - 代理
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
         WhisperViewController * Wvc = [[WhisperViewController alloc]init];
         [self.navigationController pushViewController:Wvc animated:YES];

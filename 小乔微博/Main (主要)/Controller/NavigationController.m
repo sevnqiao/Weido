@@ -57,6 +57,7 @@
     DisabledAextAttrs[NSForegroundColorAttributeName] = [UIColor lightGrayColor];
     DisabledAextAttrs[NSFontAttributeName] = [UIFont systemFontOfSize:15];
     [item setTitleTextAttributes:DisabledAextAttrs forState:UIControlStateDisabled];
+
 }
 /**
  *  重写这个方法的目的: 能够拦截说有push进来的控制器
@@ -92,6 +93,7 @@
         moreBtn.size = moreBtn.currentBackgroundImage.size;
         
         viewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:moreBtn];
+        
     } 
     [super pushViewController:viewController animated:animated];
 }

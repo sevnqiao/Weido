@@ -1,4 +1,4 @@
-//
+ //
 //  ComposeViewController.m
 //  小乔微博
 //
@@ -192,17 +192,8 @@
 
 - (void)sendWithOutImage
 {
-    Account * account = [AccountTools account];
- 
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
-    params[@"status"] = self.textView.text;
-    NSString * URL = [[NSString alloc]init];
-    URL = @"https://api.weibo.com/2/statuses/update.json";
-    [HttpTool post:URL params:params success:^(id json) {
+    [XYQApi ComposeWithOutImageStatus:self.emotionView.textView.text type:@"POST" accessToken:[AccountTools account].access_token success:^(id json) {
         [MBProgressHUD  showSuccess:@"发送成功"];
-    } failure:^(NSError *error) {
-        [MBProgressHUD showError:@"发送失败"];
     }];
     // 返回主界面
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -217,7 +208,7 @@
     
     NSMutableDictionary * params = [NSMutableDictionary dictionary];
     params[@"access_token"] = account.access_token;
-    params[@"status"] = self.textView.text;
+    params[@"status"] = self.emotionView.textView.text;
     NSString * URL = [[NSString alloc]init];
     
     if ([self.textView.text isEqualToString:@""]) {

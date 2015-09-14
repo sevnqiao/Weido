@@ -44,26 +44,17 @@
 - (void)setupMyAttention
 {
     [MBProgressHUD showMessage:@"正在加载中..."];
-    // 2. 请求参数
-    Account * account = [AccountTools account];
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
-    params[@"uid"] = account.uid;
-    params[@"count"] = @200;
-    params[@"trim_status"] = @0;
-    
-    [HttpTool get:@"https://api.weibo.com/2/friendships/followers.json" params:params success:^(id json) {
-        NSArray * arr = [NSArray arrayWithArray:json[@"users"]];
-        for (NSDictionary * dict in arr) {
-            User * user = [User objectWithKeyValues:dict];
-            [self.dataArr addObject:user];
-        }
-        self.next_cursor = json[@"next_cursor"];
-        [self.tableView reloadData];
-        [MBProgressHUD hideHUD];
-    } failure:^(NSError *error) {
-        
-    }];
+    [XYQApi getMyFansListWithAccessToken:[AccountTools account].access_token
+                                     UID:[AccountTools account].uid TrimStatus:@0 count:@200 type:@"GET" success:^(id json) {
+                                         NSArray * arr = [NSArray arrayWithArray:json[@"users"]];
+                                         for (NSDictionary * dict in arr) {
+                                             User * user = [User objectWithKeyValues:dict];
+                                             [self.dataArr addObject:user];
+                                         }
+                                         self.next_cursor = json[@"next_cursor"];
+                                         [self.tableView reloadData];
+                                         [MBProgressHUD hideHUD];
+                                     }];
 }
 
 // 上啦加载更多
@@ -71,16 +62,7 @@
 {
     
     [MBProgressHUD showMessage:@"正在加载中..."];
-    // 2. 请求参数
-    Account * account = [AccountTools account];
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
-    params[@"uid"] = account.uid;
-    params[@"trim_status"] = @0;
-    params[@"count"] = @200;
-    params[@"cursor"] = @50;
-    
-    [HttpTool get:@"https://api.weibo.com/2/friendships/followers.json" params:params success:^(id json) {
+    [XYQApi getMoreMyFansListWithAccessToken:[AccountTools account].access_token UID:[AccountTools account].uid TrimStatus:@0 curson:@50 count:@200 type:@"GET" success:^(id json) {
         NSArray * arr = [NSArray arrayWithArray:json[@"users"]];
         for (NSDictionary * dict in arr) {
             User * user = [User objectWithKeyValues:dict];
@@ -91,8 +73,6 @@
         [MBProgressHUD hideHUD];
         // 结束刷新(隐藏footer)
         [self.tableView footerEndRefreshing];
-    } failure:^(NSError *error) {
-        
     }];
 }
 
@@ -157,38 +137,18 @@
 
 
 #pragma mark - UITableViewCellDelegate
-/**
- *  取消关注
- */
+/**  取消关注 */
 - (void)cancelAttentionWithIdStr:(NSString *)idstr
 {
-    // 2. 请求参数
-    Account * account = [AccountTools account];
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
-    params[@"uid"] = idstr;
-    [HttpTool get:@"https://api.weibo.com/2/friendships/destroy.json" params:params success:^(id json) {
+    [XYQApi cancelAttentionWithAccessToken:[AccountTools account].access_token UID:idstr type:@"GET" success:^(id json) {
         [MBProgressHUD showSuccess:@"取消关注成功"];
-    } failure:^(NSError *error) {
-        [MBProgressHUD showError:@"取消关注失败,该权限暂未开放"];
     }];
 }
-/**
- *  添加关注
- * https://api.weibo.com/2/friendships/create.json
- */
+/**  添加关注 */
 - (void)addAttentionWithIdStr:(NSString *)idstr
 {
-
-    // 2. 请求参数
-    Account * account = [AccountTools account];
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
-    params[@"uid"] = idstr;
-    [HttpTool get:@"https://api.weibo.com/2/friendships/create.json" params:params success:^(id json) {
+    [XYQApi addAttentionWithAccessToken:[AccountTools account].access_token UID:idstr type:@"GET" success:^(id json) {
         [MBProgressHUD showSuccess:@"添加关注成功"];
-    } failure:^(NSError *error) {
-        [MBProgressHUD showError:@"添加关注失败,该权限暂未开放"];
     }];
 }
 

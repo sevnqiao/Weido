@@ -12,4 +12,6 @@
 
 + (instancetype)imageWithImage:(UIImage *)image border:(CGFloat)border borderColor:(UIColor *)color;
 
+
++ (UIImage *)imageWithColor:(UIColor *)color;
 @end

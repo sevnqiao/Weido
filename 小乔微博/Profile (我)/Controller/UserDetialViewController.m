@@ -15,7 +15,6 @@
 #define YZTabBarH 44
 
 #import "UserDetialViewController.h"
-#import "UserDetialView2.h"
 #import "MJRefresh.h"
 #import "MBProgressHUD+MJ.h"
 #import "Status.h"
@@ -27,14 +26,20 @@
 #import "MJExtension.h"
 #import "CommentListViewController.h"
 #import "MXSliderBar.h"
+#import "UIImage+Clip.h"
+#import "UIImageView+WebCache.h"
 
 
 @interface UserDetialViewController ()<StatusCellDelegate>
 @property(nonatomic,strong)NSMutableArray *statusesFrame;
-//@property(nonatomic,strong)UITableView * tableView;
-@property(nonatomic,strong)UserDetialView2 * userView;
-@property (nonatomic, weak) UILabel *nameLabel;
 @property (nonatomic, assign) CGFloat lastOffsetY;
+
+@property(nonatomic,strong)UILabel *nameL;
+@property(nonatomic,strong)UILabel *desL;
+@property(nonatomic,strong)UILabel *fansL;
+@property(nonatomic,strong)UILabel *attentionL;
+@property(nonatomic,strong)UIImageView *iconView;
+
 @end
 
 @implementation UserDetialViewController
@@ -51,17 +56,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _lastOffsetY = -(YZHeadViewH + YZTabBarH);
-    
-    // 设置顶部额外滚动区域
-//    self.tableView.contentInset = UIEdgeInsetsMake(YZHeadViewH + YZTabBarH , 0, 0, 0);
-
-
-//    self.tableView.contentInset = UIEdgeInsetsMake(180, 0, 0, 0);
+    [self getUserDetail];
     [self.tableView setHeaderHidden:YES];
     [self setUpRefresh];
     [self loadNewStatus];
     [self setupNav];
+    self.tableView.contentInset = UIEdgeInsetsMake(-24, 0, 0, 0);
     self.tableView.tableHeaderView = [self setupHeader];
+    self.tableView.backgroundColor = color(221, 221, 221);
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 }
 
 /**
@@ -70,26 +73,67 @@
 - (void)setupNav
 {
     self.title = @"个人主页";
-    self.tableView.backgroundColor = color(221, 221, 221);
-    
-    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
-    self.navigationController.navigationBar.alpha = 0;
+
     self.navigationItem.leftBarButtonItem.enabled = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
-//    _userView  = [[UserDetialView2 alloc]initWithFrame:CGRectMake(0, -200, self.view.width, 200) userName:self.userName];
-//    _userView.frame = CGRectMake(0, -200, self.view.width, 200);
-//    _userView.contentMode = UIViewContentModeScaleAspectFill;
-//    [self.view addSubview:_userView];
+    self.navigationController.navigationBar.alpha = 0;
 }
 
 - (UIView *)setupHeader
 {
-    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200)];
-    UIImageView *backImage = [[UIImageView alloc]initWithFrame:headerView.frame];
+    UIView *headerView = [[UIView alloc]initWithFrame:CGRectMake(0, -80, [UIScreen mainScreen].bounds.size.width, 200)];
+    UIImageView *backImage = [[UIImageView alloc]initWithFrame:CGRectMake(0, -64, [UIScreen mainScreen].bounds.size.width, 264)];
     backImage.image = [UIImage imageNamed:@"IMG_0031"];
+    [headerView addSubview:backImage];
     
+    UILabel *desL = [[UILabel alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(backImage.frame) - 10 -15 + 64, self.view.width, 15)];
+    desL.textAlignment = NSTextAlignmentCenter;
+    [backImage addSubview:desL];
+    desL.font = [UIFont systemFontOfSize:12];
+    desL.textColor = [UIColor whiteColor];
+    _desL = desL;
     
+    UILabel *fansL = [[UILabel alloc]init];
+    fansL.x = self.view.width*0.5+5;
+    fansL.y = CGRectGetMinY(desL.frame)- 5 - 15;
+    fansL.width = self.view.width;
+    fansL.height = 15;
+    fansL.textAlignment = NSTextAlignmentLeft;
+    fansL.font = [UIFont systemFontOfSize:12];
+    fansL.textColor = [UIColor whiteColor];
+    [backImage addSubview:fansL];
+    _fansL = fansL;
+    
+    UILabel *attentionL = [[UILabel alloc]init];
+    attentionL.x = 0;
+    attentionL.y = CGRectGetMinY(fansL.frame);
+    attentionL.width = self.view.width*0.5-5;
+    attentionL.height = 15;
+    attentionL.textAlignment = NSTextAlignmentRight;
+    attentionL.font = [UIFont systemFontOfSize:12];
+    attentionL.textColor = [UIColor whiteColor];
+    [backImage addSubview:attentionL];
+    _attentionL = attentionL;
+    
+    UILabel *nameL = [[UILabel alloc]init];
+    nameL.width = 200;
+    nameL.height = 20;
+    nameL.x = (headerView.width - nameL.width)*0.5;
+    nameL.y = CGRectGetMinY(fansL.frame) - 5 - 20;
+    nameL.font = [UIFont systemFontOfSize:15];
+    nameL.textAlignment = NSTextAlignmentCenter;
+    nameL.textColor = [UIColor whiteColor];
+    [backImage addSubview:nameL];
+    _nameL = nameL;
+    
+    UIImageView *iconView = [[UIImageView alloc]init];
+    iconView.width = 60 ;
+    iconView.height = 60;
+    iconView.x = (headerView.width - iconView.width)*0.5;
+    iconView.y = CGRectGetMinY(nameL.frame) - 5 - 60;
+    [backImage addSubview:iconView];
+    _iconView = iconView;
     
     return headerView;
 }
@@ -119,6 +163,39 @@
 //    }
 //    self.navigationController.navigationBar.alpha = alpha;
     
+}
+
+/**
+ *  <#Description#>
+ *
+ *  @return <#return value description#>
+ */
+- (void)getUserDetail
+{
+    [MBProgressHUD showMessage:@"正在努力加载中..."];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        Account * account = [AccountTools account];
+        NSMutableDictionary * params = [NSMutableDictionary dictionary];
+        params[@"access_token"] = account.access_token;
+        params[@"screen_name"] = self.userName;
+        
+        [XYQApi getUserInfoWithAccessToken:[AccountTools account].access_token screenName:self.userName type:@"GET" success:^(id json) {
+            _nameL.text = json[@"name"];
+            if ([json[@"description"] isEqualToString:@""]) {
+                _desL.text = @"简介 : 这个家伙很懒,什么都没有留下!";
+            }else{
+                _desL.text = [NSString stringWithFormat:@"简介 : %@",json[@"description"]];
+            }
+            UIImageView * imageView = [[UIImageView alloc]init];
+            [imageView sd_setImageWithURL:[NSURL URLWithString:json[@"profile_image_url"]] placeholderImage:[UIImage imageNamed:@"album"]];
+            _iconView.image = [UIImage imageWithImage:imageView.image border:1.0 borderColor:[UIColor clearColor]];
+            _attentionL.text =  [NSString stringWithFormat:@"关注数 : %@",[json[@"friends_count"] stringValue]];
+            _fansL.text = [NSString stringWithFormat:@"粉丝数 : %@",[json[@"followers_count"] stringValue] ];
+            
+            [MBProgressHUD hideHUD];
+
+        }];
+    });
 }
 
 /**

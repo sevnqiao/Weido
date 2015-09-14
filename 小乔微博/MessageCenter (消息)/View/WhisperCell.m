@@ -235,12 +235,12 @@
         
         
         Comment * reply_comment = comment.reply_comment;
-        _reply_commentLabel.text = reply_comment.text;
+        _reply_commentLabel.text = [NSString stringWithFormat:@"@%@ : %@",reply_comment.user.name,reply_comment.text];
         
         CGFloat reply_contentX = kPadding;
         CGFloat reply_contentY = kPadding;
         CGFloat reply_maxW = [UIScreen mainScreen].bounds.size.width - 2 * kPadding;
-        CGSize reply_contentSize = [reply_comment.text sizeWithFont:[UIFont systemFontOfSize:13.0f] maxW:reply_maxW];
+        CGSize reply_contentSize = [_reply_commentLabel.text sizeWithFont:[UIFont systemFontOfSize:13.0f] maxW:reply_maxW];
         _reply_commentLabel.frame = CGRectMake(reply_contentX, reply_contentY, reply_contentSize.width, reply_contentSize.height);
         
         statusViewY = CGRectGetMaxY(_reply_commentLabel.frame) + kPadding;

@@ -27,6 +27,7 @@
 #import "StatusLinkViewController.h"
 #import "RestoreCommentViewController.h"
 #import "RetweetViewController.h"
+#import "UserDetialViewController.h"
 
 @interface CommentListViewController()<CommentToolBarDelegate,StatusCellLinkDelegate,CommentCellLinkDelegate,UIActionSheetDelegate>
 
@@ -46,23 +47,20 @@
 @property(nonatomic,strong)NSIndexPath *indexPath;
 @end
 @implementation CommentListViewController
-- (NSMutableArray *)commentStatus
-{
+- (NSMutableArray *)commentStatus{
     if (!_commentStatus) {
         _commentStatus = [[NSMutableArray alloc]init];
     }
     return _commentStatus;
 }
-- (NSMutableArray *)commentsFrame
-{
+- (NSMutableArray *)commentsFrame{
     if (!_commentsFrame) {
         _commentsFrame = [[NSMutableArray alloc]init]; 
     }
     return _commentsFrame;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     [super viewDidLoad];
 
     self.navigationController.navigationBar.alpha = 1;
@@ -73,13 +71,12 @@
     // 下拉刷新
     [self loadNewComments];
     // 上啦加载
-    [self setupComment];
+    [self addRefresh];
     // 3. 添加工具条
     [self setupToolBar];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
 //    [self.navigationController.navigationBar setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"tabbar_background"]]];
     self.navigationController.navigationBar.alpha = 1;
@@ -87,8 +84,7 @@
     
 }
 
-- (void)setupToolBar
-{
+- (void)setupToolBar{
     CommentToolBar * toolBar = [[CommentToolBar alloc]init];
     toolBar.delegate = self;
     toolBar.width = self.view.width;
@@ -100,26 +96,19 @@
     
 }
 
-- (void)setupComment
-{
+- (void)addRefresh{
     [self.tableView addHeaderWithTarget:self action:@selector(loadNewComments)];
+    [self.tableView addFooterWithTarget:self action:@selector(loadMoreComments)];
 }
 
-- (void)loadNewComments
-{
-    [MBProgressHUD showMessage:@"正在加载中..."];
-    Account * account = [AccountTools account];
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
-    params[@"id"] = self.statusFrame.status.idstr;
-    params[@"count"] = [NSString stringWithFormat:@"%d",20];
+- (void)loadNewComments{
     CommentFrame * firstCommentsF = [self.commentsFrame firstObject];
+    NSNumber *sinceID;
     if (firstCommentsF) {
-        params[@"since_id"] = firstCommentsF.comment.idstr;
+        sinceID = [NSNumber numberWithLongLong:[firstCommentsF.comment.idstr longLongValue]];
     }
     
-    
-    [HttpTool get:@"https://api.weibo.com/2/comments/show.json" params:params success:^(id json) {
+    [XYQApi getNewCommentsWithAccessToken:[AccountTools account].access_token statusID:_statusFrame.status.idstr count:[NSString stringWithFormat:@"%d",20] sinceID:sinceID type:@"GET" success:^(id json) {
         NSArray * comments = json[@"comments"];
         
         // 将 "微博字典"数组 转为 "微博模型"数组
@@ -142,12 +131,37 @@
         [self.tableView headerEndRefreshing];
         
         [MBProgressHUD hideHUD];
-    } failure:^(NSError *error) {
-        [MBProgressHUD showError:[NSString stringWithFormat:@"%@",error]];
     }];
-
 }
+- (void)loadMoreComments{
+    CommentFrame * lastCommentsF = [self.commentsFrame lastObject];
+    NSNumber *maxID;
+    if (lastCommentsF) {
+        maxID = [NSNumber numberWithLongLong:[lastCommentsF.comment.idstr longLongValue]];
+    }
+    
+    [XYQApi getMoreCommentsWithAccessToken:[AccountTools account].access_token statusID:_statusFrame.status.idstr count:[NSString stringWithFormat:@"%d",20] maxID:maxID type:@"GET" success:^(id json) {
+        NSArray * comments = json[@"comments"];
+        
+        // 将 "微博字典"数组 转为 "微博模型"数组
+        NSArray *newCom = [Comment objectArrayWithKeyValuesArray:comments];
+        
+        
+        // 将status数组转换为frame数组
 
+        for (Comment * comment in newCom) {
+            CommentFrame * commentFrame = [[CommentFrame alloc]init];
+            commentFrame.comment = comment;
+            [self.commentsFrame addObject:commentFrame];
+        }
+        // 刷新表格
+        [self.tableView reloadData];
+        
+        [self.tableView headerEndRefreshing];
+        
+        [MBProgressHUD hideHUD];
+    }];
+}
 
 
 #pragma mark - 数据源
@@ -174,8 +188,7 @@
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
     
         StatusCell * cell = [StatusCell cellWithTableView:tableView];
@@ -199,8 +212,7 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         StatusFrame * statusframe = self.statusFrame;
         return statusframe.statusHeight - 33;
@@ -214,8 +226,7 @@
 
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (section == 1) {
         return 33;
     }else
@@ -224,35 +235,20 @@
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     if (section == 1) {
         StatusFrame * statusframe = self.statusFrame;
-        [MBProgressHUD showMessage:@"正在加载中..."];
-//        Account * account = [AccountTools account];
-//        NSMutableDictionary * params = [NSMutableDictionary dictionary];
-//        params[@"access_token" ] = account.access_token;
-//        params[@"ids"] = self.statusFrame.status.idstr;
-//        
-//        [HttpTool get:@"https://api.weibo.com/2/statuses/count.json" params:params success:^(id json) {
-            UIButton * btn1 = [self setupWithTitle:[NSString stringWithFormat:@"转发 %d",statusframe.status.reposts_count] btnX:0 backColor:[UIColor whiteColor] titleColor:[UIColor grayColor]];
-            
-            UIButton * btn2 = [self setupWithTitle:[NSString stringWithFormat:@"评论 %d",statusframe.status.comments_count] btnX:[UIScreen mainScreen].bounds.size.width/4 + 1  backColor:[UIColor whiteColor] titleColor:[UIColor blackColor]];
-            
-            UIButton * btn3 = [self setupWithTitle:@"" btnX:[UIScreen mainScreen].bounds.size.width/4 * 2 backColor:[UIColor whiteColor] titleColor:[UIColor grayColor]];
-            UIButton * btn4 = [self setupWithTitle:[NSString stringWithFormat:@"赞 %d",statusframe.status.attitudes_count] btnX:[UIScreen mainScreen].bounds.size.width/4 * 3 backColor:[UIColor whiteColor] titleColor:[UIColor grayColor]];
-            [MBProgressHUD hideHUD];
-//        } failure:^(NSError *error) {
-//            [MBProgressHUD showError:[NSString stringWithFormat:@"%@",error]];
-//        }];
-//        
+
+        UIButton * btn1 = [self setupWithTitle:[NSString stringWithFormat:@"转发 %d",statusframe.status.reposts_count] btnX:0 backColor:[UIColor whiteColor] titleColor:[UIColor grayColor]];
         
+        UIButton * btn2 = [self setupWithTitle:[NSString stringWithFormat:@"评论 %d",statusframe.status.comments_count] btnX:[UIScreen mainScreen].bounds.size.width/4 + 1  backColor:[UIColor whiteColor] titleColor:[UIColor blackColor]];
+        
+        UIButton * btn3 = [self setupWithTitle:@"" btnX:[UIScreen mainScreen].bounds.size.width/4 * 2 backColor:[UIColor whiteColor] titleColor:[UIColor grayColor]];
+        UIButton * btn4 = [self setupWithTitle:[NSString stringWithFormat:@"赞 %d",statusframe.status.attitudes_count] btnX:[UIScreen mainScreen].bounds.size.width/4 * 3 backColor:[UIColor whiteColor] titleColor:[UIColor grayColor]];
    
         UIView * header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 35)];
         header.backgroundColor = color(211, 211, 211);
         
-
- 
         UIView * sepLine = [[UIView alloc]initWithFrame:CGRectMake(0, 33, [UIScreen mainScreen].bounds.size.width, 2)];
         sepLine.backgroundColor = color(211, 211, 211);
         [header addSubview:btn1];
@@ -265,8 +261,7 @@
     return nil;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         return;
     }
@@ -302,8 +297,7 @@
 
 
 
-- (UIButton *)setupWithTitle:(NSString *)title btnX:(CGFloat)btnX backColor:(UIColor *)color titleColor:(UIColor *)titleColor
-{
+- (UIButton *)setupWithTitle:(NSString *)title btnX:(CGFloat)btnX backColor:(UIColor *)color titleColor:(UIColor *)titleColor{
     UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(btnX, 0, [UIScreen mainScreen].bounds.size.width/4, 33)];
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [btn setTitle:title forState:UIControlStateNormal];
@@ -315,8 +309,7 @@
     return btn;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if (section == 1) {
         return 44;
     }
@@ -325,8 +318,7 @@
 
 
 #pragma mark - 工具栏点击事件代理
-- (void)commentToolBar:(CommentToolBar *)toolBar DidClickButton:(NSUInteger)index
-{
+- (void)commentToolBar:(CommentToolBar *)toolBar DidClickButton:(NSUInteger)index{
     switch (index) {
         case 0: // 转发
         {
@@ -354,88 +346,60 @@
 }
 
 #pragma mark - statusCellLinkDelegate
-/**
- *  点击了链接
- */
-- (void)didClickStatusCellLinkTypeURL:(NSString *)URL
-{
+/**  点击了链接 */
+- (void)didClickStatusCellLinkTypeURL:(NSString *)URL{
     StatusLinkViewController * linkVC = [[StatusLinkViewController alloc]init];
     linkVC.URL = URL;
     [self.navigationController pushViewController:linkVC animated:YES];
 }
-/**
- *  点击了电话
- */
-- (void)didClickStatusCellLinkTypePhoneNumber:(NSString *)PhoneNumber
-{
+/**  点击了电话 */
+- (void)didClickStatusCellLinkTypePhoneNumber:(NSString *)PhoneNumber{
     XYQLog(@"%@",PhoneNumber);
 }
-/**
- *  点击了邮箱
- */
-- (void)didClickStatusCellLinkTypeEmail:(NSString *)Email
-{
+/**  点击了邮箱 */
+- (void)didClickStatusCellLinkTypeEmail:(NSString *)Email{
     XYQLog(@"%@",Email);
 }
-/**
- *  点击了用户
- */
-- (void)didClickStatusCellLinkTypeAt:(NSString *)At
-{
-    XYQLog(@"%@",At);
+/**  点击了用户 */
+- (void)didClickStatusCellLinkTypeAt:(NSString *)At{
+    UserDetialViewController * user = [[UserDetialViewController alloc]init];
+    user.userName = [At substringFromIndex:1];
+    [self.navigationController pushViewController:user animated:YES];
 }
-/**
- *  点击了话题
- */
-- (void)didClickStatusCellLinkTypePoundSign:(NSString *)PoundSign
-{
+/**  点击了话题 */
+- (void)didClickStatusCellLinkTypePoundSign:(NSString *)PoundSign{
     XYQLog(@"%@",PoundSign);
 }
 
-
 #pragma mark - CommentCellLinkDelegate
-/**
- *  点击了链接
- */
-- (void)didClickCommentCellLinkTypeURL:(NSString *)URL
-{
+/**  点击了链接 */
+- (void)didClickCommentCellLinkTypeURL:(NSString *)URL{
     StatusLinkViewController * linkVC = [[StatusLinkViewController alloc]init];
     linkVC.URL = URL;
     [self.navigationController pushViewController:linkVC animated:YES];
 }
-/**
- *  点击了电话
- */
-- (void)didClickCommentCellLinkTypePhoneNumber:(NSString *)PhoneNumber
-{
+/**  点击了电话 */
+- (void)didClickCommentCellLinkTypePhoneNumber:(NSString *)PhoneNumber{
     XYQLog(@"%@",PhoneNumber);
 }
-/**
- *  点击了邮箱
- */
-- (void)didClickCommentCellLinkTypeEmail:(NSString *)Email
-{
+/**  点击了邮箱 */
+- (void)didClickCommentCellLinkTypeEmail:(NSString *)Email{
     XYQLog(@"%@",Email);
 }
-/**
- *  点击了用户
- */
-- (void)didClickCommentCellLinkTypeAt:(NSString *)At
-{
-    XYQLog(@"%@",At);
+/**  点击了用户 */
+- (void)didClickCommentCellLinkTypeAt:(NSString *)At{
+    UserDetialViewController * user = [[UserDetialViewController alloc]init];
+    user.userName = [At substringFromIndex:1];
+    [self.navigationController pushViewController:user animated:YES];
 }
-/**
- *  点击了话题
- */
-- (void)didClickCommentCellLinkTypePoundSign:(NSString *)PoundSign
-{
+/**  点击了话题 */
+- (void)didClickCommentCellLinkTypePoundSign:(NSString *)PoundSign{
     XYQLog(@"%@",PoundSign);
 }
 
 
 #pragma mark  - UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex{
     if (actionSheet.tag == 1000) {
         switch (buttonIndex) {
             case 0:
@@ -470,19 +434,11 @@
     }
 }
 
-- (void)destoryCommentWithIdStr:(NSString *)idstr
-{
-    Account * account = [AccountTools account];
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
-    params[@"cid"] = idstr;
-    
-    [HttpTool post:@"https://api.weibo.com/2/comments/destroy.json" params:params success:^(id json) {
+- (void)destoryCommentWithIdStr:(NSString *)idstr{
+    [XYQApi destoryCommentWithAccessToken:[AccountTools account].access_token commentID:idstr type:@"POST" success:^(id json) {
         [MBProgressHUD showSuccess:@"删除评论成功"];
         [self.commentsFrame removeObjectAtIndex:self.indexPath.row];
         [self.tableView reloadData];
-    } failure:^(NSError *error) {
-        [MBProgressHUD showError:@"未知错误"];
     }];
 }
 

@@ -598,6 +598,7 @@ static inline CGSize CTFramesetterSuggestFrameSizeForAttributedStringWithConstra
            withRange:(NSRange)range
 {
     [self addLinkWithTextCheckingResult:[NSTextCheckingResult linkCheckingResultWithRange:range URL:url]];
+   
 }
 
 - (void)addLinkToAddress:(NSDictionary *)addressComponents

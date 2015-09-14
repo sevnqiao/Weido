@@ -35,7 +35,7 @@
     [self setupNav];
     
     // 2. 添加输入控件
-    [self setupTextView];
+    [self setupTextVie];
     self.automaticallyAdjustsScrollViewInsets = YES;
     
     
@@ -44,15 +44,13 @@
     
     
 }
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBar.alpha = 1;
 }
 
-- (void)setupToolBar
-{
+- (void)setupToolBar{
     ComposeToolBar * toolBar = [[ComposeToolBar alloc]init];
     toolBar.delegate = self;
     toolBar.width = self.view.width;
@@ -69,8 +67,7 @@
     //    self.textView.inputAccessoryView = toolBar;
 }
 
-- (void)keyBoardWillChangeFrame:(NSNotification *)notification
-{
+- (void)keyBoardWillChangeFrame:(NSNotification *)notification{
     
     NSDictionary * userInfo = notification.userInfo;
     
@@ -84,8 +81,7 @@
     
 }
 
-- (void)setupTextView
-{
+- (void)setupTextVie{
     PlacehoderTextView * textView = [[PlacehoderTextView alloc]init];
     // 设置文本允许垂直方向拖拽
     textView.alwaysBounceVertical = YES;
@@ -109,8 +105,7 @@
 /**
  *  设置导航栏
  */
-- (void)setupNav
-{
+- (void)setupNav{
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(cancle)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStyleDone target:self action:@selector(send)];
     //    self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -127,33 +122,21 @@
 }
 
 - (void)send
-{
-    Account * account = [AccountTools account];
-    
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
-    params[@"comment"] = self.textView.text;
-    long long currentStatusID = self.statusID.longLongValue;
-    params[@"id"] = @(currentStatusID);
-
-    [HttpTool post:@"https://api.weibo.com/2/comments/create.json" params:params success:^(id json) {
+{    
+    [XYQApi addCommentWithAccessToken:[AccountTools account].access_token comment:_textView.text commentID:[NSNumber numberWithLongLong:[_statusID longLongValue]] type:@"POST" success:^(id json) {
         [MBProgressHUD  showSuccess:@"评论成功"];
-    } failure:^(NSError *error) {
-        [MBProgressHUD showError:[NSString stringWithFormat:@"%@",error]];
     }];
     // 返回主界面
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)cancle
-{
+- (void)cancle{
     [self.textView resignFirstResponder];
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - 工具栏点击事件代理
-- (void)composeToolBar:(ComposeToolBar *)toolBar DidClickButton:(NSUInteger)index
-{
+- (void)composeToolBar:(ComposeToolBar *)toolBar DidClickButton:(NSUInteger)index{
     switch (index) {
         case 0: // 拍照
         {

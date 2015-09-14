@@ -60,8 +60,10 @@
         _contentLabel.verticalAlignment = TTTAttributedLabelVerticalAlignmentCenter;
         
         //下面是自定义表情正则和图像plist的例子
-        _contentLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
-        _contentLabel.customEmojiPlistName = @"expressionImage_custom";
+//        _contentLabel.customEmojiRegex = @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]";
+//        _contentLabel.customEmojiPlistName = @"expressionImage_custom";
+        _contentLabel.customEmojiRegex = @"[\u4E00-\u9FA5]";
+        _contentLabel.customEmojiPlistName = @"lxh";
     }
     return _contentLabel;
 }

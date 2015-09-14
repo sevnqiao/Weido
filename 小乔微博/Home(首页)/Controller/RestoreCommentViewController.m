@@ -44,15 +44,13 @@
     
     
 }
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBar.alpha = 1;
 }
 
-- (void)setupToolBar
-{
+- (void)setupToolBar{
     ComposeToolBar * toolBar = [[ComposeToolBar alloc]init];
     toolBar.delegate = self;
     toolBar.width = self.view.width;
@@ -69,10 +67,9 @@
     //    self.textView.inputAccessoryView = toolBar;
 }
 
-- (void)keyBoardWillChangeFrame:(NSNotification *)notification
-{
+- (void)keyBoardWillChangeFrame:(NSNotification *)notificatio{
     
-    NSDictionary * userInfo = notification.userInfo;
+    NSDictionary * userInfo = notificatio.userInfo;
     
     double time = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
@@ -84,8 +81,7 @@
     
 }
 
-- (void)setupTextView
-{
+- (void)setupTextView{
     PlacehoderTextView * textView = [[PlacehoderTextView alloc]init];
     // 设置文本允许垂直方向拖拽
     textView.alwaysBounceVertical = YES;
@@ -99,23 +95,20 @@
     textView.frame = self.view.bounds;
     textView.font = [UIFont systemFontOfSize:15];
     //    textView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
-    textView.placehoder = @"写评论...";
+    textView.placehoder = @"回复评论...";
     [self.view addSubview:textView];
     self.textView = textView;
     
 }
 
 
-/**
- *  设置导航栏
- */
-- (void)setupNav
-{
+/**  设置导航栏 */
+- (void)setupNav{
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(cancle)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"发送" style:UIBarButtonItemStyleDone target:self action:@selector(send)];
     //    self.navigationItem.rightBarButtonItem.enabled = NO;
     UILabel * title = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];
-    NSString * Str = [NSString stringWithFormat:@"发评论\n%@",[AccountTools account].name];
+    NSString * Str = [NSString stringWithFormat:@"回复评论\n%@",[AccountTools account].name];
     // 创建一个带有属性的字符串
     NSMutableAttributedString * attStr = [[NSMutableAttributedString alloc]initWithString:Str];
     // 添加属性
@@ -126,35 +119,20 @@
     self.navigationItem.titleView = title;
 }
 
-- (void)send
-{
-    Account * account = [AccountTools account];
-    
-    NSMutableDictionary * params = [NSMutableDictionary dictionary];
-    params[@"access_token"] = account.access_token;
-    params[@"comment"] = self.textView.text;
-    long long currentStatusID = self.statusID.longLongValue;
-    params[@"id"] = @(currentStatusID);
-    long long currentCommentID = self.idstr.longLongValue;
-    params[@"cid"] = @(currentCommentID);
-    
-    [HttpTool post:@"https://api.weibo.com/2/comments/reply.json" params:params success:^(id json) {
+- (void)send{
+    [XYQApi replyCommentWithAccessToken:[AccountTools account].access_token comment:_textView.text statusID:[NSNumber numberWithLongLong:_statusID.longLongValue] commentID:[NSNumber numberWithLongLong:_idstr.longLongValue] type:@"POST" success:^(id json) {
         [MBProgressHUD  showSuccess:@"回复评论成功"];
-    } failure:^(NSError *error) {
-        [MBProgressHUD showError:[NSString stringWithFormat:@"%@",error]];
     }];
     // 返回上个界面
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)cancle
-{
+- (void)cancle{
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - 工具栏点击事件代理
-- (void)composeToolBar:(ComposeToolBar *)toolBar DidClickButton:(NSUInteger)index
-{
+- (void)composeToolBar:(ComposeToolBar *)toolBar DidClickButton:(NSUInteger)index{
     switch (index) {
         case 0: // 拍照
         {
