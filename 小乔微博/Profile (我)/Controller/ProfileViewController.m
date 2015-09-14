@@ -148,6 +148,7 @@
 - (void)setupMyDetialDidFinishTap
 {
     UserDetialViewController * userVC = [[UserDetialViewController alloc]init];
+    userVC.userName = @"熊桥桥桥桥桥桥";
     [self.navigationController pushViewController:userVC animated:YES];
 }
 

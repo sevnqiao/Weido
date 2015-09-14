@@ -39,24 +39,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.navigationBar.backgroundColor = [UIColor whiteColor];
-    
-    //    设置整个项目所有item的主题样式
-    UIBarButtonItem * item = [[UIBarButtonItem alloc]initWithImage:nil style:UIBarButtonItemStylePlain target:nil action:nil];
-    item = [UIBarButtonItem appearance];
-    
-    // 设置普通状态
-    NSMutableDictionary * textAttrs = [NSMutableDictionary dictionary];
-    textAttrs[NSForegroundColorAttributeName] = [UIColor orangeColor];
-    textAttrs[NSFontAttributeName] = [UIFont systemFontOfSize:15];
-    [item setTitleTextAttributes:textAttrs forState:UIControlStateNormal];
-    
-    // 设置不可用状态
-    // 设置普通状态
-    NSMutableDictionary * DisabledAextAttrs = [NSMutableDictionary dictionary];
-    DisabledAextAttrs[NSForegroundColorAttributeName] = [UIColor lightGrayColor];
-    DisabledAextAttrs[NSFontAttributeName] = [UIFont systemFontOfSize:15];
-    [item setTitleTextAttributes:DisabledAextAttrs forState:UIControlStateDisabled];
+    self.navigationBar.backgroundColor = [UIColor colorWithRed:244 green:244 blue:244 alpha:1];
+
 
 }
 /**

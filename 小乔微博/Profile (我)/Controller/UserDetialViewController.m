@@ -40,6 +40,9 @@
 @property(nonatomic,strong)UILabel *attentionL;
 @property(nonatomic,strong)UIImageView *iconView;
 
+
+@property(nonatomic,strong)UILabel *titleLabel;
+
 @end
 
 @implementation UserDetialViewController
@@ -55,16 +58,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _lastOffsetY = -(YZHeadViewH + YZTabBarH);
+    _lastOffsetY = -40;
     [self getUserDetail];
     [self.tableView setHeaderHidden:YES];
     [self setUpRefresh];
     [self loadNewStatus];
     [self setupNav];
-    self.tableView.contentInset = UIEdgeInsetsMake(-24, 0, 0, 0);
+
     self.tableView.tableHeaderView = [self setupHeader];
     self.tableView.backgroundColor = color(221, 221, 221);
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
 }
 
 /**
@@ -72,12 +74,14 @@
  */
 - (void)setupNav
 {
-    self.title = @"个人主页";
-
-    self.navigationItem.leftBarButtonItem.enabled = NO;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
-    
-    self.navigationController.navigationBar.alpha = 0;
+    // 清除导航条默认颜色
+    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+   
+    // 导航条背景透明
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
+    _titleLabel = [[UILabel alloc]init];
+    self.navigationItem.titleView  = _titleLabel;
 }
 
 - (UIView *)setupHeader
@@ -141,27 +145,29 @@
 #pragma mark - scrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-//    CGFloat offsetY = scrollView.contentOffset.y;
-//    CGFloat delta = offsetY - _lastOffsetY;
-//    CGFloat alpha;
-//    // 当alpha大于1，导航条半透明，因此做处理，大于1，就直接=0.99
-//    
-//    // 往上拖动，高度减少。
-//    CGFloat height = headH - delta - 20;
-//    if (height > headMinH)
-//    {
-//        alpha = 0;
-//    }
-//    else
-//    {
-//        alpha = 1 - height / (headMinH);
-//    }
-//    if (alpha >= 1) {
-//        alpha = 0.99;
-//        self.navigationItem.leftBarButtonItem.enabled = YES;
-//        self.navigationItem.rightBarButtonItem.enabled = YES;
-//    }
-//    self.navigationController.navigationBar.alpha = alpha;
+    CGFloat offsetY = scrollView.contentOffset.y;
+    CGFloat delta = offsetY - _lastOffsetY;
+    CGFloat alpha;
+    // 当alpha大于1，导航条半透明，因此做处理，大于1，就直接=0.99
+    
+    // 往上拖动，高度减少。
+    CGFloat height = 200 - delta - 44;
+    if (height > 64)
+    {
+        alpha = 0;
+    }
+    else
+    {
+        alpha = 1 - height / (64);
+    }
+        if (alpha >= 1) {
+        alpha = 0.99;
+    }
+    UIColor *alphaColor = [UIColor colorWithWhite:0 alpha:alpha];
+    [_titleLabel setTextColor:alphaColor];
+    
+    // 设置导航条背景图片
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithRed:244 green:244 blue:244 alpha:alpha]] forBarMetrics:UIBarMetricsDefault];
     
 }
 
@@ -174,11 +180,6 @@
 {
     [MBProgressHUD showMessage:@"正在努力加载中..."];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        Account * account = [AccountTools account];
-        NSMutableDictionary * params = [NSMutableDictionary dictionary];
-        params[@"access_token"] = account.access_token;
-        params[@"screen_name"] = self.userName;
-        
         [XYQApi getUserInfoWithAccessToken:[AccountTools account].access_token screenName:self.userName type:@"GET" success:^(id json) {
             _nameL.text = json[@"name"];
             if ([json[@"description"] isEqualToString:@""]) {

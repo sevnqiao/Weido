@@ -154,7 +154,7 @@
     
     self.toolBarF = CGRectMake(toolBarX, toolBarY, toolBarW, toolBarH);
     
-    self.statusHeight = CGRectGetMaxY(self.toolBarF) + StatusFrameBorderW;
+    self.statusHeight = CGRectGetMaxY(self.toolBarF) + 3;
     
 
 }
