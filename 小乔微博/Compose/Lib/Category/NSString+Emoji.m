@@ -28,7 +28,7 @@
 + (NSString *)emojiWithStringCode:(NSString *)stringCode
 {
     char *charCode = (char *)stringCode.UTF8String;
-    int intCode = strtol(charCode, NULL, 16);
+    int intCode = (int)strtol(charCode, NULL, 16);
     return [self emojiWithIntCode:intCode];
 }
 

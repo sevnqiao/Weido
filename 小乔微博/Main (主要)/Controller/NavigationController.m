@@ -9,7 +9,7 @@
 #import "NavigationController.h"
 
 
-@interface NavigationController ()
+@interface NavigationController ()<UMSocialUIDelegate>
 
 @end
 
@@ -97,7 +97,12 @@
 
 - (void)more
 {
-    [self popToRootViewControllerAnimated:YES];
+    [UMSocialSnsService presentSnsIconSheetView:self
+                                         appKey:UMAppKey 
+                                      shareText:@"你要分享的文字"
+                                     shareImage:[UIImage imageNamed:@"icon.png"]
+                                shareToSnsNames:[NSArray arrayWithObjects:UMShareToSina,UMShareToTencent,UMShareToRenren,UMShareToWechatTimeline,UMShareToWechatSession,UMShareToSms,UMShareToQzone,UMShareToQQ,UMShareToEmail,nil]
+                                       delegate:self];
 }
 
 @end

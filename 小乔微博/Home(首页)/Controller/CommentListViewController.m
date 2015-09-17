@@ -60,6 +60,18 @@
     return _commentsFrame;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"CommentList"];
+    self.navigationController.navigationBar.alpha = 1;
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"CommentList"];
+}
+
 - (void)viewDidLoad{
     [super viewDidLoad];
 
@@ -76,13 +88,7 @@
     [self setupToolBar];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-//    [self.navigationController.navigationBar setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"tabbar_background"]]];
-    self.navigationController.navigationBar.alpha = 1;
-//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    
-}
+
 
 - (void)setupToolBar{
     CommentToolBar * toolBar = [[CommentToolBar alloc]init];

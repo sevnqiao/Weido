@@ -10,3 +10,4 @@
 extern NSString * const AppKey;
 extern NSString * const AppSecret;
 extern NSString * const AppredirectURL;
+extern NSString *const UMAppKey;

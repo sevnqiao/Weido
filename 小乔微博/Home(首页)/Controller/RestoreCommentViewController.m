@@ -26,6 +26,18 @@
 
 @implementation RestoreCommentViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"restore"];
+    self.navigationController.navigationBar.alpha = 1;
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"restore"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -44,11 +56,7 @@
     
     
 }
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-    self.navigationController.navigationBar.alpha = 1;
-}
+
 
 - (void)setupToolBar{
     ComposeToolBar * toolBar = [[ComposeToolBar alloc]init];

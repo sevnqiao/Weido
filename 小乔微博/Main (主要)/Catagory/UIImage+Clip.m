@@ -20,7 +20,7 @@
     
     // 新的图片尺寸
     CGFloat imageW = oldImage.size.width + 2 * borderW;
-    CGFloat imageH = oldImage.size.height + 2 *borderW;
+//    CGFloat imageH = oldImage.size.height + 2 *borderW;
     
     //获取矩形图片的最小园半径
     CGFloat circilW = imageW;

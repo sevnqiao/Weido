@@ -15,6 +15,17 @@
 
 @implementation NewFeatureViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"NewFeature"];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"NewFeature"];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

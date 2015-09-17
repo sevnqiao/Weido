@@ -54,6 +54,14 @@
     [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(removeLun) userInfo:nil repeats:NO];
 //
     
+    
+    [MobClick startWithAppkey:UMAppKey reportPolicy:BATCH   channelId:nil];
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [MobClick setAppVersion:version];
+    
+    [UMSocialData setAppKey:UMAppKey];
+    
+    
     return YES;
 }
 

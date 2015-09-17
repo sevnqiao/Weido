@@ -15,6 +15,17 @@
 
 @implementation DiscoverViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"Discover"];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"Discover"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     

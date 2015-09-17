@@ -24,6 +24,17 @@
 
 @implementation AllAttentionTableViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"AllAttention"];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"AllAttention"];
+}
+
 - (instancetype)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:UITableViewStyleGrouped];

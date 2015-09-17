@@ -53,10 +53,19 @@
     return _imagesArr;
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"Compose"];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"Compose"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    
     
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];

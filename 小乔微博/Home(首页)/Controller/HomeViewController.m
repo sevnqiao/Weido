@@ -45,11 +45,18 @@
 
 @implementation HomeViewController
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-    
+    [MobClick beginLogPageView:@"Home"];
     self.navigationController.navigationBar.alpha = 1;
 }
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"Home"];
+}
+
 
 - (NSMutableArray *)statusesFrame{
     if (!_statusesFrame) {

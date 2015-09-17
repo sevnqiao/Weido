@@ -31,7 +31,10 @@
 #import "XYQApi.h"
 #import "UIImageView+WebCache.h"
 #import "AFNetworking.h"
-
+#import "count.h"
+#import "UMSocial.h"
+#import "MobClick.h"
+#import "MobClickSocialAnalytics.h"
 
 #ifdef DEBUG // 处于开发阶段
 #define XYQLog(...) NSLog(__VA_ARGS__)

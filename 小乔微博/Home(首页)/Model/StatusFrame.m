@@ -120,7 +120,7 @@
         if (retweeted_status.pic_urls.count) {
             CGFloat retweetPhotoX = retweetLabelX;
             CGFloat retweetPhotoY = CGRectGetMaxY(self.retweetContentLabelF) + StatusFrameBorderW;
-            CGSize retweetPhotoSize = [StatusPhotosView photosSizeWithCount:retweeted_status.pic_urls.count];
+            CGSize retweetPhotoSize = [StatusPhotosView photosSizeWithCount:(int)retweeted_status.pic_urls.count];
             self.retweetPhotosViewF = (CGRect){{retweetPhotoX, retweetPhotoY}, retweetPhotoSize};
             
             retweetH = CGRectGetMaxY(self.retweetPhotosViewF) +StatusFrameBorderW;

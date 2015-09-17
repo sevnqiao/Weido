@@ -68,22 +68,6 @@
             }
         }
     }
-    
-    
-//    
-//    
-//    int count = self.subviews.count;
-//    for (int i = 0; i < count; i++) {
-//        UIView * child = self.subviews[i];
-//        Class class = NSClassFromString(@"UITabBarButton");
-//        if ([child isKindOfClass:class]) {
-//            child.x = tabBarBtnIndex * tabBarBtnW;
-//            tabBarBtnIndex ++;
-//            if (tabBarBtnIndex == 2) {
-//                tabBarBtnIndex ++;
-//            }
-//        }
-//    }
 }
 
 @end

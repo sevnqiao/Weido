@@ -47,6 +47,18 @@
 
 @implementation UserDetialViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"UserDetial"];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"UserDetial"];
+    self.navigationController.navigationBar.alpha = 1;
+}
+
 -  (NSMutableArray *)statusesFrame {
     if (!_statusesFrame) {
         _statusesFrame = [[NSMutableArray alloc]init];
@@ -387,11 +399,4 @@
     self.navigationController.navigationBar.alpha = 1;
 }
 
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    self.navigationController.navigationBar.alpha = 1;
-}
 @end

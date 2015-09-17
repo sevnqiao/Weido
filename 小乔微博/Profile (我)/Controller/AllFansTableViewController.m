@@ -24,6 +24,17 @@
 
 @implementation AllFansTableViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"AllFans"];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"AllFans"];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我的Fans";

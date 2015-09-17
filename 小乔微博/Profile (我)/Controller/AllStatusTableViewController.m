@@ -35,6 +35,17 @@
 
 @implementation AllStatusTableViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [MobClick beginLogPageView:@"AllStatus"];
+}
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [MobClick endLogPageView:@"AllStatus"];
+}
+
 - (NSMutableArray *)statusesFrame
 {
     if (!_statusesFrame) {
