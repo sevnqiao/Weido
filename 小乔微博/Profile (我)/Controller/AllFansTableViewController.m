@@ -24,23 +24,13 @@
 
 @implementation AllFansTableViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [MobClick beginLogPageView:@"AllFans"];
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [MobClick endLogPageView:@"AllFans"];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"我的Fans";
     [self setupMyAttention];
 //    self.next_cursor = @"20";
     [self.tableView addFooterWithTarget:self action:@selector(loadMoreUser)];
+    self.tableView.backgroundColor = color(244,243,241);
 }
 
 - (NSMutableArray *)dataArr

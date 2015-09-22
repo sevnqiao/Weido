@@ -40,28 +40,19 @@
         [self.window switchRootViewController];
     }
     
-    _launchView = [[NSBundle mainBundle]loadNibNamed:@"LaunchScreen" owner:nil options:nil].lastObject;
-    _launchView.frame = self.window.frame;
-    [self.window addSubview:_launchView];
-    
-    UIImageView * imageV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 50, 320, 300)];
-//    imageV.backgroundColor = [UIColor redColor];
-    NSURL *url = [NSURL URLWithString:@"http://ww4.sinaimg.cn/bmiddle/660f5ef4jw1evnvlysk00j20go0m8tap.jpg"];
-    [imageV sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"album"]];
-    [_launchView addSubview:imageV];
-    [self.window bringSubviewToFront:_launchView];
-    
-    [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(removeLun) userInfo:nil repeats:NO];
-//
-    
-    
-    [MobClick startWithAppkey:UMAppKey reportPolicy:BATCH   channelId:nil];
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [MobClick setAppVersion:version];
-    
-    [UMSocialData setAppKey:UMAppKey];
-    
-    
+//    _launchView = [[NSBundle mainBundle]loadNibNamed:@"LaunchScreen" owner:nil options:nil].lastObject;
+//    _launchView.frame = self.window.frame;
+//    [self.window addSubview:_launchView];
+//    
+//    UIImageView * imageV = [[UIImageView alloc]initWithFrame:CGRectMake(0, 50, 320, 300)];
+////    imageV.backgroundColor = [UIColor redColor];
+//    NSURL *url = [NSURL URLWithString:@"http://ww4.sinaimg.cn/bmiddle/660f5ef4jw1evnvlysk00j20go0m8tap.jpg"];
+//    [imageV sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"album"]];
+//    [_launchView addSubview:imageV];
+//    [self.window bringSubviewToFront:_launchView];
+//    
+//    [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(removeLun) userInfo:nil repeats:NO];
+
     return YES;
 }
 

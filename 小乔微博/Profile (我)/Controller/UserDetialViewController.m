@@ -47,17 +47,7 @@
 
 @implementation UserDetialViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [MobClick beginLogPageView:@"UserDetial"];
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [MobClick endLogPageView:@"UserDetial"];
-    self.navigationController.navigationBar.alpha = 1;
-}
+
 
 -  (NSMutableArray *)statusesFrame {
     if (!_statusesFrame) {
@@ -78,7 +68,7 @@
     [self setupNav];
 
     self.tableView.tableHeaderView = [self setupHeader];
-    self.tableView.backgroundColor = color(221, 221, 221);
+    self.tableView.backgroundColor = color(244,243,241);
 }
 
 /**
@@ -90,10 +80,13 @@
     self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
    
     // 导航条背景透明
-    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
-    _titleLabel = [[UILabel alloc]init];
+    [self.navigationController.navigationBar setBackgroundImage:[[UIImage alloc]init] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc]init]];
+    
+    _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 30)];
+    _titleLabel.textAlignment = NSTextAlignmentCenter;
     self.navigationItem.titleView  = _titleLabel;
+    _titleLabel.text = self.userName;
 }
 
 - (UIView *)setupHeader
@@ -148,6 +141,8 @@
     iconView.height = 60;
     iconView.x = (headerView.width - iconView.width)*0.5;
     iconView.y = CGRectGetMinY(nameL.frame) - 5 - 60;
+    iconView.layer.cornerRadius = 30;
+    iconView.layer.masksToBounds = YES;
     [backImage addSubview:iconView];
     _iconView = iconView;
     
@@ -180,6 +175,7 @@
     
     // 设置导航条背景图片
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithRed:244 green:244 blue:244 alpha:alpha]] forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:244 green:244 blue:244 alpha:alpha]]];
     
 }
 
@@ -194,14 +190,16 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [XYQApi getUserInfoWithAccessToken:[AccountTools account].access_token screenName:self.userName type:@"GET" success:^(id json) {
             _nameL.text = json[@"name"];
+            _titleLabel.text = json[@"name"];
             if ([json[@"description"] isEqualToString:@""]) {
                 _desL.text = @"简介 : 这个家伙很懒,什么都没有留下!";
             }else{
                 _desL.text = [NSString stringWithFormat:@"简介 : %@",json[@"description"]];
             }
-            UIImageView * imageView = [[UIImageView alloc]init];
-            [imageView sd_setImageWithURL:[NSURL URLWithString:json[@"profile_image_url"]] placeholderImage:[UIImage imageNamed:@"album"]];
-            _iconView.image = [UIImage imageWithImage:imageView.image border:1.0 borderColor:[UIColor clearColor]];
+//            UIImageView * imageView = [[UIImageView alloc]init];
+//            [imageView sd_setImageWithURL:[NSURL URLWithString:json[@"profile_image_url"]] placeholderImage:[UIImage imageNamed:@"album"]];
+//            _iconView.image = [UIImage imageWithImage:imageView.image border:1.0 borderColor:[UIColor clearColor]];
+            [_iconView sd_setImageWithURL:[NSURL URLWithString:json[@"profile_image_url"]] placeholderImage:[UIImage imageNamed:@"album"]];
             _attentionL.text =  [NSString stringWithFormat:@"关注数 : %@",[json[@"friends_count"] stringValue]];
             _fansL.text = [NSString stringWithFormat:@"粉丝数 : %@",[json[@"followers_count"] stringValue] ];
             
@@ -374,7 +372,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     MXSliderBar *sliderBar = [[MXSliderBar alloc]initWithFrame:CGRectMake(0, 0, self.view.width, 33) withTitles:@[@"主页",@"微博",@"相册"]];
-    sliderBar.backgroundColor = color(242, 242, 242);
+    sliderBar.backgroundColor = color(244, 243, 241);
     return sliderBar;
 }
 
@@ -398,5 +396,13 @@
 {
     self.navigationController.navigationBar.alpha = 1;
 }
+//
+//- (void)viewWillDisappear:(BOOL)animated
+//{
+//    [super viewWillDisappear:animated];
+////    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithRed:239 green:239 blue:239 alpha:1]] forBarMetrics:UIBarMetricsDefault];
+//    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:239 green:239 blue:239 alpha:1];
+//}
+
 
 @end

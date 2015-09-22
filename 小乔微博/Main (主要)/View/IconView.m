@@ -71,7 +71,8 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+    self.layer.cornerRadius = self.width * 0.5;
+    self.layer.masksToBounds = YES;
     self.verifiedView.size = self.verifiedView.image.size;
     CGFloat scale = 0.6;
     self.verifiedView.x = self.width - self.verifiedView.width * scale;

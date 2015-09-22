@@ -7,9 +7,9 @@
 //
 
 #import "NavigationController.h"
+#import "UIImage+Clip.h"
 
-
-@interface NavigationController ()<UMSocialUIDelegate>
+@interface NavigationController ()
 
 @end
 
@@ -36,10 +36,19 @@
     [item setTitleTextAttributes:DisabledAextAttrs forState:UIControlStateDisabled];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationBar setBackgroundImage:[UIImage imageWithColor:color(252,252,252)] forBarMetrics:UIBarMetricsDefault];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 1)];
+    view.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:view];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.navigationBar.backgroundColor = [UIColor colorWithRed:244 green:244 blue:244 alpha:1];
+    
 
 
 }
@@ -82,27 +91,20 @@
     [super pushViewController:viewController animated:animated];
 }
 
-//- (UIViewController *)popViewControllerAnimated:(BOOL)animated
-//{
-//    UIViewController * vc = [[UIViewController alloc]init];
-//    vc.navigationController.navigationBar.alpha = 1;
-//    return vc;
-//}
-
 
 - (void)back
 {
+    // 清除导航条默认颜色
+//    self.navigationBar.backgroundColor = color(247,247,247);
+    
+    // 导航条背景透明
+    [self.navigationBar setBackgroundImage:[UIImage imageWithColor:color(252,252,252)] forBarMetrics:UIBarMetricsDefault];
+
     [self popViewControllerAnimated:YES];
 }
 
 - (void)more
 {
-    [UMSocialSnsService presentSnsIconSheetView:self
-                                         appKey:UMAppKey 
-                                      shareText:@"你要分享的文字"
-                                     shareImage:[UIImage imageNamed:@"icon.png"]
-                                shareToSnsNames:[NSArray arrayWithObjects:UMShareToSina,UMShareToTencent,UMShareToRenren,UMShareToWechatTimeline,UMShareToWechatSession,UMShareToSms,UMShareToQzone,UMShareToQQ,UMShareToEmail,nil]
-                                       delegate:self];
 }
 
 @end

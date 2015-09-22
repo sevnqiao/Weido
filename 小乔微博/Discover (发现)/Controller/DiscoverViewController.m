@@ -15,16 +15,6 @@
 
 @implementation DiscoverViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [MobClick beginLogPageView:@"Discover"];
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [MobClick endLogPageView:@"Discover"];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -53,6 +43,7 @@
     
      // 创建搜索框 ( 相当于上面代码)
     self.navigationItem.titleView = [SearchBar searchBar];
+    self.tableView.backgroundColor = color(244,243,241);
 }
 
 - (void)didReceiveMemoryWarning {

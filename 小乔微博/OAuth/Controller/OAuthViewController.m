@@ -22,16 +22,6 @@
 
 @implementation OAuthViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [MobClick beginLogPageView:@"OAuth"];
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [MobClick endLogPageView:@"OAuth"];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

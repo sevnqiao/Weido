@@ -25,7 +25,7 @@
 
 @interface _FDFullscreenPopGestureRecognizerDelegate : NSObject <UIGestureRecognizerDelegate>
 
-@property (nonatomic, weak) UINavigationController *navigationController;
+@property (nonatomic, weak) NavigationController *navigationController;
 
 @end
 

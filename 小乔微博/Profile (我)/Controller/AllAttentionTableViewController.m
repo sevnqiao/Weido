@@ -24,17 +24,6 @@
 
 @implementation AllAttentionTableViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [MobClick beginLogPageView:@"AllAttention"];
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [MobClick endLogPageView:@"AllAttention"];
-}
-
 - (instancetype)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -47,6 +36,7 @@
     self.title = @"我的关注";
     [self setupMyAttention];
     [self.tableView addFooterWithTarget:self action:@selector(loadMoreUser)];
+    self.tableView.backgroundColor = color(244,243,241);
 }
 
 - (NSMutableArray *)dataArr

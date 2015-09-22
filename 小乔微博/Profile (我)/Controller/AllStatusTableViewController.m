@@ -35,17 +35,6 @@
 
 @implementation AllStatusTableViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [MobClick beginLogPageView:@"AllStatus"];
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [MobClick endLogPageView:@"AllStatus"];
-}
-
 - (NSMutableArray *)statusesFrame
 {
     if (!_statusesFrame) {
@@ -60,7 +49,7 @@
     
     [self loadNewStatus];
     
-    self.tableView.backgroundColor = color(221, 221, 221);
+    self.tableView.backgroundColor = color(244,243,241);
     self.tableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
     
     // 设置导航栏内容

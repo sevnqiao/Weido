@@ -32,6 +32,9 @@
 #import "HZPhotoBrowser.h"
 #import "RetweetViewController.h"
 
+#import <mach/mach.h>
+#import <sys/sysctl.h>
+
 @interface HomeViewController ()<DrapDownMenuDelegate,StatusCellDelegate,StatusCellLinkDelegate,HZPhotoBrowserDelegate,TitleMenuViewControllerDelegate>
 /**  微博数组,里面放得都是模型,一个字典代表一条微博 */
 @property (nonatomic , strong)NSMutableArray *statusesFrame;
@@ -44,20 +47,6 @@
 @end
 
 @implementation HomeViewController
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [MobClick beginLogPageView:@"Home"];
-    self.navigationController.navigationBar.alpha = 1;
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [MobClick endLogPageView:@"Home"];
-}
-
-
 - (NSMutableArray *)statusesFrame{
     if (!_statusesFrame) {
         _statusesFrame = [[NSMutableArray alloc]init];
@@ -69,8 +58,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self loadNewStatus];
-    self.tableView.backgroundColor = color(221, 221, 221);
+    self.tableView.backgroundColor = color(244,243,241);
     self.tableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     
     _photoBroArr = [NSArray array];
     // 设置导航栏内容
@@ -338,18 +329,17 @@
 
 #pragma mark - TitleMenuViewControllerDelegate
 - (void)willSelectRo{
-    [_menu removeFromSuperview];
-    UIButton * titleBtn = (UIButton *)self.navigationItem.titleView;
-    [titleBtn setImage:[UIImage imageNamed:@"navigationbar_arrow_down"] forState:UIControlStateNormal];
     
-    [MBProgressHUD showMessage:@"正在加载中..."];
+    
+//    [_menu dismiss];
+//    [MBProgressHUD showMessage:@"努力加载中" toView:[UIApplication sharedApplication].keyWindow];
 }
 
 - (void)titleMenuviewController:(TitleMenuViewController *)titleMenuviewController didSelectedRowToRefreshStatusesFrame:(NSMutableArray *)statusesFrame title:(NSString *)title{
     self.statusesFrame = [NSMutableArray arrayWithArray:statusesFrame];
     [self.tableView reloadData];
-    [MBProgressHUD hideHUD];
     
+    [_menu dismiss];
     UIButton * titleBtn = (UIButton *)self.navigationItem.titleView;
     [titleBtn setTitle: title forState:UIControlStateNormal];
     [titleBtn sizeToFit];
@@ -369,11 +359,49 @@
 
 #pragma mark - NavegationBarButton click
 - (void)friendSearch{
-
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"手机剩余内存" message:[NSString stringWithFormat:@"%f",[self availableMemory]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alert show];
 }
 
 - (void)pop{
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"当前应用所占内存" message:[NSString stringWithFormat:@"%f",[self usedMemory]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alert show];
+}
 
+
+// 获取当前设备可用内存(单位：MB）
+- (double)availableMemory
+{
+    vm_statistics_data_t vmStats;
+    mach_msg_type_number_t infoCount = HOST_VM_INFO_COUNT;
+    kern_return_t kernReturn = host_statistics(mach_host_self(),
+                                               HOST_VM_INFO,
+                                               (host_info_t)&vmStats,
+                                               &infoCount);
+    
+    if (kernReturn != KERN_SUCCESS) {
+        return NSNotFound;
+    }
+    
+    return ((vm_page_size *vmStats.free_count) / 1024.0) / 1024.0;
+}
+
+// 获取当前任务所占用的内存（单位：MB）
+- (double)usedMemory
+{
+    task_basic_info_data_t taskInfo;
+    mach_msg_type_number_t infoCount = TASK_BASIC_INFO_COUNT;
+    kern_return_t kernReturn = task_info(mach_task_self(),
+                                         TASK_BASIC_INFO,
+                                         (task_info_t)&taskInfo,
+                                         &infoCount);
+    
+    if (kernReturn != KERN_SUCCESS
+        ) {
+        return NSNotFound;
+    }
+    
+    return taskInfo.resident_size / 1024.0 / 1024.0;
 }
 
 
@@ -448,7 +476,7 @@
         case 100:
         {
             RetweetViewController *ret = [[RetweetViewController alloc]init];
-            UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:ret];
+            NavigationController * nav = [[NavigationController alloc]initWithRootViewController:ret];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             StatusFrame * statusFrame = self.statusesFrame[indexPath.row];
             ret.statusID = statusFrame.status.idstr;

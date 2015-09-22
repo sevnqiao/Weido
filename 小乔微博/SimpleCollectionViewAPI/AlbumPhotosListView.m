@@ -167,7 +167,7 @@
     }
     if(selectImages.count>0){
         selectCount.hidden=NO;
-        selectCount.text=[NSString stringWithFormat:@"%lu",selectImages.count];
+        selectCount.text=[NSString stringWithFormat:@"%lu",(unsigned long)selectImages.count];
     }else{
         selectCount.hidden=YES;
     }

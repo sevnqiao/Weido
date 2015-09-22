@@ -35,7 +35,7 @@
     [_postImage setImage:[UIImage imageWithCGImage:group.posterImage]];
     _albumName.text=[self getAlbumName:[group valueForProperty:ALAssetsGroupPropertyName]];
     [_albumName sizeToFit];
-    _photoCount.text=[NSString stringWithFormat:@"(%ld)",group.numberOfAssets];
+    _photoCount.text=[NSString stringWithFormat:@"(%ld)",(long)group.numberOfAssets];
     [_photoCount sizeToFit];
 
 }

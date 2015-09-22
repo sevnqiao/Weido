@@ -60,24 +60,12 @@
     return _commentsFrame;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [MobClick beginLogPageView:@"CommentList"];
-    self.navigationController.navigationBar.alpha = 1;
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [MobClick endLogPageView:@"CommentList"];
-}
-
 - (void)viewDidLoad{
     [super viewDidLoad];
 
     self.navigationController.navigationBar.alpha = 1;
     self.navigationItem.title = @"评论列表";
-    self.tableView.backgroundColor = color(221, 221, 221);
+    self.tableView.backgroundColor = color(244,243,241);
     [self.tableView setContentOffset:CGPointMake(0, self.statusFrame.statusHeight)];
     NSLog(@"%f",self.tableView.contentOffset.y);
     // 下拉刷新
@@ -331,7 +319,7 @@
             RetweetViewController *ret = [[RetweetViewController alloc]init];
             ret.statusID = self.statusFrame.status.idstr;
             ret.statusFrame = self.statusFrame;
-            UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:ret];
+            NavigationController * nav = [[NavigationController alloc]initWithRootViewController:ret];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             
         }
@@ -340,7 +328,7 @@
         {
             CommentViewController * comment = [[CommentViewController alloc]init];
             comment.statusID = self.statusFrame.status.idstr;
-            UINavigationController * nav = [[UINavigationController alloc]initWithRootViewController:comment];
+            NavigationController * nav = [[NavigationController alloc]initWithRootViewController:comment];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
         }
             break;

@@ -53,16 +53,6 @@
     return _imagesArr;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [MobClick beginLogPageView:@"Compose"];
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [MobClick endLogPageView:@"Compose"];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];

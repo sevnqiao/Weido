@@ -423,6 +423,7 @@
             }
             [[XYQApiOperationManager defaultManager]removeOperation:operation];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [MBProgressHUD hideHUD];
 #ifdef JOE_TEST
             NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - ti;
             NSLog(@"耗时:%f秒", diff);
@@ -443,6 +444,7 @@
             }
             [[XYQApiOperationManager defaultManager]removeOperation:operation];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            [MBProgressHUD hideHUD];
 #ifdef JOE_TEST
             NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - ti;
             NSLog(@"耗时:%f秒", diff);

@@ -7,22 +7,13 @@
 //
 
 #import "StatusLinkViewController.h"
+#import "MBProgressHUD+MJ.h"
+
 @interface StatusLinkViewController()<UIWebViewDelegate>
 @property(nonatomic , strong)UIWebView * webView;
 @end
 
 @implementation StatusLinkViewController
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [MobClick beginLogPageView:@"webLink"];
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [MobClick endLogPageView:@"webLink"];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,12 +32,19 @@
     [webView loadRequest:request];
     
     
-    
+    [MBProgressHUD showMessage:@"努力加载中..."];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     self.title  = [_webView stringByEvaluatingJavaScriptFromString:@"document.title"];//获取当前页面的title
+    [MBProgressHUD hideHUD];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.webView = nil;
 }
 
 - (void)dealloc{

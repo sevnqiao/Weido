@@ -32,20 +32,10 @@
     return _commentsArr;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [MobClick beginLogPageView:@"Whisper"];
-}
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [MobClick endLogPageView:@"Whisper"];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"所有评论";
+    self.tableView.backgroundColor = color(244,243,241);
     
     [self loadNew];
     

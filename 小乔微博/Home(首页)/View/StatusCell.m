@@ -153,7 +153,7 @@
 {
     /** 转发微博的整体 */
     UIView *retweetView = [[UIView alloc] init];
-    retweetView.backgroundColor = color(247, 247, 247);
+    retweetView.backgroundColor = color(244, 243, 241);
     [self.contentView addSubview:retweetView];
     self.retweetView = retweetView;
     
@@ -170,7 +170,7 @@
     self.retweetContentLabel.emojiLabeldelegate = self;
     self.retweetContentLabel.font = [UIFont systemFontOfSize:13];
     self.retweetContentLabel.numberOfLines = 0;
-    self.retweetContentLabel.backgroundColor = color(247, 247, 247);
+//    self.retweetContentLabel.backgroundColor = color(247, 247, 247);
     [retweetView addSubview:self.retweetContentLabel];
 }
 
