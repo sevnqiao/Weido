@@ -107,10 +107,10 @@
         self.vipView.hidden = YES;
     }
     
-    self.lastStatusL.frame = CGRectMake(CGRectGetMaxX(_icon.frame) + kPadding, 55 - 15 - kPadding, [UIScreen mainScreen].bounds.size.width - _icon.width - 2 * kPadding, 15);
+    self.lastStatusL.frame = CGRectMake(CGRectGetMaxX(_icon.frame) + kPadding, 55 - 15 - kPadding, KScreen_W - _icon.width - 2 * kPadding, 15);
     self.lastStatusL.text = status.text;
     
-    self.view.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, CGRectGetMaxY(self.icon.frame) + kPadding);
+    self.view.frame = CGRectMake(0, 0, KScreen_W, CGRectGetMaxY(self.icon.frame) + kPadding);
     self.cellHeight =  CGRectGetHeight(self.view.frame);
     
 }

@@ -19,10 +19,15 @@
 
 // RGB颜色
 #define color(r,g,b) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:1.0]
-
-
 // 随机色
 #define RandomColor color(arc4random_uniform(256),arc4random_uniform(256),arc4random_uniform(256))
+
+#define Screen_H [UIScreen mainScreen].bounds.size.width
+#define Screen_W [UIScreen mainScreen].bounds.size.height
+#define KScreen_H MAX(Screen_H,Screen_W)
+
+#define KScreen_W MIN(Screen_H,Screen_W)
+
 
 #import "UIView+Extension.h"
 #import "UIBarButtonItem+Extension.h"

@@ -123,6 +123,7 @@
 		04D92AD91B2D96170042552D /* ProfileHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D92AD81B2D96170042552D /* ProfileHeaderView.m */; };
 		04E0FA581B2DC94000C4E838 /* count.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E0FA571B2DC94000C4E838 /* count.m */; };
 		04E0FA5F1B2E601900C4E838 /* HttpTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E0FA5E1B2E601900C4E838 /* HttpTool.m */; };
+		406210171BB53F4E00CD5E80 /* libUMessage_Sdk_1.2.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 406210151BB53F4D00CD5E80 /* libUMessage_Sdk_1.2.0.a */; settings = {ASSET_TAGS = (); }; };
 		4069E4401B848CDF00F5E97C /* RestoreCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4069E43F1B848CDF00F5E97C /* RestoreCommentViewController.m */; };
 		407028991B96A63E00BE937F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 407028981B96A63E00BE937F /* LaunchScreen.xib */; };
 		407BCC681B857E7D006F3688 /* WhisperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 407BCC671B857E7D006F3688 /* WhisperViewController.m */; };
@@ -447,6 +448,8 @@
 		04E0FA571B2DC94000C4E838 /* count.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = count.m; sourceTree = "<group>"; };
 		04E0FA5D1B2E601900C4E838 /* HttpTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HttpTool.h; path = Tool/HttpTool.h; sourceTree = "<group>"; };
 		04E0FA5E1B2E601900C4E838 /* HttpTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HttpTool.m; path = Tool/HttpTool.m; sourceTree = "<group>"; };
+		406210151BB53F4D00CD5E80 /* libUMessage_Sdk_1.2.0.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libUMessage_Sdk_1.2.0.a; sourceTree = "<group>"; };
+		406210161BB53F4D00CD5E80 /* UMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UMessage.h; sourceTree = "<group>"; };
 		4069E43E1B848CDF00F5E97C /* RestoreCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestoreCommentViewController.h; sourceTree = "<group>"; };
 		4069E43F1B848CDF00F5E97C /* RestoreCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestoreCommentViewController.m; sourceTree = "<group>"; };
 		407028981B96A63E00BE937F /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
@@ -600,6 +603,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				406210171BB53F4E00CD5E80 /* libUMessage_Sdk_1.2.0.a in Frameworks */,
 				40CAD6A11BAC173C0098CBAF /* libsqlite3.0.tbd in Frameworks */,
 				4094800F1B8D8ED8008B3EAF /* AssetsLibrary.framework in Frameworks */,
 			);
@@ -869,7 +873,6 @@
 				044B2EEE1B1D7C3D003A8A0D /* Catagory */,
 				044B2EF11B1D7C3D003A8A0D /* Controller */,
 				044B2EF61B1D7C3D003A8A0D /* Lib */,
-				044B2EF71B1D7C3D003A8A0D /* Other */,
 			);
 			path = "Main (主要)";
 			sourceTree = "<group>";
@@ -910,6 +913,7 @@
 		044B2EF61B1D7C3D003A8A0D /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				406210141BB53F4D00CD5E80 /* UMessage_Sdk_1.2.0 */,
 				40CAD6A01BAC173C0098CBAF /* libsqlite3.0.tbd */,
 				40CAD69C1BAC16390098CBAF /* FDFullscreenPopGesture */,
 				409B76161B830705008F3BB9 /* HZPhotoBrowser */,
@@ -935,7 +939,8 @@
 				044B2EFA1B1D7C3D003A8A0D /* main.m */,
 				407028981B96A63E00BE937F /* LaunchScreen.xib */,
 			);
-			path = Other;
+			name = Other;
+			path = "Main (主要)/Other";
 			sourceTree = "<group>";
 		};
 		044B2EFB1B1D7C3D003A8A0D /* MessageCenter (消息) */ = {
@@ -1106,6 +1111,7 @@
 		049448DF1B1D337900A6B340 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				044B2EF71B1D7C3D003A8A0D /* Other */,
 				4094800E1B8D8ED8008B3EAF /* AssetsLibrary.framework */,
 				044B2F161B1D7C56003A8A0D /* Info.plist */,
 				044B2F171B1D7C56003A8A0D /* PrefixHeader.pch */,
@@ -1337,6 +1343,15 @@
 				04E0FA5E1B2E601900C4E838 /* HttpTool.m */,
 			);
 			name = Tool;
+			sourceTree = "<group>";
+		};
+		406210141BB53F4D00CD5E80 /* UMessage_Sdk_1.2.0 */ = {
+			isa = PBXGroup;
+			children = (
+				406210151BB53F4D00CD5E80 /* libUMessage_Sdk_1.2.0.a */,
+				406210161BB53F4D00CD5E80 /* UMessage.h */,
+			);
+			path = UMessage_Sdk_1.2.0;
 			sourceTree = "<group>";
 		};
 		408F05C21B86D12000B6A7D3 /* MMLocationManager */ = {
@@ -2068,45 +2083,17 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib",
-					/Users/kenny/Desktop,
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib",
-					/Users/kenny/Desktop/umeng_ios_social_sdk_4.2.3_arm64_custom/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI,
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/小乔微博/PrefixHeader.pch";
 				INFOPLIST_FILE = "小乔微博/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMAnalytics_Sdk_3.5.12",
-					/Users/kenny/Desktop/umeng_ios_social_sdk_4.2.3_arm64_custom/UMSocial_Sdk_4.2.3,
-					/Users/kenny/Desktop/umeng_ios_social_sdk_4.2.3_arm64_custom/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI,
-					/Users/kenny/Desktop/umeng_ios_social_sdk_4.2.3_arm64_custom/UMSocial_Sdk_Extra_Frameworks/Wechat,
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMSocial_Sdk_4.2.3",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMSocial_Sdk_Extra_Frameworks/Wechat",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMSocial_Sdk_4.2.3",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMAnalytics_Sdk_3.5.12",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/小乔微博/Main (主要)/Lib/UMessage_Sdk_1.2.0";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "personnal.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -2118,45 +2105,17 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib",
-					/Users/kenny/Desktop,
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib",
-					/Users/kenny/Desktop/umeng_ios_social_sdk_4.2.3_arm64_custom/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI,
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREFIX_HEADER = "$(SRCROOT)/小乔微博/PrefixHeader.pch";
 				INFOPLIST_FILE = "小乔微博/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMAnalytics_Sdk_3.5.12",
-					/Users/kenny/Desktop/umeng_ios_social_sdk_4.2.3_arm64_custom/UMSocial_Sdk_4.2.3,
-					/Users/kenny/Desktop/umeng_ios_social_sdk_4.2.3_arm64_custom/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI,
-					/Users/kenny/Desktop/umeng_ios_social_sdk_4.2.3_arm64_custom/UMSocial_Sdk_Extra_Frameworks/Wechat,
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMSocial_Sdk_4.2.3",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMSocial_Sdk_Extra_Frameworks/Wechat",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMSocial_Sdk_4.2.3",
-					"$(PROJECT_DIR)/小乔微博/Main",
-					"(主要)/Lib/UMAnalytics_Sdk_3.5.12",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/小乔微博/Main (主要)/Lib/UMessage_Sdk_1.2.0";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "personnal.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -2164,10 +2123,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -2184,10 +2140,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "小乔微博Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "小乔微博";

@@ -233,7 +233,7 @@
 - (void)showNewStatusCount:(int)count{
     UILabel * label = [[UILabel alloc]init];
     label.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"timeline_new_status_background"]];
-    label.width = [UIScreen mainScreen].bounds.size.width;
+    label.width = KScreen_W;
     label.height = 35;
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor whiteColor];

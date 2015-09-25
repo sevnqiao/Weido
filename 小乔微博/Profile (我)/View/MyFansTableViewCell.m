@@ -130,9 +130,9 @@
     self.addBtn.titleLabel.text = user.idstr;
     [self.addBtn setTitleColor:[UIColor clearColor] forState:UIControlStateNormal];
     [self.addBtn setBackgroundImage:[UIImage imageNamed:@"common_button_sort_dotted"] forState:UIControlStateNormal];
-    self.addBtn.frame = CGRectMake([UIScreen mainScreen].bounds.size.width - kPadding - 40, 15, 40, 24);
+    self.addBtn.frame = CGRectMake(KScreen_W - kPadding - 40, 15, 40, 24);
     
-    self.lastStatusL.frame = CGRectMake(CGRectGetMaxX(_icon.frame) + kPadding, CGRectGetMaxY(self.nameL.frame)+2, [UIScreen mainScreen].bounds.size.width - _icon.width - 4 * kPadding - self.addBtn.width, 15);
+    self.lastStatusL.frame = CGRectMake(CGRectGetMaxX(_icon.frame) + kPadding, CGRectGetMaxY(self.nameL.frame)+2, KScreen_W - _icon.width - 4 * kPadding - self.addBtn.width, 15);
     self.lastStatusL.text = status.text;
     
     self.sourceL.frame = CGRectMake(CGRectGetMaxX(_icon.frame) + kPadding, 70 - 15 - kPadding, [UIScreen mainScreen].bounds.size.width - _icon.width - 4 * kPadding - self.addBtn.width, 15);

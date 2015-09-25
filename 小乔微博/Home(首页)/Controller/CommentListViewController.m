@@ -235,15 +235,15 @@
 
         UIButton * btn1 = [self setupWithTitle:[NSString stringWithFormat:@"转发 %d",statusframe.status.reposts_count] btnX:0 backColor:[UIColor whiteColor] titleColor:[UIColor grayColor]];
         
-        UIButton * btn2 = [self setupWithTitle:[NSString stringWithFormat:@"评论 %d",statusframe.status.comments_count] btnX:[UIScreen mainScreen].bounds.size.width/4 + 1  backColor:[UIColor whiteColor] titleColor:[UIColor blackColor]];
+        UIButton * btn2 = [self setupWithTitle:[NSString stringWithFormat:@"评论 %d",statusframe.status.comments_count] btnX:KScreen_W/4 + 1  backColor:[UIColor whiteColor] titleColor:[UIColor blackColor]];
         
-        UIButton * btn3 = [self setupWithTitle:@"" btnX:[UIScreen mainScreen].bounds.size.width/4 * 2 backColor:[UIColor whiteColor] titleColor:[UIColor grayColor]];
-        UIButton * btn4 = [self setupWithTitle:[NSString stringWithFormat:@"赞 %d",statusframe.status.attitudes_count] btnX:[UIScreen mainScreen].bounds.size.width/4 * 3 backColor:[UIColor whiteColor] titleColor:[UIColor grayColor]];
+        UIButton * btn3 = [self setupWithTitle:@"" btnX:KScreen_W/4 * 2 backColor:[UIColor whiteColor] titleColor:[UIColor grayColor]];
+        UIButton * btn4 = [self setupWithTitle:[NSString stringWithFormat:@"赞 %d",statusframe.status.attitudes_count] btnX:KScreen_W/4 * 3 backColor:[UIColor whiteColor] titleColor:[UIColor grayColor]];
    
-        UIView * header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 35)];
+        UIView * header = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreen_W, 35)];
         header.backgroundColor = color(211, 211, 211);
         
-        UIView * sepLine = [[UIView alloc]initWithFrame:CGRectMake(0, 33, [UIScreen mainScreen].bounds.size.width, 2)];
+        UIView * sepLine = [[UIView alloc]initWithFrame:CGRectMake(0, 33, KScreen_W, 2)];
         sepLine.backgroundColor = color(211, 211, 211);
         [header addSubview:btn1];
         [header addSubview:btn2];
@@ -292,7 +292,7 @@
 
 
 - (UIButton *)setupWithTitle:(NSString *)title btnX:(CGFloat)btnX backColor:(UIColor *)color titleColor:(UIColor *)titleColor{
-    UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(btnX, 0, [UIScreen mainScreen].bounds.size.width/4, 33)];
+    UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(btnX, 0, KScreen_W/4, 33)];
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [btn setTitle:title forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize:13];

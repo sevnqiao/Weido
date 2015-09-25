@@ -127,7 +127,7 @@
     
     CGRect bounds = self.bounds;
     
-    bounds.size.width=[UIScreen mainScreen].bounds.size.width;
+    bounds.size.width=KScreen_W;
     
     CGFloat width = bounds.size.width * num;
     

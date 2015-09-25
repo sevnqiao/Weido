@@ -52,14 +52,14 @@
     CGFloat timeX = CGRectGetMaxX(self.iconViewF) + StatusFrameBorderW;;
     CGFloat timeY = CGRectGetMaxY(self.nameLabelF) + StatusFrameBorderW * 0.3;
     CGSize timeSize = [comment.created_at sizeWithFont:[UIFont systemFontOfSize:13]];
-    CGFloat timeW = [UIScreen mainScreen].bounds.size.width - CGRectGetMaxX(self.iconViewF) - StatusFrameBorderW;
+    CGFloat timeW = KScreen_W - CGRectGetMaxX(self.iconViewF) - StatusFrameBorderW;
     CGFloat timeH = timeSize.height;
     self.timeLabelF = CGRectMake(timeX, timeY,  timeW, timeH);
     
 
     /** 正文 */
     CGFloat contentX = nameX;
-    CGFloat contentY = MAX(CGRectGetMaxY(self.iconViewF), CGRectGetMaxY(self.timeLabelF)) + StatusFrameBorderW;
+    CGFloat contentY = MAX(KScreen_W, CGRectGetMaxY(self.timeLabelF)) + StatusFrameBorderW;
     CGFloat maxW = [UIScreen mainScreen].bounds.size.width - 2 * contentX;
     CGSize contentSize = [comment.text sizeWithFont:[UIFont systemFontOfSize:13] maxW:maxW];
     self.contentLabelF = (CGRect){{contentX, contentY}, contentSize};
