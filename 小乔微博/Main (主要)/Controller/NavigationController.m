@@ -40,9 +40,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationBar setBackgroundImage:[UIImage imageWithColor:color(252,252,252)] forBarMetrics:UIBarMetricsDefault];
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 1)];
-    view.backgroundColor = [UIColor blackColor];
-    [self.view addSubview:view];
+
 }
 
 - (void)viewDidLoad {

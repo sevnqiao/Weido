@@ -12,7 +12,8 @@
 #import "AccountTools.h"
 #import "SDWebImageManager.h"
 #import "UIImageView+WebCache.h"
-#import "UMessage.h"
+
+#import "ShareSDK/ShareSDK.h"
 
 #define UMSYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -31,7 +32,10 @@
     // 初始化启动动画
 //    [self setupLaunchAnimation];
     // 初始化友盟统计
-    [self setupUMessage:launchOptions];
+//    [self setupUMessage:launchOptions];
+    
+    // 初始化shareSDK
+    [self setupShareSDK];
     return YES;
 }
 // 创建根控制器
@@ -75,6 +79,21 @@
     [_launchView removeFromSuperview];
 }
 
+- (void)setupShareSDK{
+    // 初始化第三方平台
+    [ShareSDK registerApp:@"ad101ce403c2"];
+    
+    // 添加新浪微博
+    [ShareSDK connectSinaWeiboWithAppKey:@"1082360318" appSecret:@"f7260a99e539e308364edb6b23d42272" redirectUri:@"http://www.sina.com"];
+    
+//    [ShareSDK connectSinaWeiboWithAppKey:@"1082360318" appSecret:@"f7260a99e539e308364edb6b23d42272" redirectUri:@"http://www.sina.com" weiboSDKCls:[WeiboSDK class]];
+    
+    //添加腾讯微博应用 注册网址 http://dev.t.qq.com
+    [ShareSDK connectTencentWeiboWithAppKey:@"801307650"
+                                  appSecret:@"ae36f4ee3946e1cbb98d6965b0b2ff5c"
+                                redirectUri:@"http://www.sharesdk.cn"];
+}
+/*
 // 初始化友盟统计
 - (void)setupUMessage:(NSDictionary *)launchOptions{
     //set AppKey and LaunchOptions
@@ -135,29 +154,29 @@
     //如果注册成功，可以删掉这个方法
     NSLog(@"application:didFailToRegisterForRemoteNotificationsWithError: %@", error);
 }
-
-#pragma mark - 通知弹出框
-- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
-{
-    //关闭友盟自带的弹出框
-    //    [UMessage setAutoAlert:NO];
-    
-    [UMessage didReceiveRemoteNotification:userInfo];
-    
-    //    self.userInfo = userInfo;
-    //    //定制自定的的弹出框
-    //    if([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
-    //    {
-    //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"标题"
-    //                                                            message:@"Test On ApplicationStateActive"
-    //                                                           delegate:self
-    //                                                  cancelButtonTitle:@"确定"
-    //                                                  otherButtonTitles:nil];
-    //
-    //        [alertView show];
-    //
-    //    }
-}
+//*/
+//#pragma mark - 通知弹出框
+//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+//{
+//    //关闭友盟自带的弹出框
+//    //    [UMessage setAutoAlert:NO];
+//    
+//    [UMessage didReceiveRemoteNotification:userInfo];
+//    
+//    //    self.userInfo = userInfo;
+//    //    //定制自定的的弹出框
+//    //    if([UIApplication sharedApplication].applicationState == UIApplicationStateActive)
+//    //    {
+//    //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"标题"
+//    //                                                            message:@"Test On ApplicationStateActive"
+//    //                                                           delegate:self
+//    //                                                  cancelButtonTitle:@"确定"
+//    //                                                  otherButtonTitles:nil];
+//    //
+//    //        [alertView show];
+//    //
+//    //    }
+//}
 
 //- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 //{

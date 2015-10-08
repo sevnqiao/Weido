@@ -38,6 +38,10 @@
 #import "AFNetworking.h"
 #import "count.h"
 #import "NavigationController.h"
+#import "ShareSDK/ShareSDK.h"
+#import "Account.h"
+#import "AccountTools.h"
+#import "MBProgressHUD+MJ.h"
 
 #ifdef DEBUG // 处于开发阶段
 #define XYQLog(...) NSLog(__VA_ARGS__)

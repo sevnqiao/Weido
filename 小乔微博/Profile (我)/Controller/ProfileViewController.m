@@ -22,6 +22,8 @@
 #import "AllAttentionTableViewController.h"
 #import "AllFansTableViewController.h"
 #import "UserDetialViewController.h"
+#import "UserPhotosListCollectionViewController.h"
+#import "NearByUserTableViewController.h"
 
 @interface ProfileViewController ()<ProfileHeaderViewDelegate>
 @property(nonatomic, strong)NSDictionary * profile;
@@ -81,7 +83,7 @@
 - (void)addGroup0
 {
     // 第0组
-    SettingArrowItem * item0 = [SettingArrowItem itemWithIcon:@"new_friend" withTitle:@"新的好友" destVcClass:[Test1ViewController class]];
+    SettingArrowItem * item0 = [SettingArrowItem itemWithIcon:@"new_friend" withTitle:@"附近的人" destVcClass:[NearByUserTableViewController class]];
 //    SettingArrowItem * item1 = [SettingArrowItem itemWithIcon:nil withTitle:@"微博等级" destVcClass:[Test1ViewController class]];
 //    SettingArrowItem * item2 = [SettingArrowItem itemWithIcon:nil withTitle:@"编辑资料" destVcClass:[Test1ViewController class]];
     SettingGroup * group = [[SettingGroup alloc]init];
@@ -92,14 +94,8 @@
 - (void)addGroup1
 {
     // 第一组
-    SettingArrowItem * item1 = [SettingArrowItem itemWithIcon:@"album" withTitle:@"我的相册" ];
-    item1.block = ^{
-        
-    };
-    
-    
+    SettingArrowItem * item1 = [SettingArrowItem itemWithIcon:@"album" withTitle:@"附近的照片" destVcClass:[UserPhotosListCollectionViewController class]];
     SettingArrowItem * item2 = [SettingArrowItem itemWithIcon:@"collect" withTitle:@"我的点评" destVcClass:[Test1ViewController class]];
-    
     SettingArrowItem * item3 = [SettingArrowItem itemWithIcon:@"like" withTitle:@"我的赞" destVcClass:[Test1ViewController class]];
     
     SettingGroup * group = [[SettingGroup alloc]init];

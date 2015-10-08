@@ -20,9 +20,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.backgroundColor = color(244,243,241);
+    
      self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"写私信" style:UIBarButtonItemStylePlain target:self action:@selector(edit)];
     self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    
 //
+}
+
+- (instancetype)initWithStyle:(UITableViewStyle)style{
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    return self;
 }
 
 
@@ -50,15 +58,14 @@
     if (!cell) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
     }
-    
-//    cell.textLabel.text = [NSString stringWithFormat:@"测试数据-- %ld",(long)indexPath.row];
-    if (indexPath.row == 0) {
-        cell.textLabel.text = @"我的评论";
-    }
-    
+    cell.textLabel.text = @"我的评论";
+    cell.imageView.image = [UIImage imageNamed:@"compose_more_cardbackground-1"];
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 70;
+}
 #pragma mark - 代理
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

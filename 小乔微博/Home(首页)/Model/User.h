@@ -49,6 +49,8 @@ typedef enum{
 
 @property(nonatomic,strong)Status *status;
 
-@property(nonatomic,strong)NSString *following;
+@property(nonatomic,copy)NSString *following;
+
+@property(nonatomic,copy)NSString *avatar_hd ;
 
 @end

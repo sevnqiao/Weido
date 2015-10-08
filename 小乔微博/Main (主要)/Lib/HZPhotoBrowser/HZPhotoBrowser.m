@@ -288,7 +288,8 @@
     
     [self dismissViewControllerAnimated:NO completion:nil];
     [UIView animateWithDuration:kPhotoBrowserHideDuration animations:^{
-        tempImageView.frame = targetTemp;
+//        tempImageView.frame = targetTemp;
+        tempImageView.alpha = 0;
         
     } completion:^(BOOL finished) {
         [tempImageView removeFromSuperview];
@@ -372,7 +373,7 @@
     return shouldSupportLandscape;
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     if (shouldSupportLandscape) {
         return UIInterfaceOrientationMaskAll;

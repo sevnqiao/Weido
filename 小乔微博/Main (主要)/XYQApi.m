@@ -17,6 +17,21 @@
 
 @implementation XYQApi
 
+/** 获取用户的照片列表 */
++ (AFHTTPRequestOperation *)getUserPhotosListWithAccessToken:(NSString *)accessToken
+                                                       UID:(NSString *)UID
+                                                      type:(NSString *)type
+                                                   success:(void(^)(id json))success
+{
+    NSMutableDictionary * params = [NSMutableDictionary dictionary];
+    params[@"access_token"] = accessToken;
+    params[@"uid"] = UID;
+    return [self sendRequest:[self urlStringWithPath:@"2/place/users/photos.json"] parameters:params type:type success:^(id json) {
+        success(json);
+    }];
+}
+
+
 /** 取消关注 */
 + (AFHTTPRequestOperation *)cancelAttentionWithAccessToken:(NSString *)accessToken
                                                        UID:(NSString *)UID
@@ -46,11 +61,11 @@
 }
 
 
-/** 获取更多关注人列表 */
+/** 获取更多粉丝列表 */
 + (AFHTTPRequestOperation *)getMoreMyFansListWithAccessToken:(NSString *)accessToken
                                                          UID:(NSString *)UID
                                                   TrimStatus:(NSNumber *)trimStatus
-                                                      curson:(NSNumber *)curson
+                                                      curson:(int)curson
                                                        count:(NSNumber *)count
                                                         type:(NSString *)type
                                                      success:(void(^)(id json))success
@@ -59,7 +74,7 @@
     params[@"access_token"] = accessToken;
     params[@"uid"] = UID;
     params[@"trim_status"] = trimStatus;
-    params[@"cursor"] = curson;
+    params[@"cursor"] = [NSNumber numberWithInt:curson];
     params[@"count"] = count;
     return [self sendRequest:[self urlStringWithPath:@"2/friendships/followers.json"] parameters:params type:type success:^(id json) {
         success(json);
@@ -67,7 +82,7 @@
 }
 
 
-/** 获取关注人列表 */
+/** 获取粉丝列表 */
 + (AFHTTPRequestOperation *)getMyFansListWithAccessToken:(NSString *)accessToken
                                                      UID:(NSString *)UID
                                               TrimStatus:(NSNumber *)trimStatus
@@ -407,7 +422,7 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 //    manager.requestSerializer = [AFJSONRequestSerializer serializer];
 //    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-
+//manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/plain",@"application/json",@"text/html", @"text/json", @"text/javascript", nil];
 #ifdef JOE_TEST
     NSTimeInterval ti = [[NSDate date] timeIntervalSince1970];
 #endif
@@ -445,13 +460,17 @@
             [[XYQApiOperationManager defaultManager]removeOperation:operation];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [MBProgressHUD hideHUD];
+            NSString *errorDesc = [self getErrorDescWithErrorCode:[operation.responseObject[@"error_code"] intValue]];
+            if ([errorDesc isEqualToString:@""]) {
+                [MBProgressHUD showError:[NSString stringWithFormat:@"%@",error.userInfo[@"NSLocalizedDescription"]]];
+            }else{
+                [MBProgressHUD showError:errorDesc];
+            }
 #ifdef JOE_TEST
             NSTimeInterval diff = [[NSDate date] timeIntervalSince1970] - ti;
             NSLog(@"耗时:%f秒", diff);
-            NSLog(@"Error: %@  ==%@", error.description,error.chineseDescription);
+            NSLog(@"Error: %@  == \n \n ==  错误点 %@ \n", error.description,error.userInfo[@"NSLocalizedDescription"]);
 #endif
-            NSString *errorDesc = [self getErrorDescWithErrorCode:[operation.responseObject[@"error_code"] intValue]];
-            [MBProgressHUD showError:errorDesc];
             [[XYQApiOperationManager defaultManager]removeOperation:operation];
         }];
     }
@@ -908,6 +927,7 @@
             errorDesc = @"21901 	Geo code input error 	地理信息输入错误";
             break;
         default:
+            errorDesc = @"";
             break;
     }
     return errorDesc;

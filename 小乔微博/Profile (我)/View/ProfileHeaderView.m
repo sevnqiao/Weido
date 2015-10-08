@@ -70,7 +70,6 @@
             [MBProgressHUD showError:[NSString stringWithFormat:@"%@",error]];
         }];
     });
-
 }
     
 - (IBAction)MyDetialClick:(UIButton *)sender {

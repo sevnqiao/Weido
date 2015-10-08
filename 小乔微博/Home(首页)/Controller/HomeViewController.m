@@ -282,7 +282,7 @@
 - (void)setupNav{
     self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(friendSearch) image:@"navigationbar_friendsearch" highImage:@"navigationbar_friendsearch_highlighted"];
     
-    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(pop) image:@"navigationbar_pop" highImage:@"navigationbar_pop_highlighted"];
+    self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithTarget:self action:@selector(pop:) image:@"navigationbar_pop" highImage:@"navigationbar_pop_highlighted"];
     
     TitleButton * titleBtn = [[TitleButton alloc]init];
 //    titleBtn.width = 10;
@@ -359,13 +359,44 @@
 
 #pragma mark - NavegationBarButton click
 - (void)friendSearch{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"手机剩余内存" message:[NSString stringWithFormat:@"%f",[self availableMemory]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"剩余内存" message:[NSString stringWithFormat:@"手机剩余内存%.1f \n 当前应用所占内存%.1f",[self availableMemory],[self usedMemory]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [alert show];
 }
 
-- (void)pop{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"当前应用所占内存" message:[NSString stringWithFormat:@"%f",[self usedMemory]] delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-    [alert show];
+- (void)pop:(UIButton *)sender{
+    NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"ShareSDK" ofType:@"png"];
+    
+    //构造分享内容
+    id<ISSContent> publishContent = [ShareSDK content:@"分享内容"
+                                       defaultContent:@"测试一下"
+                                                image:[ShareSDK imageWithPath:imagePath]
+                                                title:@"ShareSDK"
+                                                  url:@"http://www.mob.com"
+                                          description:@"这是一条测试信息"
+                                            mediaType:SSPublishContentMediaTypeNews];
+    //创建弹出菜单容器
+    id<ISSContainer> container = [ShareSDK container];
+    [container setIPadContainerWithView:sender arrowDirect:UIPopoverArrowDirectionUp];
+    
+    //弹出分享菜单
+    [ShareSDK showShareActionSheet:container
+                         shareList:nil
+                           content:publishContent
+                     statusBarTips:YES
+                       authOptions:nil
+                      shareOptions:nil
+                            result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                
+                                if (state == SSResponseStateSuccess)
+                                {
+                                    XYQLog(@"分享成功");
+                                }
+                                else if (state == SSResponseStateFail)
+                                {
+                                    XYQLog(@"分享失败,错误码:%ld,错误描述:%@", [error errorCode], [error errorDescription]);
+                                }
+                            }];
+    
 }
 
 

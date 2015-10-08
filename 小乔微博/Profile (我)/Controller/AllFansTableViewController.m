@@ -19,7 +19,7 @@
 @interface AllFansTableViewController ()<UITableViewCellDelegate>
 @property(nonatomic,strong)NSMutableArray * dataArr;
 
-@property(nonatomic,copy)NSString * next_cursor;
+@property(nonatomic,assign)int next_cursor;
 @end
 
 @implementation AllFansTableViewController
@@ -46,13 +46,13 @@
 {
     [MBProgressHUD showMessage:@"正在加载中..."];
     [XYQApi getMyFansListWithAccessToken:[AccountTools account].access_token
-                                     UID:[AccountTools account].uid TrimStatus:@0 count:@200 type:@"GET" success:^(id json) {
+                                     UID:[AccountTools account].uid TrimStatus:@0 count:@120 type:@"GET" success:^(id json) {
                                          NSArray * arr = [NSArray arrayWithArray:json[@"users"]];
                                          for (NSDictionary * dict in arr) {
                                              User * user = [User objectWithKeyValues:dict];
                                              [self.dataArr addObject:user];
                                          }
-                                         self.next_cursor = json[@"next_cursor"];
+                                         self.next_cursor = 12;
                                          [self.tableView reloadData];
                                          [MBProgressHUD hideHUD];
                                      }];
@@ -61,15 +61,15 @@
 // 上啦加载更多
 - (void)loadMoreUser
 {
-    
+    _next_cursor += 12;
     [MBProgressHUD showMessage:@"正在加载中..."];
-    [XYQApi getMoreMyFansListWithAccessToken:[AccountTools account].access_token UID:[AccountTools account].uid TrimStatus:@0 curson:@50 count:@200 type:@"GET" success:^(id json) {
+    [XYQApi getMoreMyFansListWithAccessToken:[AccountTools account].access_token UID:[AccountTools account].uid TrimStatus:@0 curson:_next_cursor count:@120 type:@"GET" success:^(id json) {
         NSArray * arr = [NSArray arrayWithArray:json[@"users"]];
         for (NSDictionary * dict in arr) {
             User * user = [User objectWithKeyValues:dict];
             [self.dataArr addObject:user];
         }
-        self.next_cursor = json[@"next_cursor"];
+//        self.next_cursor = json[@"next_cursor"];
         [self.tableView reloadData];
         [MBProgressHUD hideHUD];
         // 结束刷新(隐藏footer)

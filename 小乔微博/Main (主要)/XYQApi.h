@@ -140,7 +140,7 @@ typedef void(^completionHandler)(AFHTTPRequestOperation *operation, id responseO
 + (AFHTTPRequestOperation *)getMoreMyFansListWithAccessToken:(NSString *)accessToken
                                                          UID:(NSString *)UID
                                                   TrimStatus:(NSNumber *)trimStatus
-                                                      curson:(NSNumber *)curson
+                                                      curson:(int)curson
                                                        count:(NSNumber *)count
                                                         type:(NSString *)type
                                                      success:(void(^)(id json))success;
@@ -164,5 +164,11 @@ typedef void(^completionHandler)(AFHTTPRequestOperation *operation, id responseO
                                                     UID:(NSString *)UID
                                                    type:(NSString *)type
                                                 success:(void(^)(id json))success;
+
+/** 获取用户的照片列表 */
++ (AFHTTPRequestOperation *)getUserPhotosListWithAccessToken:(NSString *)accessToken
+                                                         UID:(NSString *)UID
+                                                        type:(NSString *)type
+                                                     success:(void(^)(id json))success;
 
 @end

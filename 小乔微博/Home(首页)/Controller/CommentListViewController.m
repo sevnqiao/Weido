@@ -66,7 +66,7 @@
     self.navigationController.navigationBar.alpha = 1;
     self.navigationItem.title = @"评论列表";
     self.tableView.backgroundColor = color(244,243,241);
-    [self.tableView setContentOffset:CGPointMake(0, self.statusFrame.statusHeight)];
+//    [self.tableView setContentOffset:CGPointMake(0, self.statusFrame.statusHeight)];
     NSLog(@"%f",self.tableView.contentOffset.y);
     // 下拉刷新
     [self loadNewComments];
@@ -74,6 +74,13 @@
     [self addRefresh];
     // 3. 添加工具条
     [self setupToolBar];
+    
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [self.tableView setContentOffset:CGPointMake(0, _statusFrame.statusHeight) animated:YES];
 }
 
 

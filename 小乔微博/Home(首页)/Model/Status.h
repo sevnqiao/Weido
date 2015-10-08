@@ -50,5 +50,7 @@
 @property (nonatomic , assign) int comments_count;
 @property (nonatomic , assign) int attitudes_count;
 
+@property(nonatomic,copy)NSString *original_pic;
+
 
 @end
