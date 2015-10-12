@@ -27,7 +27,20 @@
     [self addScrollView];
     [self addToolbars];
     [self setUpFrames];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpToStatus:) name:@"jumpToStatus" object:nil];
+
 }
+
+- (void)jumpToStatus:(NSNotificationCenter *)notification
+{
+    [self hidePhotoBrowser:nil];
+    int index = _scrollView.contentOffset.x / _scrollView.bounds.size.width;
+    if ([self.delegate respondsToSelector:@selector(jumpToStatus:)]) {
+        [self.delegate jumpToStatus:index];
+    }
+}
+
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -43,6 +56,7 @@
     [super viewWillLayoutSubviews];
     [self setUpFrames];
 }
+
 
 #pragma mark 设置各控件frame
 - (void)setUpFrames
@@ -67,7 +81,7 @@
     
     _indexLabel.bounds = CGRectMake(0, 0, 80, 30);
     _indexLabel.center = CGPointMake(kAPPWidth * 0.5, 30);
-    _saveButton.frame = CGRectMake(30, kAppHeight - 70, 55, 30);
+    _saveButton.frame = CGRectMake(KScreen_W - 75, 16, 55, 30);
 }
 
 #pragma mark 显示图片浏览器
@@ -85,6 +99,7 @@
     
     UIImageView *tempImageView = [[UIImageView alloc] init];
     tempImageView.frame = rect;
+    tempImageView.y = rect.origin.y + 64;
     tempImageView.image = [self placeholderImageForIndex:self.currentImageIndex];
     [self.view addSubview:tempImageView];
     tempImageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -194,7 +209,10 @@
     [saveButton addTarget:self action:@selector(saveImage) forControlEvents:UIControlEventTouchUpInside];
     _saveButton = saveButton;
     [self.view addSubview:saveButton];
+    
 }
+
+
 
 #pragma mark 保存图像
 - (void)saveImage
@@ -287,9 +305,11 @@
     [self.view.window addSubview:tempImageView];
     
     [self dismissViewControllerAnimated:NO completion:nil];
-    [UIView animateWithDuration:kPhotoBrowserHideDuration animations:^{
-//        tempImageView.frame = targetTemp;
-        tempImageView.alpha = 0;
+    
+    CGRect targetRect = targetTemp;
+    targetRect.origin.y = targetTemp.origin.y + 64;
+    [UIView animateWithDuration:kPhotoBrowserShowDuration animations:^{
+        tempImageView.frame = targetRect;
         
     } completion:^(BOOL finished) {
         [tempImageView removeFromSuperview];
@@ -302,11 +322,13 @@
     HZPhotoBrowserView *view = _scrollView.subviews[index];
     if (view.beginLoadingImage) return;
     if ([self highQualityImageURLForIndex:index]) {
-        [view setImageWithURL:[self highQualityImageURLForIndex:index] placeholderImage:[self placeholderImageForIndex:index]];
+        [view setImageWithURL:[self highQualityImageURLForIndex:index] placeholderImage:[self placeholderImageForIndex:index] descText:[self descriptionForIndex:index]];
     } else {
         view.imageview.image = [self placeholderImageForIndex:index];
     }
     view.beginLoadingImage = YES;
+    
+
 }
 
 #pragma mark 获取控制器的view
@@ -335,6 +357,14 @@
     return nil;
 }
 
+#pragma mark 获取图片描述
+- (NSString *)descriptionForIndex:(NSInteger)index
+{
+    if ([self.delegate respondsToSelector:@selector(photoBrowser:descriptionForIndex:)]) {
+        return [self.delegate photoBrowser:self descriptionForIndex:index];
+    }
+    return nil;
+}
 
 #pragma mark - scrollview代理方法
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

@@ -382,8 +382,9 @@
 
 - (void) tapImageViewsTappedWithObject:(int)index withPhotosArr:(NSArray *)photos WithImageView:(UIImageView *)imageView;
 {
-    if ([self.delegate respondsToSelector:@selector(didClickPhotoWithObjects:withPhotosArr:WithImageView:)]) {
-        [self.delegate didClickPhotoWithObjects:index withPhotosArr:photos WithImageView:imageView];
+    if ([self.delegate respondsToSelector:@selector(didClickPhotoWithObjects:withPhotosArr:WithImageView:WithIndexPath:)]) {
+        [self.delegate didClickPhotoWithObjects:index withPhotosArr:photos WithImageView:imageView WithIndexPath:_indexPath];
     }
 }
+
 @end

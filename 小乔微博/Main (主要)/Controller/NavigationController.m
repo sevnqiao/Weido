@@ -92,8 +92,6 @@
 
 - (void)back
 {
-    // 清除导航条默认颜色
-//    self.navigationBar.backgroundColor = color(247,247,247);
     
     // 导航条背景透明
     [self.navigationBar setBackgroundImage:[UIImage imageWithColor:color(252,252,252)] forBarMetrics:UIBarMetricsDefault];

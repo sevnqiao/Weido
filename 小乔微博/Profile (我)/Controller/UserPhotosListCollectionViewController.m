@@ -6,7 +6,6 @@
 //  Copyright © 2015年 Mr.X. All rights reserved.
 //
 
-#warning 添加跳转微博
 
 #import "UserPhotosListCollectionViewController.h"
 #import "PhotosListCollectionViewCell.h"
@@ -16,6 +15,8 @@
 #import "User.h"
 #import "Status.h"
 #import "HZPhotoBrowser.h"
+#import "CommentListViewController.h"
+#import "StatusFrame.h"
 
 @interface UserPhotosListCollectionViewController ()<HZPhotoBrowserDelegate,PhotosListCollectionViewCellDelegate>
 @property(nonatomic,strong)UIImageView *pictureView;
@@ -24,6 +25,7 @@
 @property(nonatomic,assign)CGFloat longitude;
 @property(nonatomic,strong)NSMutableArray *poisArr;
 @property(nonatomic,assign)int page;
+@property (nonatomic,strong) HZPhotoBrowser *browserVc;
 @end
 
 @implementation UserPhotosListCollectionViewController
@@ -58,8 +60,8 @@ static NSString * const reuseIdentifier = @"Cell";
     self.collectionView.alwaysBounceVertical = YES;
     [self.collectionView addHeaderWithTarget:self action:@selector(loadNew)];
     [self.collectionView addFooterWithTarget:self action:@selector(loadMore)];
-   
 }
+
  // 1 . 先获取位置坐标
 - (void)getUserLocation
 {
@@ -75,7 +77,6 @@ static NSString * const reuseIdentifier = @"Cell";
 }
  // 2. 根据位置坐标获取地点列表
 - (void)getPhotoList{
-    [MBProgressHUD showMessage:@"正在加载中"];
     NSString *str1 = [NSString stringWithFormat:@"https://api.weibo.com/2/place/nearby/pois.json?access_token=2.00PBkLBEU3TPLB3b10a0df3a0ZuXR3&uid=3682106173&lat=%f&long=%f",_latitude,_longitude];
     NSURL *url=[NSURL URLWithString:str1];//创建URL
     NSMutableURLRequest *request=[[NSMutableURLRequest alloc]initWithURL:url];//通过URL创建网络请求
@@ -88,13 +89,13 @@ static NSString * const reuseIdentifier = @"Cell";
     for (NSDictionary *dict in arr) {
         [_poisArr addObject:dict[@"poiid"]];
     }
-    [MBProgressHUD hideHUD];
+    [self.collectionView headerBeginRefreshing];
 }
 
  // 3. 根据地点获取附近照片
 - (void)loadNew{
     [MBProgressHUD showMessage:@"正在加载中"];
-    NSString *str1 = [NSString stringWithFormat:@"https://api.weibo.com/2/place/pois/photos.json?access_token=2.00PBkLBEU3TPLB3b10a0df3a0ZuXR3&uid=3682106173&poiid=%@&page=%d",_poisArr[0],1];
+    NSString *str1 = [NSString stringWithFormat:@"https://api.weibo.com/2/place/pois/photos.json?access_token=2.00PBkLBEU3TPLB3b10a0df3a0ZuXR3&uid=3682106173&poiid=%@&page=%d",_poisArr[1],1];
     NSURL *url=[NSURL URLWithString:str1];//创建URL
     NSMutableURLRequest *request=[[NSMutableURLRequest alloc]initWithURL:url];//通过URL创建网络请求
     [request setTimeoutInterval:30];//设置超时时间
@@ -160,8 +161,10 @@ static NSString * const reuseIdentifier = @"Cell";
     return cell;
 }
 
+#pragma mark - PhotosListCollectionViewCellDelegate
 - (void)didClickPhotoWithObjects:(int)index WithImageView:(UIView *)imageView{
     HZPhotoBrowser *browserVc = [[HZPhotoBrowser alloc] init];
+    _browserVc = browserVc;
     browserVc.sourceImagesContainerView = imageView; // 原图的父控件
     browserVc.imageCount = _PhotoUrlsArr.count; // 图片总数
     browserVc.currentImageIndex = index;
@@ -185,6 +188,23 @@ static NSString * const reuseIdentifier = @"Cell";
     return [NSURL URLWithString:status.original_pic];
 }
 
+- (NSString *)photoBrowser:(HZPhotoBrowser *)browser descriptionForIndex:(NSInteger)index
+{
+    Status *status = _PhotoUrlsArr[index];
+    return status.text;
+}
 
+- (void)jumpToStatus:(NSInteger)index{
+
+    CommentListViewController *commentList = [[CommentListViewController alloc]init];
+    Status *status = _PhotoUrlsArr[index];
+    StatusFrame *statusFrame = [[StatusFrame alloc]init];
+    statusFrame.status = status;
+    commentList.statusFrame = statusFrame;
+    
+    [self.navigationController pushViewController:commentList animated:YES];
+    
+    
+}
 
 @end

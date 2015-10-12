@@ -59,12 +59,11 @@
 
     /** 正文 */
     CGFloat contentX = nameX;
-    CGFloat contentY = MAX(KScreen_W, CGRectGetMaxY(self.timeLabelF)) + StatusFrameBorderW;
-    CGFloat maxW = [UIScreen mainScreen].bounds.size.width - 2 * contentX;
+    CGFloat contentY = MAX(CGRectGetMaxY(_iconViewF), CGRectGetMaxY(self.timeLabelF)) + StatusFrameBorderW;
+    CGFloat maxW = KScreen_W - 2 * contentX;
     CGSize contentSize = [comment.text sizeWithFont:[UIFont systemFontOfSize:13] maxW:maxW];
     self.contentLabelF = (CGRect){{contentX, contentY}, contentSize};
     
-
     
     self.commentHeight = CGRectGetMaxY(self.contentLabelF) + StatusFrameBorderW;
 }

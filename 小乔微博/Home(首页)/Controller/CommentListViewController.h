@@ -11,5 +11,5 @@
 @interface CommentListViewController : UITableViewController
 
 @property (nonatomic , strong) StatusFrame * statusFrame;
-
+@property (nonatomic, copy) NSString *type;
 @end

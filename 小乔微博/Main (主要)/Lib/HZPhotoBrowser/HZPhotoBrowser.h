@@ -12,9 +12,12 @@
 @class HZPhotoBrowser;
 
 @protocol HZPhotoBrowserDelegate <NSObject>
+@optional
 
 - (UIImage *)photoBrowser:(HZPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index;
 - (NSURL *)photoBrowser:(HZPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index;
+- (NSString *)photoBrowser:(HZPhotoBrowser *)browser descriptionForIndex:(NSInteger)index;
+- (void)jumpToStatus:(NSInteger)index;
 @end
 
 @interface HZPhotoBrowser : UIViewController

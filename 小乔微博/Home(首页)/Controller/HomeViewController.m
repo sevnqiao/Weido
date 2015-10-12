@@ -44,6 +44,10 @@
 
 @property(nonatomic,strong)DrapDownMenu * menu;
 
+@property(nonatomic,strong)UILabel *label;
+
+@property (nonatomic,strong) StatusFrame *statusFrame;
+
 @end
 
 @implementation HomeViewController
@@ -58,6 +62,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self loadNewStatus];
+    _statusFrame = [[StatusFrame alloc]init];
     self.tableView.backgroundColor = color(244,243,241);
     self.tableView.contentInset = UIEdgeInsetsMake(10, 0, 0, 0);
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -231,12 +236,18 @@
 
 /**  显示最新微博的数量 */
 - (void)showNewStatusCount:(int)count{
+    
+    if (_label) {
+        [_label removeFromSuperview];
+    }
+    
     UILabel * label = [[UILabel alloc]init];
     label.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"timeline_new_status_background"]];
     label.width = KScreen_W;
     label.height = 35;
     label.textAlignment = NSTextAlignmentCenter;
     label.textColor = [UIColor whiteColor];
+    _label = label;
     
     if (count == 0)
     {
@@ -393,7 +404,7 @@
                                 }
                                 else if (state == SSResponseStateFail)
                                 {
-                                    XYQLog(@"分享失败,错误码:%ld,错误描述:%@", [error errorCode], [error errorDescription]);
+                                    XYQLog(@"分享失败,错误码:%ld,错误描述:%@", (long)[error errorCode], [error errorDescription]);
                                 }
                             }];
     
@@ -493,10 +504,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     CommentListViewController * comment = [[CommentListViewController alloc]init];
     [self.navigationController pushViewController:comment animated:YES];
-    
-    
     StatusFrame * statusFrame = self.statusesFrame[indexPath.row];
-    
     comment.statusFrame = statusFrame;
 }
 
@@ -532,7 +540,7 @@
     
 }
 
-- (void)didClickPhotoWithObjects:(int)index withPhotosArr:(NSArray *)photos WithImageView:(UIImageView *)imageView;{
+- (void)didClickPhotoWithObjects:(int)index withPhotosArr:(NSArray *)photos WithImageView:(UIImageView *)imageView WithIndexPath:(NSIndexPath *)indexpath{
     self.photoBroArr = photos;
     
     //启动图片浏览器
@@ -542,6 +550,8 @@
     browserVc.currentImageIndex = index;
     browserVc.delegate = self;
     [browserVc show];
+    
+    _statusFrame = self.statusesFrame[indexpath.row];
 }
 
 #pragma mark - statusCellLinkDelegate
@@ -589,4 +599,12 @@
     NSString *urlStr = [[self.photoBroArr[index] thumbnail_pic] stringByReplacingOccurrencesOfString:@"thumbnail" withString:@"large"];
     return [NSURL URLWithString:urlStr];
 }
+
+- (NSString *)photoBrowser:(HZPhotoBrowser *)browser descriptionForIndex:(NSInteger)index
+{
+    Status *status = _statusFrame.status;
+    return status.text;
+}
+
+
 @end

@@ -232,7 +232,7 @@
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionary];
     params[@"access_token"] = accessToken;
-    params[@"id"] = commentID;
+    params[@"cid"] = commentID;
     return [self sendRequest:[self urlStringWithPath:@"2/comments/destroy.json"] parameters:params type:type success:^(id json) {
         success(json);
     }];

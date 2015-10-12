@@ -19,6 +19,8 @@
 @property (nonatomic, strong) NSURL *imageUrl;
 @property (nonatomic, strong) UIImage *placeHolderImage;
 @property (nonatomic, strong) UIButton *reloadButton;
+@property (nonatomic, strong) UIButton *descButton;
+@property (nonatomic, strong) NSString *descText;
 @end
 
 @implementation HZPhotoBrowserView
@@ -26,6 +28,7 @@
 {
     if (self = [super initWithFrame:frame]) {
         [self addSubview:self.scrollview];
+        [self addSubview:self.descButton];
         //添加单双击事件
         [self addGestureRecognizer:self.doubleTap];
         [self addGestureRecognizer:self.singleTap];
@@ -53,6 +56,29 @@
         _imageview.userInteractionEnabled = YES;
     }
     return _imageview;
+}
+
+- (UIButton *)descButton
+{
+    if (!_descButton) {
+        _descButton = [[UIButton alloc]initWithFrame:CGRectMake(10, KScreen_H - 40, KScreen_W - 20, 30)];
+        [_descButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _descButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        _descButton.layer.borderWidth = 0.1;
+        _descButton.layer.borderColor = [UIColor whiteColor].CGColor;
+        _descButton.backgroundColor = [UIColor colorWithRed:0.1f green:0.1f blue:0.1f alpha:0.3f];
+        _descButton.layer.cornerRadius = 2;
+        _descButton.clipsToBounds = YES;
+        _descButton.userInteractionEnabled = YES;
+        _descButton.titleLabel.numberOfLines = 3;
+        [_descButton addTarget:self action:@selector(jumpToStatus) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _descButton;
+}
+
+- (void)jumpToStatus
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"jumpToStatus" object:nil];
 }
 
 - (UITapGestureRecognizer *)doubleTap
@@ -112,7 +138,7 @@
     _indicatorView.progress = progress;
 }
 
-- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder
+- (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder descText:(NSString *)descText
 {
     if (_reloadButton) {
         [_reloadButton removeFromSuperview];
@@ -156,11 +182,16 @@
         }
         strongSelf.hasLoadedImage = YES;//图片加载成功
     }];
+    
+    _descText = descText;
+    [_descButton setTitle:descText forState:UIControlStateNormal];
+    _descButton.height = [_descText sizeWithFont:[UIFont systemFontOfSize:14] maxW:KScreen_W-20].height;
+    _descButton.y = KScreen_H - 10 - _descButton.height;
 }
 
 - (void)reloadImage
 {
-    [self setImageWithURL:_imageUrl placeholderImage:_placeHolderImage];
+    [self setImageWithURL:_imageUrl placeholderImage:_placeHolderImage descText:_descText];
 }
 
 - (void)layoutSubviews

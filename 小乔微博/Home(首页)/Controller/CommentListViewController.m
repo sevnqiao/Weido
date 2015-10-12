@@ -65,6 +65,7 @@
 
     self.navigationController.navigationBar.alpha = 1;
     self.navigationItem.title = @"评论列表";
+    
     self.tableView.backgroundColor = color(244,243,241);
 //    [self.tableView setContentOffset:CGPointMake(0, self.statusFrame.statusHeight)];
     NSLog(@"%f",self.tableView.contentOffset.y);
@@ -77,13 +78,6 @@
     
     
 }
-
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    [self.tableView setContentOffset:CGPointMake(0, _statusFrame.statusHeight) animated:YES];
-}
-
-
 
 - (void)setupToolBar{
     CommentToolBar * toolBar = [[CommentToolBar alloc]init];
@@ -158,7 +152,7 @@
         // 刷新表格
         [self.tableView reloadData];
         
-        [self.tableView headerEndRefreshing];
+        [self.tableView footerEndRefreshing];
         
         [MBProgressHUD hideHUD];
     }];
@@ -279,7 +273,7 @@
                                             delegate:self
                                    cancelButtonTitle:@"Cancel"
                               destructiveButtonTitle: @"删除"
-                                   otherButtonTitles:@"回复", @"转发", @"复制", nil];
+                                   otherButtonTitles:@"回复", nil];
         sheet.tag = 1000;
     }
     else
@@ -288,7 +282,7 @@
                                             delegate:self
                                    cancelButtonTitle:@"Cancel"
                               destructiveButtonTitle:nil
-                                   otherButtonTitles:@"回复", @"转发", @"复制", @"举报", nil];
+                                   otherButtonTitles:@"回复", nil];
         sheet.tag = 1001;
     }
     // Show the sheet
@@ -415,7 +409,6 @@
             }
                 break;
             default:
-                [MBProgressHUD showError:@"该功能暂未开放"];
                 break;
         }
     }
@@ -430,7 +423,6 @@
         }
             break;
         default:
-            [MBProgressHUD showError:@"该功能暂未开放"];
             break;
     }
 }
@@ -442,5 +434,6 @@
         [self.tableView reloadData];
     }];
 }
+
 
 @end

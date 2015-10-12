@@ -22,6 +22,11 @@
 
 @implementation StatusFrame
 
+- (void)layoutSublayersOfLayer:(CALayer *)layer{
+    [super layoutSublayersOfLayer:layer];
+
+}
+
 
 - (void)setStatus:(Status *)status
 {

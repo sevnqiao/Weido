@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -550,7 +550,6 @@
 		40825E4E1B8C70AB00EADBC6 /* RetweetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetweetViewController.m; sourceTree = "<group>"; };
 		408F05C31B86D12000B6A7D3 /* MMLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMLocationManager.h; sourceTree = "<group>"; };
 		408F05C41B86D12000B6A7D3 /* MMLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMLocationManager.m; sourceTree = "<group>"; };
-		4093FDA61B4E65FF00F86552 /* Reveal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Reveal.framework; sourceTree = "<group>"; };
 		40947FFB1B8D897C008B3EAF /* AlbumCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumCell.h; sourceTree = "<group>"; };
 		40947FFC1B8D897C008B3EAF /* AlbumCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumCell.m; sourceTree = "<group>"; };
 		40947FFD1B8D897C008B3EAF /* AlbumCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlbumCell.xib; sourceTree = "<group>"; };
@@ -1038,7 +1037,6 @@
 				409B76161B830705008F3BB9 /* HZPhotoBrowser */,
 				B932955F1B44D7BA004F25CE /* MLEmoji */,
 				B9A69D901B426C8A00E1B8E8 /* DLSlideView */,
-				4093FDA61B4E65FF00F86552 /* Reveal.framework */,
 				B941E1EC1B3D569E00EB159E /* JKPopMenu */,
 				047E45181B282B7E004C0CCC /* fmdb */,
 				04BACAB61B215E7B00F69EA0 /* MJRefresh */,
@@ -1951,7 +1949,7 @@
 		049448D41B1D337900A6B340 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = "";
+				CLASSPREFIX = YQ;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = Mr.X;
 				TargetAttributes = {
@@ -1965,7 +1963,7 @@
 				};
 			};
 			buildConfigurationList = 049448D71B1D337900A6B340 /* Build configuration list for PBXProject "小乔微博" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -2336,6 +2334,10 @@
 					"$(PROJECT_DIR)/小乔微博/ShareSDK/Extend/QQConnectSDK",
 					"$(PROJECT_DIR)/小乔微博/ShareSDK",
 					"$(PROJECT_DIR)/小乔微博/ShareSDK/UI",
+					"$(PROJECT_DIR)/小乔微博/Main",
+					"(主要)/Lib",
+					"$(PROJECT_DIR)/小乔微博/Main",
+					"(主要)/Lib",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/小乔微博/PrefixHeader.pch";
 				INFOPLIST_FILE = "小乔微博/Info.plist";
@@ -2368,6 +2370,10 @@
 					"$(PROJECT_DIR)/小乔微博/ShareSDK/Extend/QQConnectSDK",
 					"$(PROJECT_DIR)/小乔微博/ShareSDK",
 					"$(PROJECT_DIR)/小乔微博/ShareSDK/UI",
+					"$(PROJECT_DIR)/小乔微博/Main",
+					"(主要)/Lib",
+					"$(PROJECT_DIR)/小乔微博/Main",
+					"(主要)/Lib",
 				);
 				GCC_PREFIX_HEADER = "$(SRCROOT)/小乔微博/PrefixHeader.pch";
 				INFOPLIST_FILE = "小乔微博/Info.plist";
@@ -2396,6 +2402,7 @@
 				);
 				INFOPLIST_FILE = "小乔微博Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xyq.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/小乔微博.app/小乔微博";
@@ -2409,6 +2416,7 @@
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "小乔微博Tests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xyq.com;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/小乔微博.app/小乔微博";
